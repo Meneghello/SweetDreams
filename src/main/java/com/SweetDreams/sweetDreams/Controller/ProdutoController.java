@@ -30,37 +30,54 @@ public class ProdutoController {
     @ApiOperation(value = "Cadastro Produto")
     public ResponseEntity CadastroProduto(@RequestBody Produto produto){
 
-        if (produtoService.findByNomeProduto(produto.getNomeProduto().toLowerCase())!=null){
-            log.info("Produto já cadastrado: " + produto.getNomeProduto());
-            return ResponseEntity.badRequest().build();
-        }
-        else{
+        if (produtoService.findByNomeProduto(produto.getNomeProduto().toLowerCase())==null){
             produto.setNomeProduto(produto.getNomeProduto().toLowerCase());
             produtoService.save(produto);
             log.info("Produto " + produto.getNomeProduto() + " cadastrado");
             return ResponseEntity.ok("Produto " + produto.getNomeProduto() + " cadastrado");
         }
+        log.info("Produto já cadastrado: " + produto.getNomeProduto());
+        return ResponseEntity.badRequest().build();
+
     }
 
-    //Update de um produto ja existente
+    //Update de um produto
     @PutMapping(value = "/atualizacao/{nomeProduto}")
     @ApiOperation(value = "Update do cadastro de produto")
     public ResponseEntity UpdateProduto(@RequestBody Produto produto, @PathVariable String nomeProduto){
-        if(produtoService.findByNomeProduto(nomeProduto.toLowerCase())==null){
-            log.info("Produto inexistente");
-            return ResponseEntity.badRequest().build();
+        if(produtoService.findByNomeProduto(nomeProduto.toLowerCase())!=null){
+            produto.setNomeProduto(produto.getNomeProduto().toLowerCase());
+            produtoService.update(produto, nomeProduto);
+            log.info("Produto " + produto.getNomeProduto().toLowerCase() + " atualizado");
+            return ResponseEntity.ok("Produto " + produto.getNomeProduto().toLowerCase() + " atualizado");
         }
-        produto.setNomeProduto(produto.getNomeProduto().toLowerCase());
-        produtoService.update(produto, nomeProduto);
-        log.info("Produto " + produto.getNomeProduto() + " atualizado");
-        return ResponseEntity.ok("Produto " + produto.getNomeProduto() + " atualizado");
+        log.info("Produto inexistente");
+        return ResponseEntity.badRequest().build();
     }
 
-//    public ResponseEntity DeleteProduto(){
-//
-//    }
-//    public ResponseEntity BuscaProduto(@RequestParam("nomeProduto") String nomeProduto){
-//
-//    }
+    //Deleta um produto
+    @DeleteMapping(value = "/delete/{nomeProduto}")
+    @ApiOperation(value = "Deletar produto")
+    public ResponseEntity DeleteProduto(@PathVariable String nomeProduto){
+        if(produtoService.findByNomeProduto(nomeProduto.toLowerCase())!=null){
+            produtoService.delete(produtoService.findByNomeProduto(nomeProduto.toLowerCase()));
+            log.info("Produto " + nomeProduto.toLowerCase() + " deletado");
+            return ResponseEntity.ok("Produto " + nomeProduto.toLowerCase() + " deletado");
+        }
+        log.info("Produto inexistente");
+        return ResponseEntity.badRequest().build();
+    }
+
+    //Busca por nome de produto
+    @GetMapping(value = "/busca/{nomeProduto}")
+    @ApiOperation(value = "Buscar produto por nome")
+    public ResponseEntity BuscaProduto(@PathVariable("nomeProduto") String nomeProduto){
+        if (produtoService.findByNomeProduto(nomeProduto.toLowerCase())!=null){
+            log.info("Produto " + nomeProduto + " encontrado");
+            return ResponseEntity.ok(produtoService.findByNomeProduto(nomeProduto.toLowerCase()));
+        }
+        log.info("Produto inexistente");
+        return ResponseEntity.badRequest().build();
+    }
 
 }

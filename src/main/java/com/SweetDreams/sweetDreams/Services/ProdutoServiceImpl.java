@@ -27,6 +27,9 @@ public class ProdutoServiceImpl implements ProdutoService{
     }
 
     @Override
+    public void delete(Produto produto){produtoRepository.delete(produto);}
+
+    @Override
     public Produto findByNomeProduto(String nomeProduto){return produtoRepository.findByNomeProduto(nomeProduto);}
 
 

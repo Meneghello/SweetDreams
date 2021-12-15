@@ -10,4 +10,5 @@ public interface ProdutoService {
     Produto findByNomeProduto(String nomeProduto);
 
     Produto update(Produto produto, String nomeProduto);
+    public void delete(Produto produto);
 }
