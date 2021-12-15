@@ -12,7 +12,6 @@ public class Cliente {
     @Id
     private String idCliente;
     private String nome;
-    private String sobrenome;
     private Endereço endereço;
     private String dataNascimento;
     private String celular;
@@ -35,13 +34,6 @@ public class Cliente {
         this.nome = nome;
     }
 
-    public String getSobrenome() {
-        return sobrenome;
-    }
-
-    public void setSobrenome(String sobrenome) {
-        this.sobrenome = sobrenome;
-    }
 
     public Endereço getEndereço() {
         return endereço;
@@ -83,10 +75,9 @@ public class Cliente {
         this.email = email;
     }
 
-    public Cliente(String idCliente, String nome, String sobrenome, Endereço endereço, String dataNascimento, String celular, String cpf, String email) {
+    public Cliente(String idCliente, String nome, Endereço endereço, String dataNascimento, String celular, String cpf, String email) {
         this.idCliente = idCliente;
         this.nome = nome;
-        this.sobrenome = sobrenome;
         this.endereço = endereço;
         this.dataNascimento = dataNascimento;
         this.celular = celular;

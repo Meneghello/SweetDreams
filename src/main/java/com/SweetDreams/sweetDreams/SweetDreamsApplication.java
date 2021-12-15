@@ -12,7 +12,7 @@ public class SweetDreamsApplication {
 
 	@GetMapping(value = "/")
 	public String helloWorld(){
-		return String.format("Hello World");
+		return String.format("Under development");
 	}
 
 	public static void main(String[] args) {
