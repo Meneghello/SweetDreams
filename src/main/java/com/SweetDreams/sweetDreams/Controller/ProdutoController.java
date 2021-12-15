@@ -28,7 +28,7 @@ public class ProdutoController {
     //Cadastro novo produto -> se já existe retorna erro badRequest(erro 400)
     @PostMapping(value = "/cadastro")
     @ApiOperation(value = "Cadastro Produto")
-    public ResponseEntity CadastroProduto(@RequestBody Produto produto){
+    public ResponseEntity<Object> CadastroProduto(@RequestBody Produto produto){
 
         if (produtoService.findByNomeProduto(produto.getNomeProduto().toLowerCase())==null){
             produto.setNomeProduto(produto.getNomeProduto().toLowerCase());
@@ -44,7 +44,7 @@ public class ProdutoController {
     //Update de um produto
     @PutMapping(value = "/atualizacao/{nomeProduto}")
     @ApiOperation(value = "Update do cadastro de produto")
-    public ResponseEntity UpdateProduto(@RequestBody Produto produto, @PathVariable String nomeProduto){
+    public ResponseEntity<Object> UpdateProduto(@RequestBody Produto produto, @PathVariable String nomeProduto){
         if(produtoService.findByNomeProduto(nomeProduto.toLowerCase())!=null){
             produto.setNomeProduto(produto.getNomeProduto().toLowerCase());
             produtoService.update(produto, nomeProduto);
@@ -58,7 +58,7 @@ public class ProdutoController {
     //Deleta um produto
     @DeleteMapping(value = "/delete/{nomeProduto}")
     @ApiOperation(value = "Deletar produto")
-    public ResponseEntity DeleteProduto(@PathVariable String nomeProduto){
+    public ResponseEntity<Object> DeleteProduto(@PathVariable String nomeProduto){
         if(produtoService.findByNomeProduto(nomeProduto.toLowerCase())!=null){
             produtoService.delete(produtoService.findByNomeProduto(nomeProduto.toLowerCase()));
             log.info("Produto " + nomeProduto.toLowerCase() + " deletado");
@@ -71,7 +71,7 @@ public class ProdutoController {
     //Busca por nome de produto
     @GetMapping(value = "/busca/{nomeProduto}")
     @ApiOperation(value = "Buscar produto por nome")
-    public ResponseEntity BuscaProduto(@PathVariable("nomeProduto") String nomeProduto){
+    public ResponseEntity<Object> BuscaProduto(@PathVariable("nomeProduto") String nomeProduto){
         if (produtoService.findByNomeProduto(nomeProduto.toLowerCase())!=null){
             log.info("Produto " + nomeProduto + " encontrado");
             return ResponseEntity.ok(produtoService.findByNomeProduto(nomeProduto.toLowerCase()));
