@@ -2,28 +2,57 @@ package com.SweetDreams.sweetDreams.Model;
 
 
 
+import org.hibernate.validator.constraints.br.CPF;
 import org.springframework.data.annotation.Id;
+import org.springframework.data.mongodb.core.index.Indexed;
 import org.springframework.data.mongodb.core.mapping.Document;
+
+import javax.validation.Valid;
+import javax.validation.constraints.*;
 
 
 @Document(value = "Clientes")
 public class Cliente {
 
     @Id
-    private String idCliente;
+    private String id;
+
+    @NotBlank
+    @Pattern(regexp = "^[A-Za-z ]+$")
     private String nome;
+
+    @Valid
+    @NotNull
     private Endereço endereço;
+
+    @NotBlank
+    @Pattern(regexp = "^[0-9-/. ]+$")
     private String dataNascimento;
+
+    @NotBlank
+    @Pattern(regexp = "^[0-9-().+ ]+$")
     private String celular;
+
+    @NotEmpty
+    //@CPF
+    @Indexed(unique = true)
     private String cpf;
+
+    @NotEmpty
+    //@Email
+    @Indexed(unique = true)
     private String email;
 
+    public Cliente() {
+
+    }
+
     public String getIdCliente() {
-        return idCliente;
+        return id;
     }
 
     public void setIdCliente(String idCliente) {
-        this.idCliente = idCliente;
+        this.id = idCliente;
     }
 
     public String getNome() {
@@ -75,8 +104,8 @@ public class Cliente {
         this.email = email;
     }
 
-    public Cliente(String idCliente, String nome, Endereço endereço, String dataNascimento, String celular, String cpf, String email) {
-        this.idCliente = idCliente;
+    public Cliente(String id, String nome, Endereço endereço, String dataNascimento, String celular, String cpf, String email) {
+        this.id = id;
         this.nome = nome;
         this.endereço = endereço;
         this.dataNascimento = dataNascimento;

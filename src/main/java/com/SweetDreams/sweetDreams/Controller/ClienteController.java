@@ -10,6 +10,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
+
 @RestController
 @RequestMapping(value = "/cliente")
 @Api(value ="Cliente")
@@ -22,8 +24,8 @@ public class ClienteController {
 
     //Cadastro de novo cliente
     @PostMapping(value = "/cadastro")
-    @ApiOperation("Cadastro de cliente")
-    public ResponseEntity<Object> CadastroCliente (@RequestBody Cliente cliente){
+    @ApiOperation(value = "Cadastro de cliente")
+    public ResponseEntity<Object> CadastroCliente (@RequestBody @Valid Cliente cliente){
         if (clienteService.findByCpf(cliente.getCpf())==null){
             cliente.setNome(cliente.getNome().toLowerCase());
             clienteService.save(cliente);
@@ -37,7 +39,7 @@ public class ClienteController {
     //Update de um cliente
     @PutMapping(value = "atualizacao/{cpf}")
     @ApiOperation(value = "Update do cadastro de cliente")
-    public ResponseEntity<Object> UpdateCliente (@RequestBody Cliente cliente, @PathVariable("cpf") String cpf){
+    public ResponseEntity<Object> UpdateCliente (@RequestBody @Valid Cliente cliente, @PathVariable("cpf") String cpf){
         if (clienteService.findByCpf(cpf)!=null){
             cliente.setNome(cliente.getNome().toLowerCase());
             clienteService.update(cliente, cpf);
@@ -52,8 +54,9 @@ public class ClienteController {
     @DeleteMapping(value = "/delete/{cpf}")
     @ApiOperation(value = "Deletar um cliente")
     public ResponseEntity<Object> DeleteCliente(@PathVariable("cpf") String cpf){
-        String nome = clienteService.findByCpf(cpf).getNome();
+
         if (clienteService.findByCpf(cpf)!=null){
+            String nome = clienteService.findByCpf(cpf).getNome();
             clienteService.delete(clienteService.findByCpf(cpf));
             log.info("Cliente " + nome + " deletado");
             return ResponseEntity.ok("Cliente " + nome + " deletado");

@@ -1,15 +1,21 @@
 package com.SweetDreams.sweetDreams.Model;
 
 
-
+import javax.validation.constraints.NotBlank;
 
 public class Endereço {
 
+    @NotBlank
     private String rua;
+    @NotBlank
     private String numero;
+
     private String complemento;
+    @NotBlank
     private String cep;
+    @NotBlank
     private String cidade;
+    @NotBlank
     private String estado;
 
     public String getRua() {

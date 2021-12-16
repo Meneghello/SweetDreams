@@ -2,17 +2,25 @@ package com.SweetDreams.sweetDreams.Model;
 
 
 import org.springframework.data.annotation.Id;
+import org.springframework.data.mongodb.core.index.Indexed;
 import org.springframework.data.mongodb.core.mapping.Document;
+
+import javax.validation.constraints.NotBlank;
 
 @Document(value = "Produtos")
 public class Produto{
 
     @Id
-    private String idProduto;
+    private String id;
+    @NotBlank
+    @Indexed(unique = true)
     private String nomeProduto;
     private String[] sabor;
+    @NotBlank
     private Long quantidade;
+    @NotBlank
     private Double preço;
+    @NotBlank
     private String dataValidade;
 
     public String getNomeProduto() {
@@ -55,7 +63,16 @@ public class Produto{
         this.dataValidade = dataValidade;
     }
 
-    public Produto(String nomeProduto, String[] sabor, Long quantidade, Double preço, String dataValidade) {
+    public String getId() {
+        return id;
+    }
+
+    public void setId(String id) {
+        this.id = id;
+    }
+
+    public Produto(String id, String nomeProduto, String[] sabor, Long quantidade, Double preço, String dataValidade) {
+        this.id = id;
         this.nomeProduto = nomeProduto;
         this.sabor = sabor;
         this.quantidade = quantidade;
