@@ -20,7 +20,7 @@ public class ProdutoServiceImpl implements ProdutoService{
         Produto produto = produtoRepository.findByNomeProduto(nomeProduto.toLowerCase());
         produto.setNomeProduto(novoProduto.getNomeProduto().toLowerCase());
         produto.setDataValidade(novoProduto.getDataValidade());
-        produto.setPreço(novoProduto.getPreço());
+        produto.setPreco(novoProduto.getPreco());
         produto.setQuantidade(novoProduto.getQuantidade());
         produto.setSabor(novoProduto.getSabor());
         return  produtoRepository.save(produto);

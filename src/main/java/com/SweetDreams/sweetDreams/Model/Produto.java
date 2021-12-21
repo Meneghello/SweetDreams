@@ -19,7 +19,7 @@ public class Produto{
     @NotBlank
     private Long quantidade;
     @NotBlank
-    private Double preço;
+    private Double preco;
     @NotBlank
     private String dataValidade;
 
@@ -47,12 +47,12 @@ public class Produto{
         this.quantidade = quantidade;
     }
 
-    public Double getPreço() {
-        return preço;
+    public Double getPreco() {
+        return preco;
     }
 
-    public void setPreço(Double preço) {
-        this.preço = preço;
+    public void setPreco(Double preco) {
+        this.preco = preco;
     }
 
     public String getDataValidade() {
@@ -76,7 +76,7 @@ public class Produto{
         this.nomeProduto = nomeProduto;
         this.sabor = sabor;
         this.quantidade = quantidade;
-        this.preço = preço;
+        this.preco = preço;
         this.dataValidade = dataValidade;
     }
 }
