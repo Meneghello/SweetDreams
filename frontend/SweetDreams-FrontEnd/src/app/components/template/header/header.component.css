@@ -1,0 +1,18 @@
+.header {
+    justify-content: center;
+    height: 10%;
+}
+
+img {
+    size: 3rem;
+}
+
+span {
+    display: flex;
+    align-items: center;
+}
+
+h1 {
+    font-size: 2rem;
+    color: #ff80c0;
+}
