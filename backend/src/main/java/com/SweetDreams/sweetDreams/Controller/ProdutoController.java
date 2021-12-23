@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.*;
 import org.slf4j.Logger;
 
 import java.util.Arrays;
+import java.util.List;
 import java.util.Locale;
 
 @RestController
@@ -83,5 +84,15 @@ public class ProdutoController {
         log.info("Produto inexistente");
         return ResponseEntity.badRequest().build();
     }
+
+    //Lista todos os produtos
+    @GetMapping(value = "/")
+    @ApiOperation(value = "Lista todos os produtos")
+    public List<Produto> ListaProdutos(){
+
+        log.info("Listados todos os produtos");
+        return produtoService.findAll();
+    }
+
 
 }

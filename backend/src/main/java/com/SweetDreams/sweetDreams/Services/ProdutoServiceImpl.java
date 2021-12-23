@@ -5,6 +5,8 @@ import com.SweetDreams.sweetDreams.Repository.ProdutoRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 
 @Service
 public class ProdutoServiceImpl implements ProdutoService{
@@ -25,6 +27,9 @@ public class ProdutoServiceImpl implements ProdutoService{
         produto.setSabor(novoProduto.getSabor());
         return  produtoRepository.save(produto);
     }
+
+    @Override
+    public List<Produto> findAll(){return produtoRepository.findAll();}
 
     @Override
     public void delete(Produto produto){produtoRepository.delete(produto);}
