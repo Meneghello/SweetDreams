@@ -59,4 +59,7 @@ public class Vendedor {
         this.cliente = cliente;
         this.codigoVendedor = codigoVendedor;
     }
+
+    public Vendedor() {
+    }
 }

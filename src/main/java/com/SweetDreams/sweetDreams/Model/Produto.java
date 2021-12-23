@@ -79,4 +79,7 @@ public class Produto{
         this.preco = preco;
         this.dataValidade = dataValidade;
     }
+
+    public Produto() {
+    }
 }

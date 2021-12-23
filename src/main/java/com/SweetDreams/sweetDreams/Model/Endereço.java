@@ -74,4 +74,7 @@ public class Endereço {
         this.cidade = cidade;
         this.estado = estado;
     }
+
+    public Endereço() {
+    }
 }
