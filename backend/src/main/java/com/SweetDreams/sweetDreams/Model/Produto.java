@@ -71,12 +71,12 @@ public class Produto{
         this.id = id;
     }
 
-    public Produto(String id, String nomeProduto, String[] sabor, Long quantidade, Double preço, String dataValidade) {
+    public Produto(String id, String nomeProduto, String[] sabor, Long quantidade, Double preco, String dataValidade) {
         this.id = id;
         this.nomeProduto = nomeProduto;
         this.sabor = sabor;
         this.quantidade = quantidade;
-        this.preco = preço;
+        this.preco = preco;
         this.dataValidade = dataValidade;
     }
 }
