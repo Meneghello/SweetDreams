@@ -5,6 +5,8 @@ import com.SweetDreams.sweetDreams.Repository.ClienteRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Service
 public class ClienteServiceImpl implements ClienteService{
 
@@ -30,6 +32,9 @@ public class ClienteServiceImpl implements ClienteService{
         cliente.setDataNascimento(novoCliente.getDataNascimento());
         return clienteRepository.save(cliente);
     }
+
+    @Override
+    public List<Cliente> findAll(){return clienteRepository.findAll();}
 
 
 

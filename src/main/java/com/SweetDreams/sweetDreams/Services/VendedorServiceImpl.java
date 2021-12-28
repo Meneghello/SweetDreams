@@ -1,6 +1,7 @@
 package com.SweetDreams.sweetDreams.Services;
 
 import com.SweetDreams.sweetDreams.Model.Cliente;
+import com.SweetDreams.sweetDreams.Model.Produto;
 import com.SweetDreams.sweetDreams.Model.Vendedor;
 
 import com.SweetDreams.sweetDreams.Repository.ClienteRepository;
@@ -8,6 +9,7 @@ import com.SweetDreams.sweetDreams.Repository.VendedorRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.Random;
 
 @Service
@@ -29,6 +31,8 @@ public class VendedorServiceImpl implements VendedorService{
     @Override
     public Vendedor findByCliente(Cliente cliente){return vendedorRepository.findByCliente(cliente);}
 
+    @Override
+    public List<Vendedor> findAll(){return vendedorRepository.findAll();}
 
     @Override
     public Vendedor findByCodigoVendedor(Long codigoVendedor){return vendedorRepository.findByCodigoVendedor(codigoVendedor);};

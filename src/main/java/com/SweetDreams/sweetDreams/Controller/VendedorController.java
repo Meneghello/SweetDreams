@@ -1,6 +1,7 @@
 package com.SweetDreams.sweetDreams.Controller;
 
 
+import com.SweetDreams.sweetDreams.Model.Produto;
 import com.SweetDreams.sweetDreams.Model.Vendedor;
 import com.SweetDreams.sweetDreams.Services.VendedorService;
 import io.swagger.annotations.Api;
@@ -12,6 +13,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
+import java.util.List;
 
 @RestController
 @RequestMapping(value = "/vendedor")
@@ -76,6 +78,16 @@ public class VendedorController {
         }
         log.info("Vendedor inexistente");
         return ResponseEntity.badRequest().build();
+    }
+
+    //Lista todos os vendedores
+    @GetMapping(value = "/")
+    @ApiOperation(value = "Lista todos os vendedores")
+    public List<Vendedor> ListaVendedores(){
+
+        log.info("Listados todos os vendedores \r\n {} Vendedores encontrados",
+                vendedorService.findAll().size());
+        return vendedorService.findAll();
     }
 
 

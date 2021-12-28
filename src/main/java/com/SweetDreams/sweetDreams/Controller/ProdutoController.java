@@ -90,7 +90,8 @@ public class ProdutoController {
     @ApiOperation(value = "Lista todos os produtos")
     public List<Produto> ListaProdutos(){
 
-        log.info("Listados todos os produtos");
+        log.info("Listados todos os produtos \r\n {} Produtos encontrados",
+                produtoService.findAll().size());
         return produtoService.findAll();
     }
 

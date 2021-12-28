@@ -39,7 +39,7 @@ public class Cliente {
     private String cpf;
 
     @NotEmpty
-    //@Email
+    @Email
     @Indexed(unique = true)
     private String email;
 

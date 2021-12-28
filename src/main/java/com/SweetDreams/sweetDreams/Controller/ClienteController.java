@@ -8,12 +8,12 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
-import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 import java.lang.reflect.Array;
 import java.util.Arrays;
+import java.util.List;
 
 @RestController
 @RequestMapping(value = "/cliente")
@@ -78,6 +78,16 @@ public class ClienteController {
         }
         log.info("Cliente inexistente");
         return ResponseEntity.badRequest().build();
+    }
+
+    //Lista todos os produtos
+    @GetMapping(value = "/")
+    @ApiOperation(value = "Lista todos os clientes")
+    public List<Cliente> ListaClientes(){
+
+        log.info("Listados todos os clientes \r\n {} Clientes encontrados",
+                clienteService.findAll().size());
+        return clienteService.findAll();
     }
 
 
