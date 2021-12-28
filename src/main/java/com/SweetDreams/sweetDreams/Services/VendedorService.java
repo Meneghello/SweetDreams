@@ -7,6 +7,7 @@ import org.springframework.stereotype.Service;
 @Service
 public interface VendedorService {
     Vendedor findByCpf(String cpf);
+    Vendedor findByCliente(Cliente cliente);
     Vendedor findByCodigoVendedor(Long codigoVendedor);
     Vendedor save(Vendedor vendedor);
     Vendedor update(Vendedor vendedor,String cpf);

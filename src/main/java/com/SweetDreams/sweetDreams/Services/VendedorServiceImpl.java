@@ -20,7 +20,14 @@ public class VendedorServiceImpl implements VendedorService{
     ClienteRepository clienteRepository;
 
     @Override
-    public Vendedor findByCpf(String cpf){return vendedorRepository.findByCpf(cpf);}
+    public Vendedor findByCpf(String cpf){
+        Cliente cliente = clienteRepository.findByCpf(cpf);
+
+        return vendedorRepository.findByCliente(cliente);
+    }
+
+    @Override
+    public Vendedor findByCliente(Cliente cliente){return vendedorRepository.findByCliente(cliente);}
 
 
     @Override
@@ -29,13 +36,7 @@ public class VendedorServiceImpl implements VendedorService{
     @Override
     public Vendedor save(Vendedor vendedor){
 
-        Cliente cliente = new Cliente();
-        cliente.setCpf(vendedor.getCliente().getCpf());
-        cliente.setNome(vendedor.getCliente().getNome());
-        cliente.setEndereço(vendedor.getCliente().getEndereço());
-        cliente.setEmail(vendedor.getCliente().getEmail());
-        cliente.setCelular(vendedor.getCliente().getCelular());
-        cliente.setDataNascimento(vendedor.getCliente().getDataNascimento());
+        Cliente cliente = vendedor.getCliente();
         clienteRepository.save(cliente);
         vendedor.setCliente(cliente);
         vendedor.setCpf(cliente.getCpf());
@@ -44,7 +45,7 @@ public class VendedorServiceImpl implements VendedorService{
 
     @Override
     public void delete(Vendedor vendedor){
-        //clienteRepository.delete(clienteRepository.findByCpf(vendedor.getCpf()));
+        clienteRepository.delete(clienteRepository.findByCpf(vendedor.getCpf()));
         vendedorRepository.delete(vendedor);
     }
 

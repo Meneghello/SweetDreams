@@ -38,7 +38,7 @@ public class ProdutoServiceImplTest {
 
         Produto produtoEnc = produtoService.findByNomeProduto(produtoTest().getNomeProduto());
         Assertions.assertNotNull(produtoEnc);
-        assertEquals("produto teste",produtoEnc.getNomeProduto());
+        Assertions.assertEquals("produto teste", produtoEnc.getNomeProduto());
         produtoRepository.delete(produtoEnc);
 
     }
@@ -46,8 +46,8 @@ public class ProdutoServiceImplTest {
     @Test
     public void deleteProdutoTest(){
         Produto produtoTest = produtoTest();
-        produtoRepository.delete(produtoTest);
-        Produto nomeProduto = produtoService.findByNomeProduto(produtoTest.getNomeProduto());
+        produtoService.delete(produtoTest);
+        Produto nomeProduto = produtoRepository.findByNomeProduto(produtoTest.getNomeProduto());
         assertNull(nomeProduto);
     }
 
@@ -76,7 +76,7 @@ public class ProdutoServiceImplTest {
     public void saveTest(){
         Produto produtoTest = produtoTest();
         produtoService.save(produtoTest);
-        assertNotNull(produtoRepository.findByNomeProduto(produtoTest.getNomeProduto()));
+        assertNotNull(produtoService.findByNomeProduto(produtoTest.getNomeProduto()));
         produtoRepository.delete(produtoTest);
 
     }

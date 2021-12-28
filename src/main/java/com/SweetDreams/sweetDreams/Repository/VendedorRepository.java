@@ -8,6 +8,7 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface VendedorRepository extends MongoRepository<Vendedor,String> {
     Vendedor findByCpf(String cpf);
+    Vendedor findByCliente(Cliente cliente);
     Vendedor findByCodigoVendedor(Long codigoVendedor);
 
 }
