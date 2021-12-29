@@ -1,6 +1,8 @@
 package com.SweetDreams.sweetDreams.TestService;
 
 import com.SweetDreams.sweetDreams.Model.Cliente;
+import com.SweetDreams.sweetDreams.Model.DTOs.ClienteDto;
+import com.SweetDreams.sweetDreams.Model.DTOs.NovoClienteDto;
 import com.SweetDreams.sweetDreams.Model.Endereço;
 import com.SweetDreams.sweetDreams.Repository.ClienteRepository;
 import com.SweetDreams.sweetDreams.Services.ClienteService;
@@ -63,5 +65,31 @@ public class ClienteServiceImplTest {
         clienteService.update(clienteTest,clienteTest.getCpf());
         assertEquals("Gabriel",clienteTest.getNome());
         clienteRepository.delete(clienteTest);
+    }
+
+    @Test
+    public void cadastroDtoTest(){
+        NovoClienteDto novoClienteDto = new NovoClienteDto();
+        novoClienteDto.setDataNascimento("25/11/1998");
+        novoClienteDto.setCelular("11911111111");
+        novoClienteDto.setEmail("abc@abc.com");
+        novoClienteDto.setEndereço(new Endereço("Teste","45","abc","09110830","São Paulo", "São paulo"));
+        novoClienteDto.setNome("Cliente teste");
+        novoClienteDto.setCpf("35912852857");
+        Cliente cliente = clienteService.cadastroDto(novoClienteDto);
+        assertTrue(cliente.getNome().equalsIgnoreCase("Cliente teste"));
+        assertEquals("35912852857", cliente.getCpf());
+    }
+
+    @Test
+    public void atualizcaoDtoTest(){
+        ClienteDto clienteDto =  new ClienteDto();
+        clienteDto.setCelular("1111");
+        clienteDto.setEmail("abc@abc.com");
+        clienteDto.setEndereço(new Endereço("Teste","45","abc","09110830","São Paulo", "São paulo"));
+        clienteDto.setNome("Cliente teste");
+        Cliente cliente = clienteService.atualizacaoDto(clienteDto);
+        assertTrue(cliente.getNome().equalsIgnoreCase("Cliente teste"));
+        assertNull(cliente.getCpf());
     }
 }

@@ -1,5 +1,6 @@
 package com.SweetDreams.sweetDreams.TestService;
 
+import com.SweetDreams.sweetDreams.Model.DTOs.ProdutoDto;
 import com.SweetDreams.sweetDreams.Model.Produto;
 import com.SweetDreams.sweetDreams.Repository.ProdutoRepository;
 import com.SweetDreams.sweetDreams.Services.ProdutoService;
@@ -78,7 +79,19 @@ public class ProdutoServiceImplTest {
         produtoService.save(produtoTest);
         assertNotNull(produtoService.findByNomeProduto(produtoTest.getNomeProduto()));
         produtoRepository.delete(produtoTest);
+    }
 
+    @Test
+    public void cadastroDtoTest(){
+        ProdutoDto produtoTest = new ProdutoDto();
+        produtoTest.setNomeProduto("Produto teste");
+        produtoTest.setPreco(5d);
+        produtoTest.setQuantidade(50L);
+        produtoTest.setDataValidade("20/20/20");
+        produtoTest.setSabor(new String[]{"Chocolate", "Doce de leite"});
+        Produto produto = produtoService.cadastroDto(produtoTest);
+        assertEquals("produto teste",produto.getNomeProduto());
+        assertArrayEquals(new String[]{"Chocolate", "Doce de leite"},produto.getSabor());
     }
 
 }

@@ -89,6 +89,7 @@ public class VendedorServiceImpl implements VendedorService{
             return vendedor;
         }
         vendedor.setCliente(findCliente(vendedorDto.getCliente().getCpf()));
+        vendedor.setCpf(vendedorDto.getCliente().getCpf());
         return vendedor;
     }
 
@@ -96,6 +97,9 @@ public class VendedorServiceImpl implements VendedorService{
     public Cliente atualizacaoDto(ClienteDto vendedorDto){
         return clienteService.atualizacaoDto(vendedorDto);
     }
+
+
+
 
     public Cliente findCliente(String cpf){
         return clienteRepository.findByCpf(cpf);

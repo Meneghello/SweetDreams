@@ -1,6 +1,8 @@
 package com.SweetDreams.sweetDreams.TestService;
 
 import com.SweetDreams.sweetDreams.Model.Cliente;
+import com.SweetDreams.sweetDreams.Model.DTOs.ClienteDto;
+import com.SweetDreams.sweetDreams.Model.DTOs.NovoVendedorDto;
 import com.SweetDreams.sweetDreams.Model.Endereço;
 import com.SweetDreams.sweetDreams.Model.Vendedor;
 import com.SweetDreams.sweetDreams.Repository.ClienteRepository;
@@ -24,97 +26,124 @@ public class VendedorServiceImplTest {
     @Autowired
     ClienteRepository clienteRepository;
 
-//    private Cliente clienteTest(){
-//        Cliente cliente = new Cliente();
-//        cliente.setDataNascimento("25/11/1998");
-//        cliente.setCelular("11911111111");
-//        cliente.setEmail("abc@abc.com");
-//        cliente.setEndereço(new Endereço("Teste","45","abc","09110830","São Paulo", "São paulo"));
-//        cliente.setNome("Cliente teste");
-//        cliente.setCpf("359.128.528-57");
-//        clienteRepository.save(cliente);
-//        return cliente;
-//    }
-//
-//    private Vendedor vendedorTest(){
-//
-//        Vendedor vendedor = new Vendedor();
-//        vendedor.setCodigoVendedor(2523l);
-//        vendedor.setCliente(clienteTest());
-//        vendedor.setCpf("359.128.528-57");
-//        vendedorRepository.save(vendedor);
-//        return vendedor;
-//    }
-//
-//    @Test
-//    public void findByCpfTest(){
-//        Vendedor vendedorTest = vendedorTest();
-//        assertNotNull(vendedorService.findByCpf(vendedorTest.getCpf()));
-//        assertEquals("359.128.528-57", vendedorService.findByCpf(vendedorTest.getCpf()).getCpf());
-//        clienteRepository.delete(vendedorTest.getCliente());
-//        vendedorRepository.delete(vendedorTest);
-//    }
-//
-//    @Test
-//    public void findByClienteTest(){
-//        Vendedor vendedorTest = vendedorTest();
-//
-//        assertNotNull(vendedorService.findByCliente(vendedorTest.getCliente()));
-//
-//        clienteRepository.delete(vendedorTest.getCliente());
-//        vendedorRepository.delete(vendedorTest);
-//    }
-//
-//    @Test
-//    public void findByCodigoVendedor(){
-//        Vendedor vendedorTest = vendedorTest();
-//
-//        assertNotNull(vendedorService.findByCodigoVendedor(vendedorTest.getCodigoVendedor()));
-//
-//        clienteRepository.delete(vendedorTest.getCliente());
-//        vendedorRepository.delete(vendedorTest);
-//    }
-//
-//    @Test
-//    public void saveTest(){
-//        Vendedor vendedorTest = vendedorTest();
-//
-//        vendedorService.save(vendedorTest);
-//        assertNotNull(vendedorRepository.findByCpf(vendedorTest.getCpf()));
-//
-//        clienteRepository.delete(vendedorTest.getCliente());
-//        vendedorRepository.delete(vendedorTest);
-//    }
-//
-//    @Test
-//    public void deleteTest(){
-//        Vendedor vendedorTest = vendedorTest();
-//
-//        clienteRepository.delete(vendedorTest.getCliente());
-//        vendedorRepository.delete(vendedorTest);
-//
-//        assertNull(vendedorRepository.findByCpf(vendedorTest.getCpf()));
-//    }
-//
-//    @Test
-//    public void updateTest(){
-//        Vendedor vendedorTest = vendedorTest();
-//
-//        vendedorTest.setCodigoVendedor(800l);
-//        vendedorTest.getCliente().setNome("Gabriel");
-//
-//        vendedorService.update(vendedorTest,vendedorTest.getCpf());
-//
-//        assertEquals("800", String.valueOf(vendedorTest.getCodigoVendedor()));
-//        assertEquals("Gabriel", vendedorTest.getCliente().getNome());
-//
-//        clienteRepository.delete(vendedorTest.getCliente());
-//        vendedorRepository.delete(vendedorTest);
-//    }
-//
-//    @Test
-//    public void gerarCodigoVendedorTest(){
-//
-//        assertNotNull(vendedorService.gerarCodigoVendedor());
-//    }
+    private Cliente clienteTest(){
+        Cliente cliente = new Cliente();
+        cliente.setDataNascimento("25/11/1998");
+        cliente.setCelular("11911111111");
+        cliente.setEmail("abc@abc.com");
+        cliente.setEndereço(new Endereço("Teste","45","abc","09110830","São Paulo", "São paulo"));
+        cliente.setNome("Cliente teste");
+        cliente.setCpf("35912852857");
+        clienteRepository.save(cliente);
+        return cliente;
+    }
+
+    private Vendedor vendedorTest(){
+
+        Vendedor vendedor = new Vendedor();
+        vendedor.setCodigoVendedor(2523l);
+        vendedor.setCliente(clienteTest());
+        vendedor.setCpf(vendedor.getCliente().getCpf());
+        vendedorRepository.save(vendedor);
+        return vendedor;
+    }
+
+    @Test
+    public void findByCpfTest(){
+        Vendedor vendedorTest = vendedorTest();
+        assertNotNull(vendedorService.findByCpf(vendedorTest.getCpf()));
+        assertEquals("35912852857", vendedorService.findByCpf(vendedorTest.getCpf()).getCpf());
+        clienteRepository.delete(vendedorTest.getCliente());
+        vendedorRepository.delete(vendedorTest);
+    }
+
+    @Test
+    public void findByClienteIdTest(){
+        Vendedor vendedorTest = vendedorTest();
+
+        assertNotNull(vendedorService.findByClienteId(vendedorTest.getCliente().getId()));
+        assertEquals("35912852857",vendedorService.findByClienteId(vendedorTest.getCliente().getId()).getCpf());
+
+        clienteRepository.delete(vendedorTest.getCliente());
+        vendedorRepository.delete(vendedorTest);
+    }
+
+    @Test
+    public void findByCodigoVendedor(){
+        Vendedor vendedorTest = vendedorTest();
+
+        assertNotNull(vendedorService.findByCodigoVendedor(vendedorTest.getCodigoVendedor()));
+
+        clienteRepository.delete(vendedorTest.getCliente());
+        vendedorRepository.delete(vendedorTest);
+    }
+
+    @Test
+    public void saveTest(){
+        Vendedor vendedorTest = vendedorTest();
+
+        vendedorService.save(vendedorTest);
+        assertNotNull(vendedorRepository.findByCpf(vendedorTest.getCpf()));
+
+        clienteRepository.delete(vendedorTest.getCliente());
+        vendedorRepository.delete(vendedorTest);
+    }
+
+    @Test
+    public void deleteTest(){
+        Vendedor vendedorTest = vendedorTest();
+
+        clienteRepository.delete(vendedorTest.getCliente());
+        vendedorRepository.delete(vendedorTest);
+
+        assertNull(vendedorRepository.findByCpf(vendedorTest.getCpf()));
+    }
+
+    @Test
+    public void updateTest(){
+        Vendedor vendedorTest = vendedorTest();
+        vendedorTest.getCliente().setNome("vendedor teste");
+        vendedorService.update(vendedorTest.getCliente(), vendedorTest.getCpf());
+        assertNotNull(vendedorRepository.findByCpf(vendedorTest.getCpf()));
+        assertNotNull(clienteRepository.findByCpf(vendedorTest.getCpf()));
+        assertEquals("vendedor teste", vendedorRepository.findByCpf(vendedorTest.getCpf()).getCliente().getNome());
+
+        clienteRepository.delete(vendedorTest.getCliente());
+        vendedorRepository.delete(vendedorTest);
+    }
+
+    @Test
+    public void gerarCodigoVendedorTest(){
+
+        assertNotNull(vendedorService.gerarCodigoVendedor());
+    }
+
+    @Test
+    public void cadastroDtoTest(){
+        NovoVendedorDto novoVendedorDto = new NovoVendedorDto();
+        novoVendedorDto.setCliente(new Cliente(null,"Vendedor teste",
+                (new Endereço("Teste","45","abc",
+                        "09110830","São Paulo", "São paulo"))
+                ,"25/11/1998","1111","35912852857","aaa@aaa.com"));
+        Vendedor vendedor = vendedorService.cadastroDto(novoVendedorDto);
+        assertTrue(vendedor.getCliente().getNome().equalsIgnoreCase("vendedor teste"));
+        assertEquals("35912852857", vendedor.getCpf());
+
+        clienteRepository.delete(vendedor.getCliente());
+
+    }
+    @Test
+    public void atualizcaoDtoTest(){
+        ClienteDto vendedorDto =  new ClienteDto();
+        vendedorDto.setCelular("1111");
+        vendedorDto.setEmail("abc@abc.com");
+        vendedorDto.setEndereço(new Endereço("Teste","45","abc","09110830","São Paulo", "São paulo"));
+        vendedorDto.setNome("Cliente teste");
+        Cliente cliente = vendedorService.atualizacaoDto(vendedorDto);
+        assertTrue(cliente.getNome().equalsIgnoreCase("Cliente teste"));
+        assertNull(cliente.getCpf());
+    }
+
+
 }
+
