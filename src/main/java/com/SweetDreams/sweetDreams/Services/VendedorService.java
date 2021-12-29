@@ -22,8 +22,8 @@ public interface VendedorService {
     List<Vendedor> findAll();
 
 
-    Vendedor fromDto(NovoVendedorDto vendedorDto);
-    Cliente fromDTO(ClienteDto vendedorDto);
+    Vendedor cadastroDto(NovoVendedorDto vendedorDto);
+    Cliente atualizacaoDto(ClienteDto vendedorDto);
 
     Long gerarCodigoVendedor();
 }

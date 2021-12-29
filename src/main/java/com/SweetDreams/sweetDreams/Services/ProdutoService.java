@@ -1,5 +1,6 @@
 package com.SweetDreams.sweetDreams.Services;
 
+import com.SweetDreams.sweetDreams.Model.DTOs.ProdutoDto;
 import com.SweetDreams.sweetDreams.Model.Produto;
 import org.springframework.stereotype.Service;
 
@@ -14,4 +15,6 @@ public interface ProdutoService {
 
     Produto update(Produto produto, String nomeProduto);
     void delete(Produto produto);
+
+    Produto cadastroDto(ProdutoDto produtoDto);
 }

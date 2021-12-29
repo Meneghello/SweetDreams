@@ -5,17 +5,17 @@ import javax.validation.constraints.NotBlank;
 
 public class Endereço {
 
-    @NotBlank
+    @NotBlank(message = "campo rua é obrigatório")
     private String rua;
-    @NotBlank
+    @NotBlank(message = "campo número é obrigatório")
     private String numero;
 
     private String complemento;
-    @NotBlank
+    @NotBlank(message = "campo CEP é obrigatório")
     private String cep;
-    @NotBlank
+    @NotBlank(message = "campo cidade é obrigatório")
     private String cidade;
-    @NotBlank
+    @NotBlank(message = "campo estado é obrigatório")
     private String estado;
 
     public String getRua() {

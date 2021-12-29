@@ -2,12 +2,14 @@ package com.SweetDreams.sweetDreams.Controller;
 
 
 import com.SweetDreams.sweetDreams.Model.Cliente;
+import com.SweetDreams.sweetDreams.Model.DTOs.ProdutoDto;
 import com.SweetDreams.sweetDreams.Model.Produto;
 import com.SweetDreams.sweetDreams.Services.ProdutoService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -34,56 +36,59 @@ public class ProdutoController {
     //Cadastro novo produto -> se já existe retorna erro badRequest(erro 400)
     @PostMapping(value = "/cadastro")
     @ApiOperation(value = "Cadastro Produto")
-    public ResponseEntity<Object> CadastroProduto(@RequestBody @Valid Produto produto){
+    public ResponseEntity<Object> CadastroProduto(@RequestBody @Valid ProdutoDto produtoDto){
 
-        if (produtoService.findByNomeProduto(produto.getNomeProduto().toLowerCase())==null){
-            produto.setNomeProduto(produto.getNomeProduto().toLowerCase());
+        if (produtoService.findByNomeProduto(produtoDto.getNomeProduto())==null){
+            Produto produto = produtoService.cadastroDto(produtoDto);
             produtoService.save(produto);
+
             log.info("Produto " + produto.getNomeProduto() + " cadastrado");
-            return ResponseEntity.ok("Produto " + produto.getNomeProduto() + " cadastrado");
+            return ResponseEntity.ok(produto);
         }
-        log.info("Produto já cadastrado: " + produto.getNomeProduto());
-        return ResponseEntity.badRequest().build();
+        log.info("Produto já cadastrado: " + produtoDto.getNomeProduto());
+        return new ResponseEntity<>("Produto já cadastrado", HttpStatus.BAD_REQUEST);
 
     }
 
     //Update de um produto
     @PutMapping(value = "/atualizacao/{nomeProduto}")
     @ApiOperation(value = "Update do cadastro de produto")
-    public ResponseEntity<Object> UpdateProduto(@RequestBody @Valid Produto produto, @PathVariable String nomeProduto){
-        if(produtoService.findByNomeProduto(nomeProduto.toLowerCase())!=null){
-            produto.setNomeProduto(produto.getNomeProduto().toLowerCase());
+    public ResponseEntity<Object> UpdateProduto(@RequestBody @Valid ProdutoDto produtoDto,
+                                                @PathVariable String nomeProduto){
+        if(produtoService.findByNomeProduto(nomeProduto)!=null){
+            Produto produto = produtoService.cadastroDto(produtoDto);
             produtoService.update(produto, nomeProduto);
-            log.info("Produto " + produto.getNomeProduto().toLowerCase() + " atualizado");
-            return ResponseEntity.ok("Produto " + produto.getNomeProduto().toLowerCase() + " atualizado");
+
+            log.info("Produto " + produto.getNomeProduto() + " atualizado");
+            return ResponseEntity.ok(produtoService.findByNomeProduto(nomeProduto));
         }
         log.info("Produto inexistente");
-        return ResponseEntity.badRequest().build();
+        return new ResponseEntity<>("Produto Inexistente", HttpStatus.NOT_FOUND);
     }
 
     //Deleta um produto
     @DeleteMapping(value = "/delete/{nomeProduto}")
     @ApiOperation(value = "Deletar produto")
     public ResponseEntity<Object> DeleteProduto(@PathVariable String nomeProduto){
-        if(produtoService.findByNomeProduto(nomeProduto.toLowerCase())!=null){
-            produtoService.delete(produtoService.findByNomeProduto(nomeProduto.toLowerCase()));
-            log.info("Produto " + nomeProduto.toLowerCase() + " deletado");
-            return ResponseEntity.ok("Produto " + nomeProduto.toLowerCase() + " deletado");
+        if(produtoService.findByNomeProduto(nomeProduto)!=null){
+            produtoService.delete(produtoService.findByNomeProduto(nomeProduto));
+            log.info("Produto " + nomeProduto + " deletado");
+            return ResponseEntity.ok("Produto " + nomeProduto + " deletado");
         }
         log.info("Produto inexistente");
-        return ResponseEntity.badRequest().build();
+        return new ResponseEntity<>("Produto Inexistente", HttpStatus.NOT_FOUND);
     }
 
     //Busca por nome de produto
     @GetMapping(value = "/busca/{nomeProduto}")
     @ApiOperation(value = "Buscar produto por nome")
     public ResponseEntity<Object> BuscaProduto(@PathVariable("nomeProduto") String nomeProduto){
-        if (produtoService.findByNomeProduto(nomeProduto.toLowerCase())!=null){
+        if (produtoService.findByNomeProduto(nomeProduto)!=null){
             log.info("Produto " + nomeProduto + " encontrado");
-            return ResponseEntity.ok(produtoService.findByNomeProduto(nomeProduto.toLowerCase()));
+            return ResponseEntity.ok(produtoService.findByNomeProduto(nomeProduto));
         }
         log.info("Produto inexistente");
-        return ResponseEntity.badRequest().build();
+        return new ResponseEntity<>("Produto Inexistente", HttpStatus.NOT_FOUND);
     }
 
     //Lista todos os produtos

@@ -13,6 +13,7 @@ import org.apache.commons.lang3.builder.ReflectionToStringBuilder;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -32,15 +33,15 @@ public class VendedorController {
     //Cadastro novo vendedor
     @PostMapping(value = "/cadastro")
     @ApiOperation(value = "Cadastro novo vendedor")
-    public ResponseEntity<Object> CadastroVendedor (@RequestBody @Valid NovoVendedorDto vendedorDto){
-        if (vendedorService.findByCpf(vendedorDto.getCliente().getCpf())==null){
-            Vendedor vendedor = vendedorService.fromDto(vendedorDto);
+    public ResponseEntity<Object> CadastroVendedor (@RequestBody @Valid NovoVendedorDto novoVendedorDto){
+        if (vendedorService.findByCpf(novoVendedorDto.getCliente().getCpf())==null){
+            Vendedor vendedor = vendedorService.cadastroDto(novoVendedorDto);
             vendedorService.save(vendedor);
-            log.info("Vendedor Cadastrado\r\n {}", vendedorService.findByCpf(vendedorDto.getCliente().getCpf()));
-            return ResponseEntity.ok(vendedorService.findByCpf(vendedorDto.getCliente().getCpf()));
+            log.info("Vendedor {} Cadastrado", novoVendedorDto.getCliente().getNome());
+            return ResponseEntity.ok(vendedor);
         }
-        log.info("Vendedor já Cadastrado\r\n {}", vendedorService.findByCpf(vendedorDto.getCliente().getCpf()));
-        return ResponseEntity.badRequest().body("Vendedor já Cadastrado");
+        log.info("Vendedor {} já Cadastrado", novoVendedorDto.getCliente().getNome());
+        return new ResponseEntity<>("Vendedore já cadastrado", HttpStatus.BAD_REQUEST);
     }
 
     //Update vendedor
@@ -48,13 +49,13 @@ public class VendedorController {
     @ApiOperation(value = "Update de cadastro de vendedor")
     public ResponseEntity<Object> UpdateVendedor (@RequestBody @Valid ClienteDto vendedorDto, @PathVariable("cpf") String cpf){
         if (vendedorService.findByCpf(cpf)!=null) {
-            Cliente cliente = vendedorService.fromDTO(vendedorDto);
+            Cliente cliente = vendedorService.atualizacaoDto(vendedorDto);
             vendedorService.update(cliente, cpf);
             log.info("Vendedor atualizado");
             return ResponseEntity.ok(vendedorService.findByCpf(cpf));
         }
         log.info("Vendedor não encontrado");
-        return ResponseEntity.badRequest().body("Vendedor não encontrado");
+        return new ResponseEntity<>("Vendedor não encontrado", HttpStatus.NOT_FOUND);
 
     }
 
@@ -63,11 +64,11 @@ public class VendedorController {
     @ApiOperation("Busca vendedor por cpf")
     public ResponseEntity<Object> BuscaVendedorCpf(@RequestParam("cpf") String cpf){
         if (vendedorService.findByCpf(cpf)!=null){
-            log.info("Vendedor {} encontrado: ",cpf);
+            log.info("Vendedor {} encontrado ",cpf);
             return ResponseEntity.ok(vendedorService.findByCpf(cpf));
         }
         log.info("Vendedor não encontrado");
-        return ResponseEntity.badRequest().body("Vendedor não encontrado");
+        return new ResponseEntity<>("Vendedor não encontrado", HttpStatus.NOT_FOUND);
     }
 
         //Busca vendedor por codigo vendedor
@@ -79,7 +80,7 @@ public class VendedorController {
             return ResponseEntity.ok(vendedorService.findByCodigoVendedor(codigoVendedor));
         }
         log.info("Vendedor não encontrado");
-        return ResponseEntity.badRequest().body("Vendedor não encontrado");
+        return new ResponseEntity<>("Vendedor não encontrado", HttpStatus.NOT_FOUND);
     }
 
     //Lista todos os vendedores
@@ -102,7 +103,7 @@ public class VendedorController {
             return ResponseEntity.ok("Vendedor " + codigoVendedor + " deletado");
         }
         log.info("Vendedor não encontrado");
-        return ResponseEntity.badRequest().body("Vendedor não encontrado");
+        return new ResponseEntity<>("Vendedor não encontrado", HttpStatus.NOT_FOUND);
     }
 
     //delete vendedor por cpf
@@ -115,7 +116,7 @@ public class VendedorController {
             return ResponseEntity.ok("Vendedor " + cpf + " deletado");
         }
         log.info("Vendedor não encontrado");
-        return ResponseEntity.badRequest().body("Vendedor não encontrado");
+        return new ResponseEntity<>("Vendedor não encontrado", HttpStatus.NOT_FOUND);
     }
 
 

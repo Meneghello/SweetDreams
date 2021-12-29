@@ -1,6 +1,8 @@
 package com.SweetDreams.sweetDreams.Services;
 
 import com.SweetDreams.sweetDreams.Model.Cliente;
+import com.SweetDreams.sweetDreams.Model.DTOs.ClienteDto;
+import com.SweetDreams.sweetDreams.Model.DTOs.NovoClienteDto;
 import com.SweetDreams.sweetDreams.Repository.ClienteRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -23,18 +25,42 @@ public class ClienteServiceImpl implements ClienteService{
     public void delete(Cliente cliente){clienteRepository.delete(cliente);}
 
     @Override
-    public Cliente update(Cliente novoCliente, String cpf){
+    public Cliente update(Cliente clienteDto, String cpf){
         Cliente cliente = clienteRepository.findByCpf(cpf);
-        cliente.setNome(novoCliente.getNome().toLowerCase());
-        cliente.setCelular(novoCliente.getCelular());
-        cliente.setEmail(novoCliente.getEmail());
-        cliente.setEndereço(novoCliente.getEndereço());
-        cliente.setDataNascimento(novoCliente.getDataNascimento());
+        cliente.setNome(clienteDto.getNome().toLowerCase());
+        cliente.setCelular(clienteDto.getCelular());
+        cliente.setEmail(clienteDto.getEmail());
+        cliente.setEndereço(clienteDto.getEndereço());
         return clienteRepository.save(cliente);
     }
 
     @Override
     public List<Cliente> findAll(){return clienteRepository.findAll();}
+
+    @Override
+    public Cliente cadastroDto(NovoClienteDto novoClienteDto){
+        Cliente cliente = new Cliente();
+        cliente.setEndereço(novoClienteDto.getEndereço());
+        cliente.setEmail(novoClienteDto.getEmail());
+        cliente.setCelular(novoClienteDto.getCelular());
+        cliente.setNome(novoClienteDto.getNome().toLowerCase());
+        cliente.setCpf(novoClienteDto.getCpf());
+        cliente.setDataNascimento(novoClienteDto.getDataNascimento());
+        return cliente;
+
+    }
+
+    @Override
+    public Cliente atualizacaoDto(ClienteDto clienteDto){
+        Cliente cliente = new Cliente();
+        cliente.setEmail(clienteDto.getEmail());
+        cliente.setNome(clienteDto.getNome());
+        cliente.setCelular(clienteDto.getCelular());
+        cliente.setEndereço(clienteDto.getEndereço());
+        return cliente;
+    }
+
+
 
 
 

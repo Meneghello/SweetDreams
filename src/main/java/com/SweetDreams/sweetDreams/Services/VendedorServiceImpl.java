@@ -23,6 +23,9 @@ public class VendedorServiceImpl implements VendedorService{
     @Autowired
     ClienteRepository clienteRepository;
 
+    @Autowired
+    ClienteService clienteService;
+
     @Override
     public Vendedor findByCpf(String cpf){
         if (clienteRepository.findByCpf(cpf)!=null){
@@ -58,6 +61,7 @@ public class VendedorServiceImpl implements VendedorService{
         vendedor.getCliente().setCelular(clienteDto.getCelular());
         vendedor.getCliente().setNome(clienteDto.getNome());
         vendedor.getCliente().setEmail(clienteDto.getEmail());
+        vendedor.setCpf(cpf);
         clienteSave(clienteDto,cpf);
         return vendedorRepository.save(vendedor);
 
@@ -73,13 +77,15 @@ public class VendedorServiceImpl implements VendedorService{
     }
 
     @Override
-    public Vendedor fromDto(NovoVendedorDto vendedorDto){
+    public Vendedor cadastroDto(NovoVendedorDto vendedorDto){
         Vendedor vendedor = new Vendedor();
         vendedor.setCodigoVendedor(gerarCodigoVendedor());
 
         if(findCliente(vendedorDto.getCliente().getCpf())==null){
             Cliente cliente = clienteRepository.save(vendedorDto.getCliente());
             vendedor.setCliente(cliente);
+            vendedor.getCliente().setNome(vendedorDto.getCliente().getNome().toLowerCase());
+            vendedor.setCpf(vendedorDto.getCliente().getCpf());
             return vendedor;
         }
         vendedor.setCliente(findCliente(vendedorDto.getCliente().getCpf()));
@@ -87,13 +93,8 @@ public class VendedorServiceImpl implements VendedorService{
     }
 
     @Override
-    public Cliente fromDTO(ClienteDto vendedorDto){
-        Cliente cliente = new Cliente();
-        cliente.setEmail(vendedorDto.getEmail());
-        cliente.setNome(vendedorDto.getNome());
-        cliente.setCelular(vendedorDto.getCelular());
-        cliente.setEndereço(vendedorDto.getEndereço());
-        return cliente;
+    public Cliente atualizacaoDto(ClienteDto vendedorDto){
+        return clienteService.atualizacaoDto(vendedorDto);
     }
 
     public Cliente findCliente(String cpf){
@@ -102,7 +103,7 @@ public class VendedorServiceImpl implements VendedorService{
     public void clienteSave(Cliente clienteDTO , String cpf){
         Cliente cliente = clienteRepository.findByCpf(cpf);
         cliente.setEmail(clienteDTO.getEmail());
-        cliente.setNome(clienteDTO.getNome());
+        cliente.setNome(clienteDTO.getNome().toLowerCase());
         cliente.setCelular(clienteDTO.getCelular());
         cliente.setEmail(clienteDTO.getEmail());
         cliente.setEndereço(clienteDTO.getEndereço());
