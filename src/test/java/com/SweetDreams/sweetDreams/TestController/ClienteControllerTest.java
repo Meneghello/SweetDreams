@@ -3,7 +3,7 @@ package com.SweetDreams.sweetDreams.TestController;
 import com.SweetDreams.sweetDreams.Model.Cliente;
 import com.SweetDreams.sweetDreams.Model.Endereço;
 import com.SweetDreams.sweetDreams.Services.ClienteService;
-import com.fasterxml.jackson.core.JsonProcessingException;
+
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;

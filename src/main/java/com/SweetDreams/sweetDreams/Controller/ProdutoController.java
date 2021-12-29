@@ -14,6 +14,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.slf4j.Logger;
 
+import javax.validation.Valid;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Locale;
@@ -33,7 +34,7 @@ public class ProdutoController {
     //Cadastro novo produto -> se já existe retorna erro badRequest(erro 400)
     @PostMapping(value = "/cadastro")
     @ApiOperation(value = "Cadastro Produto")
-    public ResponseEntity<Object> CadastroProduto(@RequestBody Produto produto){
+    public ResponseEntity<Object> CadastroProduto(@RequestBody @Valid Produto produto){
 
         if (produtoService.findByNomeProduto(produto.getNomeProduto().toLowerCase())==null){
             produto.setNomeProduto(produto.getNomeProduto().toLowerCase());
@@ -49,7 +50,7 @@ public class ProdutoController {
     //Update de um produto
     @PutMapping(value = "/atualizacao/{nomeProduto}")
     @ApiOperation(value = "Update do cadastro de produto")
-    public ResponseEntity<Object> UpdateProduto(@RequestBody Produto produto, @PathVariable String nomeProduto){
+    public ResponseEntity<Object> UpdateProduto(@RequestBody @Valid Produto produto, @PathVariable String nomeProduto){
         if(produtoService.findByNomeProduto(nomeProduto.toLowerCase())!=null){
             produto.setNomeProduto(produto.getNomeProduto().toLowerCase());
             produtoService.update(produto, nomeProduto);

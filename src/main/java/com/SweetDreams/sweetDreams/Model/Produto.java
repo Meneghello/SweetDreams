@@ -6,6 +6,7 @@ import org.springframework.data.mongodb.core.index.Indexed;
 import org.springframework.data.mongodb.core.mapping.Document;
 
 import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.PositiveOrZero;
 
 @Document(value = "Produtos")
 public class Produto{
@@ -16,9 +17,9 @@ public class Produto{
     @Indexed(unique = true)
     private String nomeProduto;
     private String[] sabor;
-    @NotBlank
+    @PositiveOrZero
     private Long quantidade;
-    @NotBlank
+    @PositiveOrZero
     private Double preco;
     @NotBlank
     private String dataValidade;

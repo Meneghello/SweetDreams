@@ -15,11 +15,11 @@ public class Vendedor {
     private String id;
 
     private String cpf;
-
     @Valid
     @DBRef
     private Cliente cliente;
     private Long codigoVendedor;
+
 
     public String getId() {
         return id;
@@ -27,6 +27,14 @@ public class Vendedor {
 
     public void setId(String id) {
         this.id = id;
+    }
+
+    public String getCpf() {
+        return cpf;
+    }
+
+    public void setCpf(String cpf) {
+        this.cpf = cliente.getCpf();
     }
 
     public Cliente getCliente() {
@@ -45,17 +53,9 @@ public class Vendedor {
         this.codigoVendedor = codigoVendedor;
     }
 
-    public String getCpf() {
-        return cpf;
-    }
-
-    public void setCpf(String cpf) {
-        this.cpf = cpf;
-    }
-
     public Vendedor(String id, String cpf, Cliente cliente, Long codigoVendedor) {
+        this.cpf=cliente.getCpf();
         this.id = id;
-        this.cpf = cpf;
         this.cliente = cliente;
         this.codigoVendedor = codigoVendedor;
     }

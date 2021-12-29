@@ -47,12 +47,12 @@ public class Cliente {
 
     }
 
-    public String getIdCliente() {
+    public String getId() {
         return id;
     }
 
-    public void setIdCliente(String idCliente) {
-        this.id = idCliente;
+    public void setId(String id) {
+        this.id = id;
     }
 
     public String getNome() {
