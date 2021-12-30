@@ -34,6 +34,7 @@ public class VendedorController {
     @PostMapping(value = "/cadastro")
     @ApiOperation(value = "Cadastro novo vendedor")
     public ResponseEntity<Object> CadastroVendedor (@RequestBody @Valid NovoVendedorDto novoVendedorDto){
+
         if (vendedorService.findByCpf(novoVendedorDto.getCliente().getCpf())==null){
             Vendedor vendedor = vendedorService.cadastroDto(novoVendedorDto);
             vendedorService.save(vendedor);
