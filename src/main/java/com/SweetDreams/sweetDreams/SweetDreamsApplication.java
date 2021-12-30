@@ -13,7 +13,7 @@ public class SweetDreamsApplication {
 
 	@GetMapping(value = "")
 	public String index(){
-		return String.format("Under Development");
+		return "Under Development";
 	}
 
 	public static void main(String[] args) {

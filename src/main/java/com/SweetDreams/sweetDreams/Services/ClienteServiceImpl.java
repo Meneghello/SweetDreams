@@ -6,6 +6,7 @@ import com.SweetDreams.sweetDreams.Model.DTOs.NovoClienteDto;
 import com.SweetDreams.sweetDreams.Repository.ClienteRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.web.bind.annotation.PostMapping;
 
 import java.util.List;
 
