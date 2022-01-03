@@ -10,6 +10,7 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import static org.junit.Assert.*;
@@ -23,13 +24,20 @@ public class ProdutoServiceImplTest {
     @Autowired
     private ProdutoRepository produtoRepository;
 
+    private ArrayList<String> sabor (){
+        ArrayList<String> sabor = new ArrayList<>();
+        sabor.add("Chocolate");
+        sabor.add("Doce de leite");
+        return sabor;
+    }
+
     private Produto produtoTest(){
         Produto produtoTest = new Produto();
         produtoTest.setNomeProduto("produto teste");
         produtoTest.setPreco(5d);
         produtoTest.setDataValidade("25/12/2021");
         produtoTest.setQuantidade(50l);
-        produtoTest.setSabor(new String[]{"chocolate", "Doce de leite"});
+        produtoTest.setSabor(sabor());
         produtoRepository.save(produtoTest);
         return produtoTest;
     }
@@ -88,10 +96,10 @@ public class ProdutoServiceImplTest {
         produtoTest.setPreco(5d);
         produtoTest.setQuantidade(50L);
         produtoTest.setDataValidade("20/20/20");
-        produtoTest.setSabor(new String[]{"Chocolate", "Doce de leite"});
+        produtoTest.setSabor(sabor());
         Produto produto = produtoService.cadastroDto(produtoTest);
         assertEquals("produto teste",produto.getNomeProduto());
-        assertArrayEquals(new String[]{"Chocolate", "Doce de leite"},produto.getSabor());
+        assertArrayEquals(sabor().toArray() ,produto.getSabor().toArray());
     }
 
 }

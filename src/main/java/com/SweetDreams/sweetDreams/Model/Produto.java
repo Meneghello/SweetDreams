@@ -5,23 +5,33 @@ import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.index.Indexed;
 import org.springframework.data.mongodb.core.mapping.Document;
 
-import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.PositiveOrZero;
+import javax.validation.constraints.*;
+import java.util.List;
 
 @Document(value = "Produtos")
 public class Produto{
 
     @Id
     private String id;
-    @NotBlank
+    @NotBlank(message = "Nome do produto é obrigatório")
+    @Pattern(regexp = "^[A-Za-z ]+$", message = "O campo nome do produto deve conter apenas letras")
     @Indexed(unique = true)
     private String nomeProduto;
-    private String[] sabor;
-    @PositiveOrZero
+
+    @NotNull(message = "Nome do sabor é obrigatório")
+    private List<@Pattern(regexp = "^[A-Za-z ]+$", message = "O campo sabor do produto deve conter apenas letras")String> sabor;
+
+    @NotNull(message = "Quantidade é obrigatória")
+    @PositiveOrZero(message = "Quantidade não pode ser negativa")
     private Long quantidade;
-    @PositiveOrZero
+
+    @NotNull(message = "Preço é obrigatório")
+    @PositiveOrZero(message = "Preço não pode ser negativo")
+    @DecimalMin("0.0")
     private Double preco;
-    @NotBlank
+
+    @NotBlank(message = "Data de validade é obrigatória")
+    @Pattern(regexp = "^[0-9-/. ]+$", message = "O campo data de validade deve apenas conter números, -/.")
     private String dataValidade;
 
     public String getNomeProduto() {
@@ -32,11 +42,11 @@ public class Produto{
         this.nomeProduto = nomeProduto;
     }
 
-    public String[] getSabor() {
+    public List<String> getSabor() {
         return sabor;
     }
 
-    public void setSabor(String[] sabor) {
+    public void setSabor(List<String> sabor) {
         this.sabor = sabor;
     }
 
@@ -72,7 +82,7 @@ public class Produto{
         this.id = id;
     }
 
-    public Produto(String id, String nomeProduto, String[] sabor, Long quantidade, Double preco, String dataValidade) {
+    public Produto(String id, String nomeProduto, List<String> sabor, Long quantidade, Double preco, String dataValidade) {
         this.id = id;
         this.nomeProduto = nomeProduto;
         this.sabor = sabor;

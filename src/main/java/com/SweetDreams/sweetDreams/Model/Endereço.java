@@ -2,19 +2,27 @@ package com.SweetDreams.sweetDreams.Model;
 
 
 import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.Pattern;
 
 public class Endereço {
 
     @NotBlank(message = "campo rua é obrigatório")
+    @Pattern(regexp = "^[A-Za-z ]+$", message = "O campo rua deve conter apenas letras")
     private String rua;
     @NotBlank(message = "campo número é obrigatório")
+    @Pattern(regexp = "^[0-9 ]+$", message = "O campo número deve conter apenas números")
     private String numero;
 
+    @Pattern(regexp = "^[A-Za-z0-9./() ]+$", message = "O campo complemento deve conter apenas letras e números")
     private String complemento;
     @NotBlank(message = "campo CEP é obrigatório")
+    @Pattern(regexp = "^[0-9-./ ]+$", message = "O campo cep deve conter apenas números")
     private String cep;
+
     @NotBlank(message = "campo cidade é obrigatório")
+    @Pattern(regexp = "^[A-Za-z ]+$", message = "O campo cidade deve conter apenas letras")
     private String cidade;
+    @Pattern(regexp = "^[A-Za-z ]+$", message = "O campo estado deve conter apenas letras")
     @NotBlank(message = "campo estado é obrigatório")
     private String estado;
 

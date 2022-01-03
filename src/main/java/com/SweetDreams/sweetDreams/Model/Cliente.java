@@ -30,7 +30,7 @@ public class Cliente {
     private String dataNascimento;
 
     @NotBlank(message = "Celular é obrigatório")
-    @Pattern(regexp = "^[0-9-().+ ]+$", message = "O campo deve conter apenas números e (.-+)")
+    @Pattern(regexp = "^[0-9-().+ ]+$", message = "O campo celular deve conter apenas números e (.-+)")
     private String celular;
 
     @NotEmpty(message = "Campo cpf é obrigatório")

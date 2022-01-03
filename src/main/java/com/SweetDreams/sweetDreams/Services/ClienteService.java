@@ -20,4 +20,5 @@ public interface ClienteService {
     Cliente cadastroDto(NovoClienteDto novoClienteDto);
 
     Cliente atualizacaoDto(ClienteDto clienteDto);
+
 }

@@ -60,9 +60,4 @@ public class ClienteServiceImpl implements ClienteService{
         cliente.setEndereço(clienteDto.getEndereço());
         return cliente;
     }
-
-
-
-
-
 }

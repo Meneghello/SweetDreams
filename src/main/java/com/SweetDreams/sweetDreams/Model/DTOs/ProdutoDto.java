@@ -2,21 +2,31 @@ package com.SweetDreams.sweetDreams.Model.DTOs;
 
 import org.springframework.data.mongodb.core.index.Indexed;
 
-import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.PositiveOrZero;
+import javax.validation.constraints.*;
+import java.util.List;
 
 public class ProdutoDto {
 
 
-    @NotBlank
+    @NotBlank(message = "Nome do produto é obrigatório")
+    @Pattern(regexp = "^[A-Za-z ]+$", message = "O campo nome do produto deve conter apenas letras")
     @Indexed(unique = true)
     private String nomeProduto;
-    private String[] sabor;
-    @PositiveOrZero
+
+    @NotNull(message = "Nome do sabor é obrigatório")
+    private List<@Pattern(regexp = "^[A-Za-z ]+$", message = "O campo sabor do produto deve conter apenas letras")String> sabor;
+
+    @NotNull(message = "Quantidade é obrigatória")
+    @PositiveOrZero(message = "Quantidade não pode ser negativa")
     private Long quantidade;
-    @PositiveOrZero
+
+    @NotNull(message = "Preço é obrigatório")
+    @PositiveOrZero(message = "Preço não pode ser negativo")
+    @DecimalMin("0.0")
     private Double preco;
-    @NotBlank
+
+    @NotBlank(message = "Data de validade é obrigatória")
+    @Pattern(regexp = "^[0-9-/. ]+$", message = "O campo data de validade deve apenas conter números, -/.")
     private String dataValidade;
 
     public String getNomeProduto() {
@@ -27,11 +37,11 @@ public class ProdutoDto {
         this.nomeProduto = nomeProduto;
     }
 
-    public String[] getSabor() {
+    public List<String> getSabor() {
         return sabor;
     }
 
-    public void setSabor(String[] sabor) {
+    public void setSabor(List<String> sabor) {
         this.sabor = sabor;
     }
 
@@ -59,7 +69,7 @@ public class ProdutoDto {
         this.dataValidade = dataValidade;
     }
 
-    public ProdutoDto(String nomeProduto, String[] sabor, Long quantidade, Double preco, String dataValidade) {
+    public ProdutoDto(String nomeProduto, List<String> sabor, Long quantidade, Double preco, String dataValidade) {
         this.nomeProduto = nomeProduto;
         this.sabor = sabor;
         this.quantidade = quantidade;

@@ -13,6 +13,9 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import static org.junit.jupiter.api.Assertions.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
@@ -29,13 +32,20 @@ public class ProdutoControllerTest {
     @Autowired
     private ProdutoService produtoService;
 
+    private ArrayList<String> sabor (){
+        ArrayList<String> sabor = new ArrayList<>();
+        sabor.add("chocolate");
+        sabor.add("doce de leite");
+        return sabor;
+    }
+
     private Produto produtoTest(){
         Produto produtoTest = new Produto();
         produtoTest.setNomeProduto("produtoteste");
         produtoTest.setPreco(5d);
         produtoTest.setDataValidade("25/12/2021");
         produtoTest.setQuantidade(50l);
-        produtoTest.setSabor(new String[]{"chocolate", "Doce de leite"});
+        produtoTest.setSabor(sabor());
         produtoService.save(produtoTest);
         return produtoTest;
     }
@@ -54,6 +64,7 @@ public class ProdutoControllerTest {
         MvcResult result = mockMvc.perform(MockMvcRequestBuilders.get(
                 "/produto/busca/produtoteste")).andExpect(status().isOk()).andReturn();
         String resultCase = result.getResponse().getContentAsString();
+        System.out.println(resultCase);
         assertTrue(resultCase.contains("produtoteste"));
         assertTrue(resultCase.contains("chocolate"));
         produtoService.delete(produtoTest);
@@ -92,7 +103,7 @@ public class ProdutoControllerTest {
         produtoTest.setPreco(5d);
         produtoTest.setDataValidade("25/12/2021");
         produtoTest.setQuantidade(50l);
-        produtoTest.setSabor(new String[]{"chocolate", "Doce de leite"});
+        produtoTest.setSabor(sabor());
 
         MvcResult result=mockMvc.perform(MockMvcRequestBuilders.post(
                 "/produto/cadastro")
@@ -114,7 +125,7 @@ public class ProdutoControllerTest {
         produtoTest.setPreco(5d);
         produtoTest.setDataValidade(null);
         produtoTest.setQuantidade(50l);
-        produtoTest.setSabor(new String[]{"chocolate", "Doce de leite"});
+        produtoTest.setSabor(sabor());
 
         MvcResult result=mockMvc.perform(MockMvcRequestBuilders.post(
                                 "/produto/cadastro")
