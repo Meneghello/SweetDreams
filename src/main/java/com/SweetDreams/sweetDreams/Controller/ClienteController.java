@@ -14,8 +14,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
-import java.lang.reflect.Array;
-import java.util.Arrays;
+
 import java.util.List;
 
 @RestController
@@ -26,7 +25,7 @@ public class ClienteController {
     @Autowired
     ClienteService clienteService;
 
-    private static Logger log = LoggerFactory.getLogger(ClienteController.class);
+    private static final Logger log = LoggerFactory.getLogger(ClienteController.class);
 
     //Cadastro de novo cliente
     @PostMapping(value = "/cadastro")

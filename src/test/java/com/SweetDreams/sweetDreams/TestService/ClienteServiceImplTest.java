@@ -26,7 +26,7 @@ public class ClienteServiceImplTest {
         cliente.setDataNascimento("25/11/1998");
         cliente.setCelular("11911111111");
         cliente.setEmail("abc@abc.com");
-        cliente.setEndereço(new Endereço("Teste","45","abc","09110830","São Paulo", "São paulo"));
+        cliente.setEndereço(new Endereço("Teste","45","abc","09110830","Sao Paulo", "Sao paulo"));
         cliente.setNome("Cliente teste");
         cliente.setCpf("359.128.528-57");
         clienteRepository.save(cliente);
@@ -73,7 +73,7 @@ public class ClienteServiceImplTest {
         novoClienteDto.setDataNascimento("25/11/1998");
         novoClienteDto.setCelular("11911111111");
         novoClienteDto.setEmail("abc@abc.com");
-        novoClienteDto.setEndereço(new Endereço("Teste","45","abc","09110830","São Paulo", "São paulo"));
+        novoClienteDto.setEndereço(new Endereço("Teste","45","abc","09110830","Sao Paulo", "Sao paulo"));
         novoClienteDto.setNome("Cliente teste");
         novoClienteDto.setCpf("35912852857");
         Cliente cliente = clienteService.cadastroDto(novoClienteDto);
@@ -86,7 +86,7 @@ public class ClienteServiceImplTest {
         ClienteDto clienteDto =  new ClienteDto();
         clienteDto.setCelular("1111");
         clienteDto.setEmail("abc@abc.com");
-        clienteDto.setEndereço(new Endereço("Teste","45","abc","09110830","São Paulo", "São paulo"));
+        clienteDto.setEndereço(new Endereço("Teste","45","abc","09110830","Sao Paulo", "Sao paulo"));
         clienteDto.setNome("Cliente teste");
         Cliente cliente = clienteService.atualizacaoDto(clienteDto);
         assertTrue(cliente.getNome().equalsIgnoreCase("Cliente teste"));

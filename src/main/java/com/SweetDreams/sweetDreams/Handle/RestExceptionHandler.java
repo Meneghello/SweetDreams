@@ -8,6 +8,7 @@ import org.springframework.web.bind.MissingServletRequestParameterException;
 
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 import org.springframework.web.context.request.WebRequest;
+import org.springframework.web.servlet.NoHandlerFoundException;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
 
 
@@ -27,10 +28,17 @@ public class RestExceptionHandler extends ResponseEntityExceptionHandler {
     protected ResponseEntity<Object> handleMissingServletRequestParameter(MissingServletRequestParameterException ex,
                                                                           HttpHeaders headers, HttpStatus status, WebRequest request){
         String errors =  "Parâmetro(s) inválidos " + ex.getParameterName();
-        ApiError apiError = new ApiError(HttpStatus.BAD_REQUEST, ex.getLocalizedMessage(),errors);
+        ApiError apiError = new ApiError(HttpStatus.BAD_REQUEST, status.value() ,ex.getLocalizedMessage(),errors);
         return new ResponseEntity<Object>(apiError, new HttpHeaders(),apiError.getStatus());
     }
 
+    @Override
+    protected ResponseEntity<Object> handleNoHandlerFoundException(NoHandlerFoundException ex, HttpHeaders headers,
+                                                                   HttpStatus status, WebRequest request){
+        String errors ="Caminho não especificado: "+ ex.getHttpMethod()+" "+ex.getRequestURL();
+        ApiError apiError = new ApiError(HttpStatus.NOT_FOUND, status.value(), ex.getLocalizedMessage(),errors);
+        return new ResponseEntity<>(apiError,new HttpHeaders(), apiError.getStatus());
+    }
 
 
 

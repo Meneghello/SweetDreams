@@ -42,7 +42,7 @@ public class VendedorControllerTest {
         cliente.setDataNascimento("25/11/1998");
         cliente.setCelular("11911111111");
         cliente.setEmail("abc@abc.com");
-        cliente.setEndereço(new Endereço("Teste", "45", "abc", "09110830", "São Paulo", "São paulo"));
+        cliente.setEndereço(new Endereço("Teste", "45", "abc", "09110830", "Sao Paulo", "Sao paulo"));
         cliente.setNome("Cliente teste");
         cliente.setCpf("35912852857");
         clienteService.save(cliente);
@@ -62,7 +62,7 @@ public class VendedorControllerTest {
     private ClienteDto clienteDto() {
         ClienteDto clienteDto = new ClienteDto();
         clienteDto.setNome("Gabriel");
-        clienteDto.setEndereço(new Endereço("Teste", "45", "abc", "09110830", "São Paulo", "São paulo"));
+        clienteDto.setEndereço(new Endereço("Teste", "45", "abc", "09110830", "Sao Paulo", "Sao paulo"));
         clienteDto.setCelular("1234");
         clienteDto.setEmail("abdsac@abc.com");
         return clienteDto;
@@ -73,7 +73,7 @@ public class VendedorControllerTest {
         vendedorDto.setCliente(new Cliente(
                 null,
                 "Gabriel",
-                (new Endereço("Teste", "45", "abc", "09110830", "São Paulo", "São paulo")),
+                (new Endereço("Teste", "45", "abc", "09110830", "Sao Paulo", "Sao paulo")),
                 "25/11/1998",
                 "1111",
                 "35912852857",

@@ -36,7 +36,7 @@ public class ClienteControllerTest {
         cliente.setDataNascimento("25/11/1998");
         cliente.setCelular("11911111111");
         cliente.setEmail("abc@abc.com");
-        cliente.setEndereço(new Endereço("Teste", "45", "abc", "09110830", "São Paulo", "São paulo"));
+        cliente.setEndereço(new Endereço("Teste", "45", "abc", "09110830", "Sao Paulo", "Sao paulo"));
         cliente.setNome("Cliente teste");
         cliente.setCpf("35912852857");
         clienteService.save(cliente);
@@ -99,7 +99,7 @@ public class ClienteControllerTest {
         novoClienteDto.setDataNascimento("25/11/1998");
         novoClienteDto.setCelular("11911111111");
         novoClienteDto.setEmail("abc@abc.com");
-        novoClienteDto.setEndereço(new Endereço("Teste", "45", "abc", "09110830", "São Paulo", "São paulo"));
+        novoClienteDto.setEndereço(new Endereço("Teste", "45", "abc", "09110830", "Sao Paulo", "Sao paulo"));
         novoClienteDto.setNome("Cliente teste");
         novoClienteDto.setCpf("35912852857");
         MvcResult result = mockMvc.perform(MockMvcRequestBuilders.post("/cliente/cadastro")

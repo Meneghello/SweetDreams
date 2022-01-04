@@ -31,7 +31,7 @@ public class VendedorServiceImplTest {
         cliente.setDataNascimento("25/11/1998");
         cliente.setCelular("11911111111");
         cliente.setEmail("abc@abc.com");
-        cliente.setEndereço(new Endereço("Teste","45","abc","09110830","São Paulo", "São paulo"));
+        cliente.setEndereço(new Endereço("Teste","45","abc","09110830","Sao Paulo", "Sao paulo"));
         cliente.setNome("Cliente teste");
         cliente.setCpf("35912852857");
         clienteRepository.save(cliente);
@@ -123,7 +123,7 @@ public class VendedorServiceImplTest {
         NovoVendedorDto novoVendedorDto = new NovoVendedorDto();
         novoVendedorDto.setCliente(new Cliente(null,"Vendedor teste",
                 (new Endereço("Teste","45","abc",
-                        "09110830","São Paulo", "São paulo"))
+                        "09110830","Sao Paulo", "Sao paulo"))
                 ,"25/11/1998","1111","35912852857","aaa@aaa.com"));
         Vendedor vendedor = vendedorService.cadastroDto(novoVendedorDto);
         assertTrue(vendedor.getCliente().getNome().equalsIgnoreCase("vendedor teste"));
@@ -137,7 +137,7 @@ public class VendedorServiceImplTest {
         ClienteDto vendedorDto =  new ClienteDto();
         vendedorDto.setCelular("1111");
         vendedorDto.setEmail("abc@abc.com");
-        vendedorDto.setEndereço(new Endereço("Teste","45","abc","09110830","São Paulo", "São paulo"));
+        vendedorDto.setEndereço(new Endereço("Teste","45","abc","09110830","Sao Paulo", "Sao paulo"));
         vendedorDto.setNome("Cliente teste");
         Cliente cliente = vendedorService.atualizacaoDto(vendedorDto);
         assertTrue(cliente.getNome().equalsIgnoreCase("Cliente teste"));

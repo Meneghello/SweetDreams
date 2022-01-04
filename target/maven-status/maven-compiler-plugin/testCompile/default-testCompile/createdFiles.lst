@@ -1,0 +1,7 @@
+com\SweetDreams\sweetDreams\SweetDreamsApplicationTests.class
+com\SweetDreams\sweetDreams\TestService\ProdutoServiceImplTest.class
+com\SweetDreams\sweetDreams\TestController\ProdutoControllerTest.class
+com\SweetDreams\sweetDreams\TestService\VendedorServiceImplTest.class
+com\SweetDreams\sweetDreams\TestService\ClienteServiceImplTest.class
+com\SweetDreams\sweetDreams\TestController\VendedorControllerTest.class
+com\SweetDreams\sweetDreams\TestController\ClienteControllerTest.class

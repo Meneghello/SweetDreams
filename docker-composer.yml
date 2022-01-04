@@ -1,0 +1,16 @@
+version: '3'
+  services:
+    SweetDreams:
+      image: SweetDreams
+      container_name: SweetDreams_App
+      restart: always
+      build:
+        context: .
+        dockerfile: ./Dockerfile
+      working_dir: /SweetDreams
+      ports:
+        - "8080:8080"
+      command: mvn spring-boot:run
+
+
+

@@ -6,14 +6,12 @@ public class ErrorResponse {
     String message;
     int code;
     String status;
-    String objectName;
     List<ErrorObject> error;
 
-    public ErrorResponse(String message, int code, String status, String objectName, List<ErrorObject> error) {
+    public ErrorResponse(String message, int code, String status, List<ErrorObject> error) {
         this.message = message;
         this.code = code;
         this.status = status;
-        this.objectName = objectName;
         this.error = error;
     }
 
@@ -27,7 +25,6 @@ public class ErrorResponse {
 
     public ErrorResponse() {
     }
-
     public String getMessage() {
         return message;
     }
@@ -44,13 +41,6 @@ public class ErrorResponse {
         this.status = status;
     }
 
-    public String getObjectName() {
-        return objectName;
-    }
-
-    public void setObjectName(String objectName) {
-        this.objectName = objectName;
-    }
 
     public List<ErrorObject> getError() {
         return error;

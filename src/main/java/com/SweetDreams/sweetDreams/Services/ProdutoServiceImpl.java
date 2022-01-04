@@ -33,7 +33,9 @@ public class ProdutoServiceImpl implements ProdutoService{
     public List<Produto> findAll(){return produtoRepository.findAll();}
 
     @Override
-    public void delete(Produto produto){produtoRepository.delete(produto);}
+    public void delete(Produto produto){
+        produtoRepository.delete(produto);
+    }
 
     @Override
     public Produto findByNomeProduto(String nomeProduto){return produtoRepository.findByNomeProduto(nomeProduto);}
