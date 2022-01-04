@@ -1,6 +1,6 @@
 FROM openjdk:11-jdk-slim
 VOLUME /tmp
-ADD SweetDreams/target/sweetDreams-0.0.1-SNAPSHOT.jar sweetdreams.jar
+ADD /target/sweetDreams-0.0.1-SNAPSHOT.jar sweetdreams.jar
 EXPOSE 8080
 RUN bash -c 'touch /sweetdreams.jar'
 ENTRYPOINT ["java", "-jar", "/sweetdreams.jar"]
