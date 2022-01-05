@@ -14,14 +14,7 @@ public class ApiError {
     private Integer code;
     private String message;
     private List<String>  errors;
-    private ErrorObject errorObjects;
 
-    public ApiError(HttpStatus status, Integer code, String message, ErrorObject errorObjects) {
-        this.status = status;
-        this.code = code;
-        this.message = message;
-        this.errorObjects = errorObjects;
-    }
 
     public ApiError(HttpStatus status, Integer code , String message, List<String> errors) {
         super();
@@ -37,13 +30,6 @@ public class ApiError {
         this.code = code;
         this.message = message;
         errors = Arrays.asList(error);
-    }
-
-    public static ErrorResponse getErrorResponse(MethodArgumentNotValidException ex, HttpStatus status,
-                                                 List<ErrorObject> errors) {
-        return new ErrorResponse("Requisição possui campos inválidos", status.value()
-                , ex.getBindingResult().getObjectName(),
-                errors);
     }
 
     public HttpStatus getStatus() {
@@ -78,19 +64,7 @@ public class ApiError {
         this.code = code;
     }
 
-    public ErrorObject getErrorObjects() {
-        return errorObjects;
-    }
 
-    public void setErrorObjects(ErrorObject errorObjects) {
-        this.errorObjects = errorObjects;
-    }
 
-    public static List<ErrorObject> getErrors(MethodArgumentNotValidException ex) {
-        return ex.getBindingResult().getFieldErrors().stream()
-                .map((FieldError error) -> {
-                    return new ErrorObject(error.getDefaultMessage(), error.getField(), error.getRejectedValue());
-                })
-                .collect(Collectors.toList());
-    }
+
 }
