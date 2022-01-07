@@ -34,6 +34,7 @@ public class CompraVendaController {
 
     private static Logger log = LoggerFactory.getLogger(VendedorController.class);
 
+    //usar dto
     @GetMapping(value = "/cliente")
     @ApiOperation(value = "Historico de compras de um Cliente")
     public ResponseEntity<Object> historicoCompra(@RequestParam("cpf") String cpf) {
@@ -72,6 +73,7 @@ public class CompraVendaController {
     @PostMapping(value = "/venda")
     @ApiOperation(value = "Venda de um produto")
     public ResponseEntity<Object> vendaProduto(@Valid @RequestBody CompraVendaDto vendaDto) {
+
         if (compraVendaService.verificacao(vendaDto)) {
             CompraVenda venda = compraVendaService.vendaDto(vendaDto);
             compraVendaService.save(venda);

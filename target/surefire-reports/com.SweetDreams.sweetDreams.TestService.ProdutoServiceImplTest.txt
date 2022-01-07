@@ -1,8 +1,4 @@
 -------------------------------------------------------------------------------
 Test set: com.SweetDreams.sweetDreams.TestService.ProdutoServiceImplTest
 -------------------------------------------------------------------------------
-Tests run: 6, Failures: 1, Errors: 0, Skipped: 0, Time elapsed: 2.442 s <<< FAILURE! - in com.SweetDreams.sweetDreams.TestService.ProdutoServiceImplTest
-cadastroDtoTest  Time elapsed: 0.008 s  <<< FAILURE!
-org.opentest4j.AssertionFailedError: array contents differ at index [0], expected: <Chocolate> but was: <chocolate>
-	at com.SweetDreams.sweetDreams.TestService.ProdutoServiceImplTest.cadastroDtoTest(ProdutoServiceImplTest.java:107)
-
+Tests run: 6, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 2.231 s - in com.SweetDreams.sweetDreams.TestService.ProdutoServiceImplTest

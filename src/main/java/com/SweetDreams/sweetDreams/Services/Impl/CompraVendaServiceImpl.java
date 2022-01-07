@@ -78,7 +78,7 @@ public class CompraVendaServiceImpl implements CompraVendaService {
         Cliente cliente = clienteService.findByCpf(venda.getCpfCliente());
         Vendedor vendedor = vendedorService.findByCodigoVendedor(venda.getCodigoVendedor());
         Produto produto = produtoService.findByNomeProduto(venda.getNomeProduto().toLowerCase());
-        if (cliente != null && vendedor != null && produto != null && produto.getSabor().contains(venda.getNomeProduto().toLowerCase())) {
+        if (cliente != null && vendedor != null && produto != null) {
             return true;
         }
         return false;
@@ -94,9 +94,6 @@ public class CompraVendaServiceImpl implements CompraVendaService {
             return new ResponseEntity<Object>("Vendedor não encontrado", HttpStatus.NOT_FOUND);
         } else if (produto == null) {
             return new ResponseEntity<Object>("Produto não encontrado", HttpStatus.NOT_FOUND);
-        }
-        else if (!produto.getSabor().contains(venda.getNomeProduto().toLowerCase())){
-            return new ResponseEntity<Object>("Sabor não encontrado", HttpStatus.NOT_FOUND);
         }
         return new ResponseEntity<Object>("Venda não realizada", HttpStatus.BAD_REQUEST);
     }

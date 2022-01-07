@@ -4,17 +4,15 @@ import com.SweetDreams.sweetDreams.Model.DTOs.ProdutoDto;
 import com.SweetDreams.sweetDreams.Model.Produto;
 import com.SweetDreams.sweetDreams.Repository.ProdutoRepository;
 import com.SweetDreams.sweetDreams.Services.ProdutoService;
-import org.junit.Before;
-import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.BeforeAll;
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Test;
 
-import org.mockito.InjectMocks;
-import org.mockito.Mockito;
+
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
+import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.test.context.junit4.SpringRunner;
+import org.springframework.test.context.web.WebAppConfiguration;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -22,6 +20,8 @@ import java.util.List;
 import static org.junit.Assert.*;
 
 @SpringBootTest
+@RunWith(SpringRunner.class)
+@WebAppConfiguration
 public class ProdutoServiceImplTest {
 
     @Autowired
