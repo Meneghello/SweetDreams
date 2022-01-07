@@ -11,13 +11,13 @@ import org.springframework.web.bind.annotation.RestController;
 @SpringBootApplication
 public class SweetDreamsApplication {
 
-	@GetMapping(value = "")
-	public String index(){
-		return "Under Development";
-	}
+    @GetMapping(value = "")
+    public String index() {
+        return "Under Development";
+    }
 
-	public static void main(String[] args) {
-		SpringApplication.run(SweetDreamsApplication.class, args);
-	}
+    public static void main(String[] args) {
+        SpringApplication.run(SweetDreamsApplication.class, args);
+    }
 
 }

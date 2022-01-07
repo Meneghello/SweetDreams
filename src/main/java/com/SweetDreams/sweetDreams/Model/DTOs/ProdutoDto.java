@@ -14,7 +14,7 @@ public class ProdutoDto {
     private String nomeProduto;
 
     @NotNull(message = "Nome do sabor é obrigatório")
-    private List<@Pattern(regexp = "^[A-Za-z ]+$", message = "O campo sabor do produto deve conter apenas letras")String> sabor;
+    private List<@Pattern(regexp = "^[A-Za-z ]+$", message = "O campo sabor do produto deve conter apenas letras") String> sabor;
 
     @NotNull(message = "Quantidade é obrigatória")
     @PositiveOrZero(message = "Quantidade não pode ser negativa")

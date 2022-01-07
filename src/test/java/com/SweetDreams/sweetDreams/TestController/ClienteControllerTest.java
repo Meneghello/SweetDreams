@@ -1,15 +1,21 @@
 package com.SweetDreams.sweetDreams.TestController;
 
+import com.SweetDreams.sweetDreams.Controller.ClienteController;
 import com.SweetDreams.sweetDreams.Model.Cliente;
 import com.SweetDreams.sweetDreams.Model.DTOs.NovoClienteDto;
 import com.SweetDreams.sweetDreams.Model.Endereço;
 import com.SweetDreams.sweetDreams.Services.ClienteService;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.mockito.Mock;
+import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
+import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
@@ -70,7 +76,7 @@ public class ClienteControllerTest {
         Cliente clienteTest = clienteTest();
         MvcResult result = mockMvc.perform(MockMvcRequestBuilders.delete(
                         "/cliente/delete").param("cpf", "35912852857"))
-                .andExpect(status().isOk()).andReturn();
+                .andExpect(status().isAccepted()).andReturn();
         String resultCase = result.getResponse().getContentAsString();
 
         assertNull(clienteService.findByCpf(clienteTest.getCpf()));

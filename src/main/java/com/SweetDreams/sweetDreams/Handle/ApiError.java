@@ -13,10 +13,10 @@ public class ApiError {
     private HttpStatus status;
     private Integer code;
     private String message;
-    private List<String>  errors;
+    private List<String> errors;
 
 
-    public ApiError(HttpStatus status, Integer code , String message, List<String> errors) {
+    public ApiError(HttpStatus status, Integer code, String message, List<String> errors) {
         super();
         this.status = status;
         this.code = code;
@@ -63,8 +63,6 @@ public class ApiError {
     public void setCode(Integer code) {
         this.code = code;
     }
-
-
 
 
 }

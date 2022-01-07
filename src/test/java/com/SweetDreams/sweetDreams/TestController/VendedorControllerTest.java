@@ -148,7 +148,7 @@ public class VendedorControllerTest {
         Vendedor vendedor = vendedorTest();
         MvcResult result = mockMvc.perform(MockMvcRequestBuilders.delete("/vendedor/delete")
                         .param("cpf", "35912852857"))
-                .andExpect(status().isOk())
+                .andExpect(status().isAccepted())
                 .andReturn();
         String resultCase = result.getResponse().getContentAsString();
         assertNull(vendedorService.findByCpf(vendedor.getCpf()));
@@ -159,7 +159,7 @@ public class VendedorControllerTest {
     public void deleteVendedorCodigoTest() throws Exception {
         Vendedor vendedor = vendedorTest();
         MvcResult result = mockMvc.perform(MockMvcRequestBuilders.delete("/vendedor/delete/2523"))
-                .andExpect(status().isOk())
+                .andExpect(status().isAccepted())
                 .andReturn();
         String resultCase = result.getResponse().getContentAsString();
         assertNull(vendedorService.findByCpf(vendedor.getCpf()));

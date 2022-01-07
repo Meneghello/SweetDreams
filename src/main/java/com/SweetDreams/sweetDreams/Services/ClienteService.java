@@ -12,9 +12,13 @@ import java.util.List;
 public interface ClienteService {
 
     List<Cliente> findAll();
+
     Cliente findByCpf(String cpf);
+
     Cliente save(Cliente cliente);
-    Cliente update(Cliente cliente,String cpf);
+
+    Cliente update(Cliente cliente, String cpf);
+
     void delete(Cliente cliente);
 
     Cliente cadastroDto(NovoClienteDto novoClienteDto);

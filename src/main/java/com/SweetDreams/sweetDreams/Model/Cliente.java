@@ -1,7 +1,6 @@
 package com.SweetDreams.sweetDreams.Model;
 
 
-
 import org.hibernate.validator.constraints.br.CPF;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.index.Indexed;

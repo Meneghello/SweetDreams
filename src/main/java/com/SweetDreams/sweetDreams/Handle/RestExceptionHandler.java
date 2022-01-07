@@ -22,6 +22,7 @@ import java.util.List;
 
 @RestControllerAdvice
 public class RestExceptionHandler extends ResponseEntityExceptionHandler {
+
     @Override
     protected ResponseEntity<Object> handleMethodArgumentNotValid(MethodArgumentNotValidException ex, HttpHeaders headers, HttpStatus status, WebRequest request) {
 
@@ -29,11 +30,14 @@ public class RestExceptionHandler extends ResponseEntityExceptionHandler {
         for (FieldError error : ex.getBindingResult().getFieldErrors()) {
             errors.add(error.getField() + ": " + error.getDefaultMessage());
         }
-        ApiError apiError = new ApiError(HttpStatus.BAD_REQUEST, status.value(),"Parâmetro(s) inválido", errors);
-
+        for (ObjectError error : ex.getBindingResult().getGlobalErrors()) {
+            errors.add(error.getObjectName() + ": " + error.getDefaultMessage());
+        }
+        ApiError apiError = new ApiError(HttpStatus.BAD_REQUEST, status.value(), "Parâmetro(s) inválido", errors);
         return handleExceptionInternal(ex, apiError, headers, apiError.getStatus(), request);
     }
 
+    //exception para tratar quando a requisição está com parametros faltando
     @Override
     protected ResponseEntity<Object> handleMissingServletRequestParameter(MissingServletRequestParameterException ex,
                                                                           HttpHeaders headers, HttpStatus status, WebRequest request) {
@@ -42,6 +46,10 @@ public class RestExceptionHandler extends ResponseEntityExceptionHandler {
         return new ResponseEntity<Object>(apiError, new HttpHeaders(), apiError.getStatus());
     }
 
+    /*CONFLITO COM O SWAGGER POR CONTA DAS NOTAÇOES, exception para tratar caminho não existente
+    spring.mvc.throw-exception-if-no-handler-found=true
+    spring.resources.add-mappings=false
+    */
     @Override
     protected ResponseEntity<Object> handleNoHandlerFoundException(NoHandlerFoundException ex, HttpHeaders headers,
                                                                    HttpStatus status, WebRequest request) {

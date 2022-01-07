@@ -32,14 +32,14 @@ public class ProdutoControllerTest {
     @Autowired
     private ProdutoService produtoService;
 
-    private ArrayList<String> sabor (){
+    private ArrayList<String> sabor() {
         ArrayList<String> sabor = new ArrayList<>();
         sabor.add("chocolate");
         sabor.add("doce de leite");
         return sabor;
     }
 
-    private Produto produtoTest(){
+    private Produto produtoTest() {
         Produto produtoTest = new Produto();
         produtoTest.setNomeProduto("produtoteste");
         produtoTest.setPreco(5d);
@@ -51,15 +51,15 @@ public class ProdutoControllerTest {
     }
 
     @Test
-    public void listaProdutosTest() throws Exception{
+    public void listaProdutosTest() throws Exception {
         MvcResult result = mockMvc.perform(MockMvcRequestBuilders.get(
                 "/produto/")).andExpect(status().isOk()).andReturn();
         String resultCase = result.getResponse().getContentAsString();
-        assertTrue(resultCase.length()>0);
+        assertTrue(resultCase.length() > 0);
     }
 
     @Test
-    public void buscarProdutosNomeTest() throws Exception{
+    public void buscarProdutosNomeTest() throws Exception {
         Produto produtoTest = produtoTest();
         MvcResult result = mockMvc.perform(MockMvcRequestBuilders.get(
                 "/produto/busca/produtoteste")).andExpect(status().isOk()).andReturn();
@@ -71,21 +71,21 @@ public class ProdutoControllerTest {
     }
 
     @Test
-    public void deletarProdutoTest() throws Exception{
+    public void deletarProdutoTest() throws Exception {
         Produto produtoTest = produtoTest();
         MvcResult result = mockMvc.perform(MockMvcRequestBuilders.delete(
-                "/produto/delete/produtoteste")).andExpect(status().isOk()).andReturn();
+                "/produto/delete/produtoteste")).andExpect(status().isAccepted()).andReturn();
         String resultCase = result.getResponse().getContentAsString();
         assertNull(produtoService.findByNomeProduto(produtoTest.getNomeProduto()));
         produtoService.delete(produtoTest);
     }
 
     @Test
-    public void updateProdutoTest() throws Exception{
+    public void updateProdutoTest() throws Exception {
         Produto produtoTest = produtoTest();
         produtoTest.setQuantidade(10l);
         MvcResult result = mockMvc.perform(MockMvcRequestBuilders.put(
-                "/produto/atualizacao/produtoteste")
+                                "/produto/atualizacao/produtoteste")
                         .content(objectMapper.writeValueAsString(produtoTest))
                         .contentType(MediaType.APPLICATION_JSON)
                         .accept(MediaType.APPLICATION_JSON))
@@ -97,7 +97,7 @@ public class ProdutoControllerTest {
     }
 
     @Test
-    public void cadastroProdutoTestSucess() throws Exception{
+    public void cadastroProdutoTestSucess() throws Exception {
         Produto produtoTest = new Produto();
         produtoTest.setNomeProduto("produtoteste");
         produtoTest.setPreco(5d);
@@ -105,11 +105,11 @@ public class ProdutoControllerTest {
         produtoTest.setQuantidade(50l);
         produtoTest.setSabor(sabor());
 
-        MvcResult result=mockMvc.perform(MockMvcRequestBuilders.post(
-                "/produto/cadastro")
-                .content(objectMapper.writeValueAsString(produtoTest))
-                .contentType(MediaType.APPLICATION_JSON)
-                .accept(MediaType.APPLICATION_JSON))
+        MvcResult result = mockMvc.perform(MockMvcRequestBuilders.post(
+                                "/produto/cadastro")
+                        .content(objectMapper.writeValueAsString(produtoTest))
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .accept(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk()).andReturn();
         String resultCase = result.getResponse().getContentAsString();
         assertNotNull(resultCase);
@@ -119,7 +119,7 @@ public class ProdutoControllerTest {
     }
 
     @Test
-    public void cadastroProdutoTestError() throws Exception{
+    public void cadastroProdutoTestError() throws Exception {
         Produto produtoTest = new Produto();
         produtoTest.setNomeProduto("produtoteste");
         produtoTest.setPreco(5d);
@@ -127,7 +127,7 @@ public class ProdutoControllerTest {
         produtoTest.setQuantidade(50l);
         produtoTest.setSabor(sabor());
 
-        MvcResult result=mockMvc.perform(MockMvcRequestBuilders.post(
+        MvcResult result = mockMvc.perform(MockMvcRequestBuilders.post(
                                 "/produto/cadastro")
                         .content(objectMapper.writeValueAsString(produtoTest))
                         .contentType(MediaType.APPLICATION_JSON)

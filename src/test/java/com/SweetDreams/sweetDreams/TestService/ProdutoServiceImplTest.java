@@ -4,11 +4,17 @@ import com.SweetDreams.sweetDreams.Model.DTOs.ProdutoDto;
 import com.SweetDreams.sweetDreams.Model.Produto;
 import com.SweetDreams.sweetDreams.Repository.ProdutoRepository;
 import com.SweetDreams.sweetDreams.Services.ProdutoService;
+import org.junit.Before;
 import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
+import org.mockito.InjectMocks;
+import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.boot.test.mock.mockito.MockBean;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -24,14 +30,14 @@ public class ProdutoServiceImplTest {
     @Autowired
     private ProdutoRepository produtoRepository;
 
-    private ArrayList<String> sabor (){
+    private ArrayList<String> sabor() {
         ArrayList<String> sabor = new ArrayList<>();
         sabor.add("Chocolate");
         sabor.add("Doce de leite");
         return sabor;
     }
 
-    private Produto produtoTest(){
+    private Produto produtoTest() {
         Produto produtoTest = new Produto();
         produtoTest.setNomeProduto("produto teste");
         produtoTest.setPreco(5d);
@@ -42,8 +48,9 @@ public class ProdutoServiceImplTest {
         return produtoTest;
     }
 
+
     @Test
-    public void buscarPorNomeProdutoTest(){
+    public void buscarPorNomeProdutoTest() {
 
         Produto produtoEnc = produtoService.findByNomeProduto(produtoTest().getNomeProduto());
         Assertions.assertNotNull(produtoEnc);
@@ -53,44 +60,42 @@ public class ProdutoServiceImplTest {
     }
 
     @Test
-    public void deleteProdutoTest(){
+    public void deleteProdutoTest() {
         Produto produtoTest = produtoTest();
         produtoService.delete(produtoTest);
-        Produto nomeProduto = produtoRepository.findByNomeProduto(produtoTest.getNomeProduto());
-        assertNull(nomeProduto);
+        Produto nomeProduto = produtoService.findByNomeProduto(produtoTest.getNomeProduto());
+        Assertions.assertNull(nomeProduto);
     }
 
     @Test
-    public void findAllTest(){
+    public void findAllTest() {
 
         List<Produto> produtos = produtoService.findAll();
-        Produto produtoTest = produtoTest();
-        List<Produto> produtos2 = produtoService.findAll();
 
-        assertTrue(produtos2.size()==produtos.size()+1);
-        produtoRepository.delete(produtoTest);
+        Assertions.assertEquals(3, produtos.size());
+
     }
 
     @Test
-    public void updateTest(){
+    public void updateTest() {
         Produto produtoTest = produtoTest();
         produtoTest.setQuantidade(10l);
         produtoService.update(produtoTest, produtoTest.getNomeProduto());
 
-        assertEquals("10", String.valueOf(produtoTest.getQuantidade()));
+        Assertions.assertEquals("10", String.valueOf(produtoTest.getQuantidade()));
         produtoRepository.delete(produtoTest);
     }
 
     @Test
-    public void saveTest(){
+    public void saveTest() {
         Produto produtoTest = produtoTest();
         produtoService.save(produtoTest);
-        assertNotNull(produtoService.findByNomeProduto(produtoTest.getNomeProduto()));
+        Assertions.assertNotNull(produtoService.findByNomeProduto(produtoTest.getNomeProduto()));
         produtoRepository.delete(produtoTest);
     }
 
     @Test
-    public void cadastroDtoTest(){
+    public void cadastroDtoTest() {
         ProdutoDto produtoTest = new ProdutoDto();
         produtoTest.setNomeProduto("Produto teste");
         produtoTest.setPreco(5d);
@@ -98,8 +103,8 @@ public class ProdutoServiceImplTest {
         produtoTest.setDataValidade("20/20/20");
         produtoTest.setSabor(sabor());
         Produto produto = produtoService.cadastroDto(produtoTest);
-        assertEquals("produto teste",produto.getNomeProduto());
-        assertArrayEquals(sabor().toArray() ,produto.getSabor().toArray());
+        Assertions.assertEquals("produto teste", produto.getNomeProduto());
+        Assertions.assertArrayEquals(sabor().toArray(), produto.getSabor().toArray());
     }
 
 }
