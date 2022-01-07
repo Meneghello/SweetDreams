@@ -32,8 +32,8 @@ public class ProdutoServiceImplTest {
 
     private ArrayList<String> sabor() {
         ArrayList<String> sabor = new ArrayList<>();
-        sabor.add("Chocolate");
-        sabor.add("Doce de leite");
+        sabor.add("chocolate");
+        sabor.add("doce de leite");
         return sabor;
     }
 
@@ -42,7 +42,7 @@ public class ProdutoServiceImplTest {
         produtoTest.setNomeProduto("produto teste");
         produtoTest.setPreco(5d);
         produtoTest.setDataValidade("25/12/2021");
-        produtoTest.setQuantidade(50l);
+        produtoTest.setQuantidade(50L);
         produtoTest.setSabor(sabor());
         produtoRepository.save(produtoTest);
         return produtoTest;
@@ -79,7 +79,7 @@ public class ProdutoServiceImplTest {
     @Test
     public void updateTest() {
         Produto produtoTest = produtoTest();
-        produtoTest.setQuantidade(10l);
+        produtoTest.setQuantidade(10L);
         produtoService.update(produtoTest, produtoTest.getNomeProduto());
 
         Assertions.assertEquals("10", String.valueOf(produtoTest.getQuantidade()));
