@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 
 @Service
@@ -28,7 +29,7 @@ public class ProdutoServiceImpl implements ProdutoService {
         produto.setDataValidade(novoProduto.getDataValidade());
         produto.setPreco(novoProduto.getPreco());
         produto.setQuantidade(novoProduto.getQuantidade());
-        produto.setSabor(novoProduto.getSabor());
+        produto.setSabor(novoProduto.getSabor().stream().map(String::toLowerCase).collect(Collectors.toList()));
         return produtoRepository.save(produto);
     }
 
@@ -52,7 +53,7 @@ public class ProdutoServiceImpl implements ProdutoService {
         Produto produto = new Produto();
         produto.setQuantidade(produtoDto.getQuantidade());
         produto.setNomeProduto(produtoDto.getNomeProduto().toLowerCase());
-        produto.setSabor(produtoDto.getSabor());
+        produto.setSabor(produtoDto.getSabor().stream().map(String::toLowerCase).collect(Collectors.toList()));
         produto.setPreco(produtoDto.getPreco());
         produto.setDataValidade(produtoDto.getDataValidade());
         return produto;

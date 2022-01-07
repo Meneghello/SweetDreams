@@ -15,16 +15,14 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
+import java.lang.reflect.Array;
 import java.text.DecimalFormat;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
 import java.time.format.FormatStyle;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 @Service
 public class CompraVendaServiceImpl implements CompraVendaService {
@@ -72,7 +70,7 @@ public class CompraVendaServiceImpl implements CompraVendaService {
     public String totalPago(CompraVendaDto compraVendaDto) {
         Long quantidade = compraVendaDto.getQuantidade();
         Double preco = produtoService.findByNomeProduto(compraVendaDto.getNomeProduto()).getPreco();
-        return new DecimalFormat("##.00").format(Math.round(quantidade * preco));
+        return new DecimalFormat("##.00").format(quantidade * preco);
 
     }
 
@@ -80,7 +78,7 @@ public class CompraVendaServiceImpl implements CompraVendaService {
         Cliente cliente = clienteService.findByCpf(venda.getCpfCliente());
         Vendedor vendedor = vendedorService.findByCodigoVendedor(venda.getCodigoVendedor());
         Produto produto = produtoService.findByNomeProduto(venda.getNomeProduto().toLowerCase());
-        if (cliente != null && vendedor != null && produto != null) {
+        if (cliente != null && vendedor != null && produto != null && produto.getSabor().contains(venda.getNomeProduto().toLowerCase())) {
             return true;
         }
         return false;
@@ -96,6 +94,9 @@ public class CompraVendaServiceImpl implements CompraVendaService {
             return new ResponseEntity<Object>("Vendedor não encontrado", HttpStatus.NOT_FOUND);
         } else if (produto == null) {
             return new ResponseEntity<Object>("Produto não encontrado", HttpStatus.NOT_FOUND);
+        }
+        else if (!produto.getSabor().contains(venda.getNomeProduto().toLowerCase())){
+            return new ResponseEntity<Object>("Sabor não encontrado", HttpStatus.NOT_FOUND);
         }
         return new ResponseEntity<Object>("Venda não realizada", HttpStatus.BAD_REQUEST);
     }
