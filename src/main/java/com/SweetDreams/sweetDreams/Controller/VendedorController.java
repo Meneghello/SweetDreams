@@ -35,6 +35,7 @@ public class VendedorController {
     @PostMapping(value = "/cadastro")
     @ApiOperation(value = "Cadastro novo vendedor")
     public ResponseEntity<Object> CadastroVendedor(@RequestBody @Valid NovoVendedorDto novoVendedorDto) {
+        log.info("Cadastrando novo vendedor");
         if (vendedorService.findByCpf(novoVendedorDto.getCliente().getCpf()) == null) {
             Vendedor vendedor = vendedorService.cadastroDto(novoVendedorDto);
             vendedorService.save(vendedor);
@@ -49,6 +50,7 @@ public class VendedorController {
     @PutMapping(value = "/atualizacao/{cpf}")
     @ApiOperation(value = "Update de cadastro de vendedor")
     public ResponseEntity<Object> UpdateVendedor(@RequestBody @Valid ClienteDto vendedorDto, @PathVariable("cpf") String cpf) {
+        log.info("Atualizando vendedor");
         if (vendedorService.findByCpf(cpf) != null) {
             Cliente cliente = vendedorService.atualizacaoDto(vendedorDto);
             vendedorService.update(cliente, cpf);
@@ -64,6 +66,7 @@ public class VendedorController {
     @GetMapping(value = "/busca")
     @ApiOperation("Busca vendedor por cpf")
     public ResponseEntity<Object> BuscaVendedorCpf(@RequestParam("cpf") String cpf) {
+        log.info("Buscando vendedor CPF: {}", cpf);
         if (vendedorService.findByCpf(cpf) != null) {
             log.info("Vendedor {} encontrado ", cpf);
             return new ResponseEntity<>(vendedorService.findByCpf(cpf), HttpStatus.OK);
@@ -76,6 +79,7 @@ public class VendedorController {
     @GetMapping(value = "/busca/{codigoVendedor}")
     @ApiOperation("Busca vendedor por codigo")
     public ResponseEntity<Object> BuscaVendedorCodigo(@PathVariable("codigoVendedor") Long codigoVendedor) {
+        log.info("Buscando vendedor código: {}", codigoVendedor);
         if (vendedorService.findByCodigoVendedor(codigoVendedor) != null) {
             log.info("Vendedor {} encontrado", codigoVendedor);
             return new ResponseEntity<>(vendedorService.findByCodigoVendedor(codigoVendedor), HttpStatus.OK);
@@ -89,6 +93,7 @@ public class VendedorController {
     @ApiOperation(value = "Deletar um vendedor por codigo")
     @ApiResponses(@ApiResponse(code = 202, message = "Requisição aceita e concluida"))
     public ResponseEntity<Object> DeletarVendedorCodigo(@PathVariable("codigoVendedor") Long codigoVendedor) {
+        log.info("Deletando vendedor código: {}", codigoVendedor);
         if (vendedorService.findByCodigoVendedor(codigoVendedor) != null) {
             vendedorService.delete(vendedorService.findByCodigoVendedor(codigoVendedor));
             log.info("Vendedor {} deletado", codigoVendedor);
@@ -103,6 +108,7 @@ public class VendedorController {
     @ApiOperation(value = "Deletar um vendedor por cpf")
     @ApiResponses(@ApiResponse(code = 202, message = "Requisição aceita e concluida"))
     public ResponseEntity<Object> DeletarVendedorCpf(@RequestParam("cpf") String cpf) {
+        log.info("Deletando vendedor CPF: {}", cpf);
         if (vendedorService.findByCpf(cpf) != null) {
             vendedorService.delete(vendedorService.findByCpf(cpf));
             log.info("Vendedor {} deletado", cpf);

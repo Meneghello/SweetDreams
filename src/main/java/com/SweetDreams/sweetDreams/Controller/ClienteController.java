@@ -34,6 +34,7 @@ public class ClienteController {
     @PostMapping(value = "/cadastro")
     @ApiOperation(value = "Cadastro de cliente")
     public ResponseEntity<Object> CadastroCliente(@RequestBody @Valid NovoClienteDto novoClienteDto) {
+        log.info("Cadastrando novo cliente");
         if (clienteService.findByCpf(novoClienteDto.getCpf()) == null) {
             Cliente cliente = clienteService.cadastroDto(novoClienteDto);
             clienteService.save(cliente);
@@ -49,10 +50,10 @@ public class ClienteController {
     @PutMapping(value = "atualizacao/{cpf}")
     @ApiOperation(value = "Update do cadastro de cliente")
     public ResponseEntity<Object> UpdateCliente(@RequestBody @Valid ClienteDto clienteDto, @PathVariable("cpf") String cpf) {
+        log.info("Atualizando cliente");
         if (clienteService.findByCpf(cpf) != null) {
             Cliente cliente = clienteService.atualizacaoDto(clienteDto);
             clienteService.update(cliente, cpf);
-
             log.info("Cliente " + cliente.getNome() + " atualizado");
             return new ResponseEntity<>(clienteService.findByCpf(cpf), HttpStatus.OK);
         }
@@ -65,7 +66,7 @@ public class ClienteController {
     @ApiOperation(value = "Deletar um cliente")
     @ApiResponses(@ApiResponse(code = 202, message = "Requisição aceita e concluida"))
     public ResponseEntity<Object> DeleteCliente(@RequestParam("cpf") String cpf) {
-
+        log.info("Deletando cliente");
         if (clienteService.findByCpf(cpf) != null) {
             String nome = clienteService.findByCpf(cpf).getNome();
             clienteService.delete(clienteService.findByCpf(cpf));
@@ -80,6 +81,7 @@ public class ClienteController {
     @GetMapping(value = "/busca")
     @ApiOperation("Busca cliente por cpf")
     public ResponseEntity<Object> BuscaCliente(@RequestParam("cpf") String cpf) {
+        log.info("Buscando cliente com CPF {}", cpf);
         if (clienteService.findByCpf(cpf) != null) {
             log.info("Cliente " + clienteService.findByCpf(cpf).getNome() + " encontrado");
             return new ResponseEntity<>(clienteService.findByCpf(cpf), HttpStatus.OK);

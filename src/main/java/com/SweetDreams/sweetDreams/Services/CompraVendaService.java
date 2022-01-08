@@ -2,17 +2,21 @@ package com.SweetDreams.sweetDreams.Services;
 
 import com.SweetDreams.sweetDreams.Model.CompraVenda;
 import com.SweetDreams.sweetDreams.Model.DTOs.CompraVendaDto;
+import com.SweetDreams.sweetDreams.Model.DTOs.HistoricoClienteDto;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public interface CompraVendaService {
 
+    void delete(CompraVenda compraVenda);
+
     List<CompraVenda> findByCodigoVendedor(Long codigoVendedor);
 
-    List<CompraVenda> findByCpfCliente(String cpfCliente);
+    List<HistoricoClienteDto> findByCpfCliente(String cpfCliente);
 
     CompraVenda save(CompraVenda compraVenda);
 
@@ -21,4 +25,10 @@ public interface CompraVendaService {
     boolean verificacao(CompraVendaDto venda);
 
     ResponseEntity<Object> verificacaoHandle(CompraVendaDto venda);
+
+    List<CompraVenda> findAll();
+
+    Optional<CompraVenda> findById(String id);
+
+    void deleteById(String id);
 }

@@ -36,6 +36,7 @@ public class ProdutoController {
     @PostMapping(value = "/cadastro")
     @ApiOperation(value = "Cadastro Produto")
     public ResponseEntity<Object> CadastroProduto(@RequestBody @Valid ProdutoDto produtoDto) {
+        log.info("Cadastrando um novo produto");
         if (produtoService.findByNomeProduto(produtoDto.getNomeProduto()) == null) {
             Produto produto = produtoService.cadastroDto(produtoDto);
             produtoService.save(produto);
@@ -52,6 +53,7 @@ public class ProdutoController {
     @ApiOperation(value = "Update do cadastro de produto")
     public ResponseEntity<Object> UpdateProduto(@RequestBody @Valid ProdutoDto produtoDto,
                                                 @PathVariable String nomeProduto) {
+        log.info("Atualizando produto");
         if (produtoService.findByNomeProduto(nomeProduto) != null) {
             Produto produto = produtoService.cadastroDto(produtoDto);
             produtoService.update(produto, nomeProduto);
@@ -68,6 +70,7 @@ public class ProdutoController {
     @ApiOperation(value = "Deletar produto")
     @ApiResponses(@ApiResponse(code = 202, message = "Requisição aceita e concluida"))
     public ResponseEntity<Object> DeleteProduto(@PathVariable String nomeProduto) {
+        log.info("Deletando produto");
         if (produtoService.findByNomeProduto(nomeProduto) != null) {
             produtoService.delete(produtoService.findByNomeProduto(nomeProduto.toLowerCase()));
             log.info("Produto " + nomeProduto + " deletado");
@@ -81,6 +84,7 @@ public class ProdutoController {
     @GetMapping(value = "/busca/{nomeProduto}")
     @ApiOperation(value = "Buscar produto por nome")
     public ResponseEntity<Object> BuscaProduto(@PathVariable("nomeProduto") String nomeProduto) {
+        log.info("Buscando produto {}", nomeProduto);
         if (produtoService.findByNomeProduto(nomeProduto.toLowerCase()) != null) {
             log.info("Produto " + nomeProduto + " encontrado");
             return new ResponseEntity<>(produtoService.findByNomeProduto(nomeProduto), HttpStatus.OK);
