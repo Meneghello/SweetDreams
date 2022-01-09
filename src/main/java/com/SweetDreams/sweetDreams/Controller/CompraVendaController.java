@@ -79,7 +79,7 @@ public class CompraVendaController {
         if (compraVendaService.verificacao(vendaDto)) {
             CompraVenda venda = compraVendaService.vendaDto(vendaDto);
             compraVendaService.save(venda);
-            log.info("Venda realizada com sucesso, cliente: {}, vendedor {}, total: R$ {}",
+            log.info("Venda realizada com sucesso:\ncliente: {}\nvendedor: {}\ntotal: R$ {}",
                     clienteService.findByCpf(venda.getCpfCliente()).getNome(),
                     venda.getCodigoVendedor(), venda.getTotalPago());
             return new ResponseEntity<>(venda, HttpStatus.OK);

@@ -56,6 +56,7 @@ public class ClienteServiceImpl implements ClienteService {
         cliente.setNome(novoClienteDto.getNome().toLowerCase());
         cliente.setCpf(novoClienteDto.getCpf());
         cliente.setDataNascimento(novoClienteDto.getDataNascimento());
+
         return cliente;
 
     }

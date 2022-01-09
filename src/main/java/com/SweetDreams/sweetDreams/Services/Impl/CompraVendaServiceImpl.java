@@ -19,6 +19,7 @@ import java.text.DecimalFormat;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.*;
+import java.util.stream.Collectors;
 
 @Service
 public class CompraVendaServiceImpl implements CompraVendaService {
@@ -75,8 +76,8 @@ public class CompraVendaServiceImpl implements CompraVendaService {
         compraVenda.setCodigoVendedor(compraVendaDto.getCodigoVendedor());
         compraVenda.setCpfCliente(compraVendaDto.getCpfCliente());
         compraVenda.setQuantidade(compraVendaDto.getQuantidade());
-        compraVenda.setSabor(compraVendaDto.getSabor());
-        compraVenda.setNomeProduto(compraVendaDto.getNomeProduto());
+        compraVenda.setSabor(compraVendaDto.getSabor().toLowerCase());
+        compraVenda.setNomeProduto(compraVendaDto.getNomeProduto().toLowerCase());
         compraVenda.setData((LocalDateTime.now().format(DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm:ss"))));
         compraVenda.setTotalPago(totalPago(compraVendaDto));
         return compraVenda;
@@ -88,7 +89,8 @@ public class CompraVendaServiceImpl implements CompraVendaService {
         Cliente cliente = clienteService.findByCpf(venda.getCpfCliente());
         Vendedor vendedor = vendedorService.findByCodigoVendedor(venda.getCodigoVendedor());
         Produto produto = produtoService.findByNomeProduto(venda.getNomeProduto().toLowerCase());
-        if (cliente != null && vendedor != null && produto != null && produto.getSabor().stream().anyMatch((String s) -> produto.getNomeProduto().equalsIgnoreCase(venda.getNomeProduto()))) {
+        if (cliente != null && vendedor != null && produto != null && venda.getQuantidade()<=produto.getQuantidade() && produto.getSabor().stream().anyMatch((String s) -> produto.getNomeProduto().equalsIgnoreCase(venda.getNomeProduto()))) {
+            posCompra(venda);
             return true;
         }
         return false;
@@ -110,22 +112,32 @@ public class CompraVendaServiceImpl implements CompraVendaService {
         else if (produto.getSabor().stream().noneMatch(s -> produto.getNomeProduto().equalsIgnoreCase(venda.getNomeProduto()))){
             return new ResponseEntity<Object>("Sabor não encontrado", HttpStatus.NOT_FOUND);
         }
+        else if (venda.getQuantidade()>produto.getQuantidade()){
+            return new ResponseEntity<Object>("Quantidade insuficiente do produto", HttpStatus.BAD_REQUEST);
+        }
         return new ResponseEntity<Object>("Venda não realizada", HttpStatus.BAD_REQUEST);
     }
 
     public HistoricoClienteDto historicoDto(CompraVenda compra) {
         HistoricoClienteDto historico = new HistoricoClienteDto();
         historico.setData(compra.getData());
-        historico.setNomeProduto(compra.getNomeProduto());
+        historico.setNomeProduto(compra.getNomeProduto().toLowerCase());
         historico.setQuantidade(compra.getQuantidade());
-        historico.setSabor(compra.getSabor());
+        historico.setSabor(compra.getSabor().toLowerCase());
         historico.setTotalPago(compra.getTotalPago());
         return historico;
     }
 
+    public void posCompra(CompraVendaDto venda){
+        Produto produto = produtoService.findByNomeProduto(venda.getNomeProduto().toLowerCase());
+        Long quantidadeFinal = produto.getQuantidade()-venda.getQuantidade();
+        produto.setQuantidade(quantidadeFinal);
+        produtoService.save(produto);
+    }
+
     public String totalPago(CompraVendaDto compraVendaDto) {
         Long quantidade = compraVendaDto.getQuantidade();
-        if (produtoService.findByNomeProduto(compraVendaDto.getNomeProduto())==null){
+        if (produtoService.findByNomeProduto(compraVendaDto.getNomeProduto().toLowerCase())==null){
             return "";
         }
         Double preco = produtoService.findByNomeProduto(compraVendaDto.getNomeProduto().toLowerCase()).getPreco();

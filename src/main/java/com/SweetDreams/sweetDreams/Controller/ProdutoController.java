@@ -3,6 +3,7 @@ package com.SweetDreams.sweetDreams.Controller;
 
 import com.SweetDreams.sweetDreams.Model.Cliente;
 import com.SweetDreams.sweetDreams.Model.DTOs.ProdutoDto;
+import com.SweetDreams.sweetDreams.Model.Operadores;
 import com.SweetDreams.sweetDreams.Model.Produto;
 import com.SweetDreams.sweetDreams.Services.ProdutoService;
 import io.swagger.annotations.Api;
@@ -15,15 +16,19 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import org.slf4j.Logger;
 
 import javax.validation.Valid;
+import javax.validation.constraints.Min;
+import javax.validation.constraints.PositiveOrZero;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Locale;
 
 @RestController
+@Validated
 @RequestMapping(value = "/produto")
 @Api(value = "Produto")
 public class ProdutoController {
@@ -37,7 +42,7 @@ public class ProdutoController {
     @ApiOperation(value = "Cadastro Produto")
     public ResponseEntity<Object> CadastroProduto(@RequestBody @Valid ProdutoDto produtoDto) {
         log.info("Cadastrando um novo produto");
-        if (produtoService.findByNomeProduto(produtoDto.getNomeProduto()) == null) {
+        if (produtoService.findByNomeProduto(produtoDto.getNomeProduto().toLowerCase()) == null) {
             Produto produto = produtoService.cadastroDto(produtoDto);
             produtoService.save(produto);
             log.info("Produto " + produto.getNomeProduto() + " cadastrado");
@@ -52,26 +57,68 @@ public class ProdutoController {
     @PutMapping(value = "/atualizacao/{nomeProduto}")
     @ApiOperation(value = "Update do cadastro de produto")
     public ResponseEntity<Object> UpdateProduto(@RequestBody @Valid ProdutoDto produtoDto,
-                                                @PathVariable String nomeProduto) {
+                                                @PathVariable(value = "nomeProduto") String nomeProduto) {
         log.info("Atualizando produto");
-        if (produtoService.findByNomeProduto(nomeProduto) != null) {
+        if (produtoService.findByNomeProduto(nomeProduto.toLowerCase()) != null) {
             Produto produto = produtoService.cadastroDto(produtoDto);
             produtoService.update(produto, nomeProduto);
 
             log.info("Produto " + produto.getNomeProduto() + " atualizado");
-            return new ResponseEntity<>(produtoService.findByNomeProduto(nomeProduto), HttpStatus.OK);
+            return new ResponseEntity<>(produtoService.findByNomeProduto(nomeProduto.toLowerCase()), HttpStatus.OK);
         }
         log.info("Produto inexistente");
         return new ResponseEntity<>("Produto Inexistente", HttpStatus.NOT_FOUND);
     }
 
+    //Atualizar quantidade de produto
+    @PutMapping(value = "/reposicao/{nomeProduto}")
+    @ApiOperation(value = "Atualizar quantidade de produto")
+    public ResponseEntity<Object> reposicaoProduto(@PositiveOrZero @RequestParam(value = "quantidade",
+            defaultValue = "0") Long quantidade,
+                                                   @RequestParam("operador") Operadores operadores,
+                                                   @PathVariable(value = "nomeProduto") String nomeProduto) {
+        log.info("Atualizando quantidade de produto");
+        if (produtoService.findByNomeProduto(nomeProduto.toLowerCase()) != null) {
+            Produto produto = produtoService.findByNomeProduto(nomeProduto.toLowerCase());
+            Long quantidadeFinal = produto.getQuantidade();
+            String mensagem = null;
+            switch (operadores) {
+                case adicao:
+                    log.info("Adicionando produtos");
+                    quantidadeFinal += quantidade;
+                    mensagem =
+                            "Foram adicionadas " + quantidade + " unidade do produto " + nomeProduto.toLowerCase() +
+                                    ".\nQuantidade atualizada: ";
+                    break;
+                case retirada:
+                    if (quantidadeFinal >= quantidade) {
+                        log.info("Retirando produtos");
+                        quantidadeFinal -= quantidade;
+                        mensagem = "Foram retiradas " + quantidade + " unidades do produto " + nomeProduto.toLowerCase() +
+                                ".\nQuantidade atualizada: ";
+                        break;
+                    }
+                    log.info("Quantidade Insuficiente");
+                    return new ResponseEntity<>("Quantidade Insuficiente", HttpStatus.BAD_REQUEST);
+            }
+            produto.setQuantidade(quantidadeFinal);
+            produtoService.save(produto);
+            log.info(mensagem + produtoService.findByNomeProduto(nomeProduto.toLowerCase()).getQuantidade());
+            return new ResponseEntity<>(mensagem + produtoService.findByNomeProduto(nomeProduto.toLowerCase()).getQuantidade(), HttpStatus.OK);
+        }
+        log.info("Produto inexistente");
+        return new ResponseEntity<>("Produto Inexistente", HttpStatus.NOT_FOUND);
+    }
+
+
     //Deleta um produto
     @DeleteMapping(value = "/delete/{nomeProduto}")
     @ApiOperation(value = "Deletar produto")
     @ApiResponses(@ApiResponse(code = 202, message = "Requisição aceita e concluida"))
-    public ResponseEntity<Object> DeleteProduto(@PathVariable String nomeProduto) {
+    public ResponseEntity<Object> DeleteProduto(@PathVariable(value =
+            "nomeProduto") String nomeProduto) {
         log.info("Deletando produto");
-        if (produtoService.findByNomeProduto(nomeProduto) != null) {
+        if (produtoService.findByNomeProduto(nomeProduto.toLowerCase()) != null) {
             produtoService.delete(produtoService.findByNomeProduto(nomeProduto.toLowerCase()));
             log.info("Produto " + nomeProduto + " deletado");
             return new ResponseEntity<>("Produto " + nomeProduto + " deletado", HttpStatus.ACCEPTED);
@@ -87,7 +134,7 @@ public class ProdutoController {
         log.info("Buscando produto {}", nomeProduto);
         if (produtoService.findByNomeProduto(nomeProduto.toLowerCase()) != null) {
             log.info("Produto " + nomeProduto + " encontrado");
-            return new ResponseEntity<>(produtoService.findByNomeProduto(nomeProduto), HttpStatus.OK);
+            return new ResponseEntity<>(produtoService.findByNomeProduto(nomeProduto.toLowerCase()), HttpStatus.OK);
         }
         log.info("Produto inexistente");
         return new ResponseEntity<>("Produto Inexistente", HttpStatus.NOT_FOUND);
