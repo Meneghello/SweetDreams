@@ -1,4 +1,5 @@
 C:\Users\Pichau\Documents\GitHub\SweetDreams\src\main\java\com\SweetDreams\sweetDreams\Services\VendedorService.java
+C:\Users\Pichau\Documents\GitHub\SweetDreams\src\main\java\com\SweetDreams\sweetDreams\Model\Operadores.java
 C:\Users\Pichau\Documents\GitHub\SweetDreams\src\main\java\com\SweetDreams\sweetDreams\Config\SwaggerConfig.java
 C:\Users\Pichau\Documents\GitHub\SweetDreams\src\main\java\com\SweetDreams\sweetDreams\Model\DTOs\NovoClienteDto.java
 C:\Users\Pichau\Documents\GitHub\SweetDreams\src\main\java\com\SweetDreams\sweetDreams\Model\DTOs\CompraVendaDto.java
@@ -26,6 +27,7 @@ C:\Users\Pichau\Documents\GitHub\SweetDreams\src\main\java\com\SweetDreams\sweet
 C:\Users\Pichau\Documents\GitHub\SweetDreams\src\main\java\com\SweetDreams\sweetDreams\Repository\ClienteRepository.java
 C:\Users\Pichau\Documents\GitHub\SweetDreams\src\main\java\com\SweetDreams\sweetDreams\Services\Impl\ProdutoServiceImpl.java
 C:\Users\Pichau\Documents\GitHub\SweetDreams\src\main\java\com\SweetDreams\sweetDreams\Config\CorsConfig.java
+C:\Users\Pichau\Documents\GitHub\SweetDreams\src\main\java\com\SweetDreams\sweetDreams\Model\DTOs\HistoricoClienteDto.java
 C:\Users\Pichau\Documents\GitHub\SweetDreams\src\main\java\com\SweetDreams\sweetDreams\Model\Endereço.java
 C:\Users\Pichau\Documents\GitHub\SweetDreams\src\main\java\com\SweetDreams\sweetDreams\Services\ClienteService.java
 C:\Users\Pichau\Documents\GitHub\SweetDreams\src\main\java\com\SweetDreams\sweetDreams\Model\DTOs\ClienteDto.java

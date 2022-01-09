@@ -1,12 +1,10 @@
 package com.SweetDreams.sweetDreams.TestController;
 
 
-import com.SweetDreams.sweetDreams.Model.Cliente;
-import com.SweetDreams.sweetDreams.Model.CompraVenda;
+import com.SweetDreams.sweetDreams.Model.*;
 import com.SweetDreams.sweetDreams.Model.DTOs.CompraVendaDto;
-import com.SweetDreams.sweetDreams.Model.Endereço;
-import com.SweetDreams.sweetDreams.Model.Vendedor;
 import com.SweetDreams.sweetDreams.Repository.ClienteRepository;
+import com.SweetDreams.sweetDreams.Repository.ProdutoRepository;
 import com.SweetDreams.sweetDreams.Repository.VendedorRepository;
 import com.SweetDreams.sweetDreams.Services.CompraVendaService;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -21,6 +19,7 @@ import org.springframework.test.web.servlet.MvcResult;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 
 import java.io.UnsupportedEncodingException;
+import java.util.ArrayList;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
@@ -43,6 +42,9 @@ public class CompraVendaControllerTest {
     private VendedorRepository vendedorRepository;
 
     @Autowired
+    private ProdutoRepository produtoRepository;
+
+    @Autowired
     private ClienteRepository clienteRepository;
 
     private Cliente clienteTest() {
@@ -60,7 +62,7 @@ public class CompraVendaControllerTest {
     private Vendedor vendedorTest() {
 
         Vendedor vendedor = new Vendedor();
-        vendedor.setCodigoVendedor(50l);
+        vendedor.setCodigoVendedor(50L);
         vendedor.setCliente(clienteTest());
         vendedor.setCpf(vendedor.getCliente().getCpf());
         vendedorRepository.save(vendedor);
@@ -71,10 +73,26 @@ public class CompraVendaControllerTest {
         CompraVendaDto compraVendaDto = new CompraVendaDto();
         compraVendaDto.setCodigoVendedor(50L);
         compraVendaDto.setCpfCliente("111");
-        compraVendaDto.setQuantidade(20L);
+        compraVendaDto.setQuantidade(10L);
         compraVendaDto.setSabor("Chocolate");
         compraVendaDto.setNomeProduto("teste");
         return compraVendaDto;
+    }
+    private ArrayList<String> sabor() {
+        ArrayList<String> sabor = new ArrayList<>();
+        sabor.add("chocolate");
+        sabor.add("doce de leite");
+        return sabor;
+    }
+    private Produto produtoTest() {
+        Produto produtoTest = new Produto();
+        produtoTest.setNomeProduto("produtoteste");
+        produtoTest.setPreco(5d);
+        produtoTest.setDataValidade("25/12/2021");
+        produtoTest.setQuantidade(50l);
+        produtoTest.setSabor(sabor());
+        produtoRepository.save(produtoTest);
+        return produtoTest;
     }
 
 
@@ -164,12 +182,13 @@ public class CompraVendaControllerTest {
     @Test
     public void vendaProdutoSucessTest() throws Exception {
         Vendedor vendedor = vendedorTest();
+        Produto produto = produtoTest();
         CompraVendaDto compraVendaDto = new CompraVendaDto();
         compraVendaDto.setCodigoVendedor(50L);
         compraVendaDto.setCpfCliente("111");
-        compraVendaDto.setQuantidade(20L);
+        compraVendaDto.setQuantidade(2L);
         compraVendaDto.setSabor("Chocolate");
-        compraVendaDto.setNomeProduto("cookie");
+        compraVendaDto.setNomeProduto("produtoteste");
         MvcResult result = mockMvc.perform(MockMvcRequestBuilders.post("/negocio/venda")
                         .content(objectMapper.writeValueAsString(compraVendaDto))
                         .contentType(MediaType.APPLICATION_JSON)
@@ -180,6 +199,7 @@ public class CompraVendaControllerTest {
         System.out.println(resultCase);
         clienteRepository.delete(vendedor.getCliente());
         vendedorRepository.delete(vendedor);
+        produtoRepository.delete(produto);
         compraVendaService.deleteById(compraVendaService.findByCodigoVendedor(50L).get(0).getId());
     }
     @Test

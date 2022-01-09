@@ -4,6 +4,7 @@ com\SweetDreams\sweetDreams\Model\DTOs\CompraVendaDto.class
 com\SweetDreams\sweetDreams\Model\Produto.class
 com\SweetDreams\sweetDreams\Model\Cliente.class
 com\SweetDreams\sweetDreams\Services\Impl\ClienteServiceImpl.class
+com\SweetDreams\sweetDreams\Model\Operadores.class
 com\SweetDreams\sweetDreams\Handle\ApiError.class
 com\SweetDreams\sweetDreams\Services\Impl\VendedorServiceImpl.class
 com\SweetDreams\sweetDreams\Model\DTOs\ProdutoDto.class
@@ -11,12 +12,14 @@ com\SweetDreams\sweetDreams\Repository\ProdutoRepository.class
 com\SweetDreams\sweetDreams\Config\SwaggerConfig.class
 com\SweetDreams\sweetDreams\Model\Endereço.class
 com\SweetDreams\sweetDreams\SweetDreamsApplication.class
+com\SweetDreams\sweetDreams\Controller\ProdutoController$1.class
 com\SweetDreams\sweetDreams\Repository\ClienteRepository.class
 com\SweetDreams\sweetDreams\Config\CorsConfig$1.class
 com\SweetDreams\sweetDreams\Services\ProdutoService.class
 com\SweetDreams\sweetDreams\Model\DTOs\ClienteDto.class
 com\SweetDreams\sweetDreams\Repository\VendedorRepository.class
 com\SweetDreams\sweetDreams\Services\ClienteService.class
+com\SweetDreams\sweetDreams\Model\DTOs\HistoricoClienteDto.class
 com\SweetDreams\sweetDreams\Model\DTOs\NovoClienteDto.class
 com\SweetDreams\sweetDreams\Controller\ProdutoController.class
 com\SweetDreams\sweetDreams\Model\DTOs\NovoVendedorDto.class
