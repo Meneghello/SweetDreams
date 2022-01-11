@@ -1,8 +1,8 @@
-package com.SweetDreams.sweetDreams.Model.DTOs;
+package com.SweetDreams.sweetDreams.Models.DTOs;
 
 
-import com.SweetDreams.sweetDreams.Model.Cliente;
-import com.SweetDreams.sweetDreams.Model.Endereço;
+import com.SweetDreams.sweetDreams.Models.Cliente;
+import com.SweetDreams.sweetDreams.Models.Endereço;
 import org.springframework.data.mongodb.core.index.Indexed;
 
 import javax.validation.Valid;

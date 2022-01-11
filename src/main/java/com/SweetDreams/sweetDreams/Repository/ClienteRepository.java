@@ -1,6 +1,6 @@
 package com.SweetDreams.sweetDreams.Repository;
 
-import com.SweetDreams.sweetDreams.Model.Cliente;
+import com.SweetDreams.sweetDreams.Models.Cliente;
 import org.springframework.data.mongodb.repository.MongoRepository;
 import org.springframework.stereotype.Repository;
 

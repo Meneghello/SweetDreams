@@ -1,8 +1,8 @@
 package com.SweetDreams.sweetDreams.TestController;
 
 
-import com.SweetDreams.sweetDreams.Model.*;
-import com.SweetDreams.sweetDreams.Model.DTOs.CompraVendaDto;
+import com.SweetDreams.sweetDreams.Models.*;
+import com.SweetDreams.sweetDreams.Models.DTOs.CompraVendaDto;
 import com.SweetDreams.sweetDreams.Repository.ClienteRepository;
 import com.SweetDreams.sweetDreams.Repository.ProdutoRepository;
 import com.SweetDreams.sweetDreams.Repository.VendedorRepository;
@@ -18,7 +18,6 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 
-import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;

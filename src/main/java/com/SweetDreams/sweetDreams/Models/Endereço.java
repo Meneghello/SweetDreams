@@ -1,4 +1,4 @@
-package com.SweetDreams.sweetDreams.Model;
+package com.SweetDreams.sweetDreams.Models;
 
 
 import javax.validation.constraints.NotBlank;

@@ -1,20 +1,25 @@
-package com.SweetDreams.sweetDreams.Model.DTOs;
+package com.SweetDreams.sweetDreams.Models;
 
+
+import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.index.Indexed;
+import org.springframework.data.mongodb.core.mapping.Document;
 
 import javax.validation.constraints.*;
 import java.util.List;
 
-public class ProdutoDto {
+@Document(value = "Produtos")
+public class Produto{
 
-
+    @Id
+    private String id;
     @NotBlank(message = "Nome do produto é obrigatório")
     @Pattern(regexp = "^[A-Za-z ]+$", message = "O campo nome do produto deve conter apenas letras")
     @Indexed(unique = true)
     private String nomeProduto;
 
     @NotNull(message = "Nome do sabor é obrigatório")
-    private List<@Pattern(regexp = "^[A-Za-z ]+$", message = "O campo sabor do produto deve conter apenas letras") String> sabor;
+    private List<@Pattern(regexp = "^[A-Za-z ]+$", message = "O campo sabor do produto deve conter apenas letras")String> sabor;
 
     @NotNull(message = "Quantidade é obrigatória")
     @PositiveOrZero(message = "Quantidade não pode ser negativa")
@@ -69,7 +74,16 @@ public class ProdutoDto {
         this.dataValidade = dataValidade;
     }
 
-    public ProdutoDto(String nomeProduto, List<String> sabor, Long quantidade, Double preco, String dataValidade) {
+    public String getId() {
+        return id;
+    }
+
+    public void setId(String id) {
+        this.id = id;
+    }
+
+    public Produto(String id, String nomeProduto, List<String> sabor, Long quantidade, Double preco, String dataValidade) {
+        this.id = id;
         this.nomeProduto = nomeProduto;
         this.sabor = sabor;
         this.quantidade = quantidade;
@@ -77,6 +91,6 @@ public class ProdutoDto {
         this.dataValidade = dataValidade;
     }
 
-    public ProdutoDto() {
+    public Produto() {
     }
 }

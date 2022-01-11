@@ -1,9 +1,9 @@
 package com.SweetDreams.sweetDreams.TestService;
 
-import com.SweetDreams.sweetDreams.Model.Cliente;
-import com.SweetDreams.sweetDreams.Model.DTOs.ClienteDto;
-import com.SweetDreams.sweetDreams.Model.DTOs.NovoClienteDto;
-import com.SweetDreams.sweetDreams.Model.Endereço;
+import com.SweetDreams.sweetDreams.Models.Cliente;
+import com.SweetDreams.sweetDreams.Models.DTOs.ClienteDto;
+import com.SweetDreams.sweetDreams.Models.DTOs.NovoClienteDto;
+import com.SweetDreams.sweetDreams.Models.Endereço;
 import com.SweetDreams.sweetDreams.Repository.ClienteRepository;
 import com.SweetDreams.sweetDreams.Services.ClienteService;
 import org.junit.jupiter.api.Assertions;

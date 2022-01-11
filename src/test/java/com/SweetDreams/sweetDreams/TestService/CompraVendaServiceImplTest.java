@@ -1,11 +1,7 @@
 package com.SweetDreams.sweetDreams.TestService;
 
-import com.SweetDreams.sweetDreams.Model.Cliente;
-import com.SweetDreams.sweetDreams.Model.CompraVenda;
-import com.SweetDreams.sweetDreams.Model.DTOs.CompraVendaDto;
-import com.SweetDreams.sweetDreams.Model.DTOs.HistoricoClienteDto;
-import com.SweetDreams.sweetDreams.Model.Endereço;
-import com.SweetDreams.sweetDreams.Model.Vendedor;
+import com.SweetDreams.sweetDreams.Models.CompraVenda;
+import com.SweetDreams.sweetDreams.Models.DTOs.CompraVendaDto;
 import com.SweetDreams.sweetDreams.Repository.ClienteRepository;
 import com.SweetDreams.sweetDreams.Repository.CompraVendaRepository;
 import com.SweetDreams.sweetDreams.Repository.VendedorRepository;
@@ -14,12 +10,8 @@ import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.test.context.web.WebAppConfiguration;
 
-import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
 import java.util.Optional;
 
 @SpringBootTest

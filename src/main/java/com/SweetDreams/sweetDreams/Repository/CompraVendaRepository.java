@@ -1,6 +1,6 @@
 package com.SweetDreams.sweetDreams.Repository;
 
-import com.SweetDreams.sweetDreams.Model.CompraVenda;
+import com.SweetDreams.sweetDreams.Models.CompraVenda;
 import org.springframework.data.mongodb.repository.MongoRepository;
 import org.springframework.stereotype.Repository;
 

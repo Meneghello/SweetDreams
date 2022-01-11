@@ -1,8 +1,9 @@
 package com.SweetDreams.sweetDreams.Services;
 
-import com.SweetDreams.sweetDreams.Model.CompraVenda;
-import com.SweetDreams.sweetDreams.Model.DTOs.CompraVendaDto;
-import com.SweetDreams.sweetDreams.Model.DTOs.HistoricoClienteDto;
+
+import com.SweetDreams.sweetDreams.Models.CompraVenda;
+import com.SweetDreams.sweetDreams.Models.DTOs.CompraVendaDto;
+import com.SweetDreams.sweetDreams.Models.DTOs.HistoricoClienteDto;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 

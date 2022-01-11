@@ -1,7 +1,7 @@
 package com.SweetDreams.sweetDreams.TestService;
 
-import com.SweetDreams.sweetDreams.Model.DTOs.ProdutoDto;
-import com.SweetDreams.sweetDreams.Model.Produto;
+import com.SweetDreams.sweetDreams.Models.DTOs.ProdutoDto;
+import com.SweetDreams.sweetDreams.Models.Produto;
 import com.SweetDreams.sweetDreams.Repository.ProdutoRepository;
 import com.SweetDreams.sweetDreams.Services.ProdutoService;
 
@@ -10,7 +10,6 @@ import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.test.context.web.WebAppConfiguration;
 
 import java.util.ArrayList;
 import java.util.List;

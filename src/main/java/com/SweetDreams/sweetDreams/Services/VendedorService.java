@@ -1,10 +1,9 @@
 package com.SweetDreams.sweetDreams.Services;
 
-import com.SweetDreams.sweetDreams.Model.Cliente;
-import com.SweetDreams.sweetDreams.Model.DTOs.ClienteDto;
-import com.SweetDreams.sweetDreams.Model.DTOs.NovoVendedorDto;
-import com.SweetDreams.sweetDreams.Model.Produto;
-import com.SweetDreams.sweetDreams.Model.Vendedor;
+import com.SweetDreams.sweetDreams.Models.Cliente;
+import com.SweetDreams.sweetDreams.Models.DTOs.ClienteDto;
+import com.SweetDreams.sweetDreams.Models.DTOs.NovoVendedorDto;
+import com.SweetDreams.sweetDreams.Models.Vendedor;
 import org.springframework.stereotype.Service;
 
 import java.util.List;

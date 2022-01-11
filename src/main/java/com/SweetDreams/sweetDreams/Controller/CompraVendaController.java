@@ -1,10 +1,10 @@
 package com.SweetDreams.sweetDreams.Controller;
 
 
-import com.SweetDreams.sweetDreams.Model.Cliente;
-import com.SweetDreams.sweetDreams.Model.CompraVenda;
-import com.SweetDreams.sweetDreams.Model.DTOs.CompraVendaDto;
-import com.SweetDreams.sweetDreams.Model.DTOs.HistoricoClienteDto;
+
+import com.SweetDreams.sweetDreams.Models.CompraVenda;
+import com.SweetDreams.sweetDreams.Models.DTOs.CompraVendaDto;
+import com.SweetDreams.sweetDreams.Models.DTOs.HistoricoClienteDto;
 import com.SweetDreams.sweetDreams.Services.ClienteService;
 import com.SweetDreams.sweetDreams.Services.CompraVendaService;
 import com.SweetDreams.sweetDreams.Services.VendedorService;

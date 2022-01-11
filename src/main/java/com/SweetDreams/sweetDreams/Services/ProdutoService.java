@@ -1,7 +1,7 @@
 package com.SweetDreams.sweetDreams.Services;
 
-import com.SweetDreams.sweetDreams.Model.DTOs.ProdutoDto;
-import com.SweetDreams.sweetDreams.Model.Produto;
+import com.SweetDreams.sweetDreams.Models.DTOs.ProdutoDto;
+import com.SweetDreams.sweetDreams.Models.Produto;
 import org.springframework.stereotype.Service;
 
 import java.util.List;

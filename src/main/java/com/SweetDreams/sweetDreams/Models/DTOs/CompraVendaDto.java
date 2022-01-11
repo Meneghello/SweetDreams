@@ -1,4 +1,4 @@
-package com.SweetDreams.sweetDreams.Model.DTOs;
+package com.SweetDreams.sweetDreams.Models.DTOs;
 
 import javax.validation.constraints.*;
 

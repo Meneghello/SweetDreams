@@ -1,11 +1,12 @@
 package com.SweetDreams.sweetDreams.Services.Impl;
 
-import com.SweetDreams.sweetDreams.Model.Cliente;
-import com.SweetDreams.sweetDreams.Model.CompraVenda;
-import com.SweetDreams.sweetDreams.Model.DTOs.CompraVendaDto;
-import com.SweetDreams.sweetDreams.Model.DTOs.HistoricoClienteDto;
-import com.SweetDreams.sweetDreams.Model.Produto;
-import com.SweetDreams.sweetDreams.Model.Vendedor;
+
+import com.SweetDreams.sweetDreams.Models.Cliente;
+import com.SweetDreams.sweetDreams.Models.CompraVenda;
+import com.SweetDreams.sweetDreams.Models.DTOs.CompraVendaDto;
+import com.SweetDreams.sweetDreams.Models.DTOs.HistoricoClienteDto;
+import com.SweetDreams.sweetDreams.Models.Produto;
+import com.SweetDreams.sweetDreams.Models.Vendedor;
 import com.SweetDreams.sweetDreams.Repository.CompraVendaRepository;
 import com.SweetDreams.sweetDreams.Services.ClienteService;
 import com.SweetDreams.sweetDreams.Services.CompraVendaService;
@@ -19,7 +20,6 @@ import java.text.DecimalFormat;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.*;
-import java.util.stream.Collectors;
 
 @Service
 public class CompraVendaServiceImpl implements CompraVendaService {

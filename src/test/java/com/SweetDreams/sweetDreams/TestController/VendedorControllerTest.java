@@ -1,10 +1,10 @@
 package com.SweetDreams.sweetDreams.TestController;
 
-import com.SweetDreams.sweetDreams.Model.Cliente;
-import com.SweetDreams.sweetDreams.Model.DTOs.ClienteDto;
-import com.SweetDreams.sweetDreams.Model.DTOs.NovoVendedorDto;
-import com.SweetDreams.sweetDreams.Model.Endereço;
-import com.SweetDreams.sweetDreams.Model.Vendedor;
+import com.SweetDreams.sweetDreams.Models.Cliente;
+import com.SweetDreams.sweetDreams.Models.DTOs.ClienteDto;
+import com.SweetDreams.sweetDreams.Models.DTOs.NovoVendedorDto;
+import com.SweetDreams.sweetDreams.Models.Endereço;
+import com.SweetDreams.sweetDreams.Models.Vendedor;
 import com.SweetDreams.sweetDreams.Services.ClienteService;
 import com.SweetDreams.sweetDreams.Services.VendedorService;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -16,7 +16,6 @@ import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
-import org.springframework.transaction.annotation.Transactional;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -77,7 +76,8 @@ public class VendedorControllerTest {
                 "25/11/1998",
                 "1111",
                 "35912852857",
-                "abc@abcv.com"
+                "abc@abcv.com",
+                "abc"
         ));
         return vendedorDto;
     }

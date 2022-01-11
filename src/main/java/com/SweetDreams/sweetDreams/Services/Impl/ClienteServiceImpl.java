@@ -1,8 +1,10 @@
 package com.SweetDreams.sweetDreams.Services.Impl;
 
-import com.SweetDreams.sweetDreams.Model.Cliente;
-import com.SweetDreams.sweetDreams.Model.DTOs.ClienteDto;
-import com.SweetDreams.sweetDreams.Model.DTOs.NovoClienteDto;
+
+import com.SweetDreams.sweetDreams.SweetDreamsApplication;
+import com.SweetDreams.sweetDreams.Models.Cliente;
+import com.SweetDreams.sweetDreams.Models.DTOs.ClienteDto;
+import com.SweetDreams.sweetDreams.Models.DTOs.NovoClienteDto;
 import com.SweetDreams.sweetDreams.Repository.ClienteRepository;
 import com.SweetDreams.sweetDreams.Services.ClienteService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,6 +18,7 @@ public class ClienteServiceImpl implements ClienteService {
 
     @Autowired
     ClienteRepository clienteRepository;
+
 
     @Override
     public Cliente findByCpf(String cpf) {
@@ -55,11 +58,12 @@ public class ClienteServiceImpl implements ClienteService {
         cliente.setCelular(novoClienteDto.getCelular());
         cliente.setNome(novoClienteDto.getNome().toLowerCase());
         cliente.setCpf(novoClienteDto.getCpf());
+        cliente.setSenha(novoClienteDto.getSenha());
         cliente.setDataNascimento(novoClienteDto.getDataNascimento());
-
         return cliente;
 
     }
+
 
     @Override
     public Cliente atualizacaoDto(ClienteDto clienteDto) {

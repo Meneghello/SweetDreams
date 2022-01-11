@@ -1,9 +1,7 @@
-package com.SweetDreams.sweetDreams.Model.DTOs;
+package com.SweetDreams.sweetDreams.Models.DTOs;
 
 
-import com.SweetDreams.sweetDreams.Model.Cliente;
-import org.springframework.data.annotation.Id;
-import org.springframework.data.mongodb.core.mapping.DBRef;
+import com.SweetDreams.sweetDreams.Models.Cliente;
 
 import javax.validation.Valid;
 

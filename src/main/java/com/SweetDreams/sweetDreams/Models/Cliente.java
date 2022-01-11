@@ -1,7 +1,6 @@
-package com.SweetDreams.sweetDreams.Model;
+package com.SweetDreams.sweetDreams.Models;
 
 
-import org.hibernate.validator.constraints.br.CPF;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.index.Indexed;
 import org.springframework.data.mongodb.core.mapping.Document;
@@ -42,6 +41,8 @@ public class Cliente {
     @Indexed(unique = true)
     private String email;
 
+    private String senha;
+
     public Cliente() {
 
     }
@@ -62,6 +63,13 @@ public class Cliente {
         this.nome = nome;
     }
 
+    public String getSenha() {
+        return senha;
+    }
+
+    public void setSenha(String senha) {
+        this.senha = senha;
+    }
 
     public Endereço getEndereço() {
         return endereço;
@@ -103,7 +111,8 @@ public class Cliente {
         this.email = email;
     }
 
-    public Cliente(String id, String nome, Endereço endereço, String dataNascimento, String celular, String cpf, String email) {
+    public Cliente(String id, String nome, Endereço endereço, String dataNascimento, String celular, String cpf,
+                   String email, String senha) {
         this.id = id;
         this.nome = nome;
         this.endereço = endereço;
@@ -111,6 +120,7 @@ public class Cliente {
         this.celular = celular;
         this.cpf = cpf;
         this.email = email;
+        this.senha = senha;
     }
 
 }

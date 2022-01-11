@@ -1,14 +1,12 @@
 package com.SweetDreams.sweetDreams.TestService;
 
-import com.SweetDreams.sweetDreams.Model.Cliente;
-import com.SweetDreams.sweetDreams.Model.DTOs.ClienteDto;
-import com.SweetDreams.sweetDreams.Model.DTOs.NovoVendedorDto;
-import com.SweetDreams.sweetDreams.Model.Endereço;
-import com.SweetDreams.sweetDreams.Model.Vendedor;
+import com.SweetDreams.sweetDreams.Models.Cliente;
+import com.SweetDreams.sweetDreams.Models.DTOs.ClienteDto;
+import com.SweetDreams.sweetDreams.Models.DTOs.NovoVendedorDto;
+import com.SweetDreams.sweetDreams.Models.Endereço;
+import com.SweetDreams.sweetDreams.Models.Vendedor;
 import com.SweetDreams.sweetDreams.Repository.ClienteRepository;
 import org.junit.jupiter.api.Assertions;
-
-import static org.junit.Assert.*;
 
 import com.SweetDreams.sweetDreams.Repository.VendedorRepository;
 import com.SweetDreams.sweetDreams.Services.VendedorService;
@@ -126,7 +124,7 @@ public class VendedorServiceImplTest {
         novoVendedorDto.setCliente(new Cliente(null, "Vendedor teste",
                 (new Endereço("Teste", "45", "abc",
                         "09110830", "Sao Paulo", "Sao paulo"))
-                , "25/11/1998", "1111", "35912852857", "aaa@aaa.com"));
+                , "25/11/1998", "1111", "35912852857", "aaa@aaa.com", "abc"));
         Vendedor vendedor = vendedorService.cadastroDto(novoVendedorDto);
         Assertions.assertTrue(vendedor.getCliente().getNome().equalsIgnoreCase("vendedor teste"));
         Assertions.assertEquals("35912852857", vendedor.getCpf());

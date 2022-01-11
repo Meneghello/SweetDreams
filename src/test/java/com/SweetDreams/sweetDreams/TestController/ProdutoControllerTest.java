@@ -1,6 +1,7 @@
 package com.SweetDreams.sweetDreams.TestController;
 
-import com.SweetDreams.sweetDreams.Model.Produto;
+import com.SweetDreams.sweetDreams.Models.Operadores;
+import com.SweetDreams.sweetDreams.Models.Produto;
 import com.SweetDreams.sweetDreams.Services.ProdutoService;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -12,9 +13,10 @@ import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
+import org.springframework.util.LinkedMultiValueMap;
+import org.springframework.util.MultiValueMap;
 
 import java.util.ArrayList;
-import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -96,6 +98,40 @@ public class ProdutoControllerTest {
         produtoService.delete(produtoTest);
     }
 
+    @Test
+    public void reposicaoAdicaoProdutoTest() throws Exception{
+        Produto produtoTest = produtoTest();
+        MultiValueMap<String,String> params = new LinkedMultiValueMap<>();
+        params.add("quantidade", String.valueOf(50));
+        params.add("operador", String.valueOf(Operadores.adicao));
+        MvcResult result =mockMvc.perform(MockMvcRequestBuilders.put("/produto/reposicao/produtoteste")
+                .params(params)
+                        .content(objectMapper.writeValueAsString(produtoTest))
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .accept(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk()).andReturn();
+        String resultcase = result.getResponse().getContentAsString();
+        System.out.println(resultcase);
+        assertEquals(100,produtoService.findByNomeProduto(produtoTest.getNomeProduto()).getQuantidade());
+        produtoService.delete(produtoTest);
+    }
+    @Test
+    public void reposicaoRetiradaProdutoTest() throws Exception{
+        Produto produtoTest = produtoTest();
+        MultiValueMap<String,String> params = new LinkedMultiValueMap<>();
+        params.add("quantidade", String.valueOf(50));
+        params.add("operador", String.valueOf(Operadores.retirada));
+        MvcResult result =mockMvc.perform(MockMvcRequestBuilders.put("/produto/reposicao/produtoteste")
+                        .params(params)
+                        .content(objectMapper.writeValueAsString(produtoTest))
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .accept(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk()).andReturn();
+        String resultcase = result.getResponse().getContentAsString();
+        System.out.println(resultcase);
+        assertEquals(0,produtoService.findByNomeProduto(produtoTest.getNomeProduto()).getQuantidade());
+        produtoService.delete(produtoTest);
+    }
     @Test
     public void cadastroProdutoTestSucess() throws Exception {
         Produto produtoTest = new Produto();

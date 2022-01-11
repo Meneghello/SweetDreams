@@ -1,10 +1,9 @@
 package com.SweetDreams.sweetDreams.Controller;
 
 
-import com.SweetDreams.sweetDreams.Model.Cliente;
-import com.SweetDreams.sweetDreams.Model.DTOs.ProdutoDto;
-import com.SweetDreams.sweetDreams.Model.Operadores;
-import com.SweetDreams.sweetDreams.Model.Produto;
+import com.SweetDreams.sweetDreams.Models.DTOs.ProdutoDto;
+import com.SweetDreams.sweetDreams.Models.Operadores;
+import com.SweetDreams.sweetDreams.Models.Produto;
 import com.SweetDreams.sweetDreams.Services.ProdutoService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -14,18 +13,12 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import org.slf4j.Logger;
 
 import javax.validation.Valid;
-import javax.validation.constraints.Min;
 import javax.validation.constraints.PositiveOrZero;
-import java.util.Arrays;
-import java.util.List;
-import java.util.Locale;
 
 @RestController
 @Validated

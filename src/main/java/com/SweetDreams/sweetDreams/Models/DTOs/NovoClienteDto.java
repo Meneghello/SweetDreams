@@ -1,9 +1,7 @@
-package com.SweetDreams.sweetDreams.Model.DTOs;
+package com.SweetDreams.sweetDreams.Models.DTOs;
 
 
-import com.SweetDreams.sweetDreams.Model.Endereço;
-import org.hibernate.validator.constraints.br.CPF;
-import org.springframework.data.annotation.Id;
+import com.SweetDreams.sweetDreams.Models.Endereço;
 import org.springframework.data.mongodb.core.index.Indexed;
 
 import javax.validation.Valid;
@@ -36,6 +34,8 @@ public class NovoClienteDto {
     //@Email(message = "Digite um email valido")
     @Indexed(unique = true)
     private String email;
+
+    private String senha;
 
     public String getNome() {
         return nome;
@@ -85,13 +85,23 @@ public class NovoClienteDto {
         this.email = email;
     }
 
-    public NovoClienteDto(String nome, Endereço endereço, String dataNascimento, String celular, String cpf, String email) {
+    public String getSenha() {
+        return senha;
+    }
+
+    public void setSenha(String senha) {
+        this.senha = senha;
+    }
+
+    public NovoClienteDto(String nome, Endereço endereço, String dataNascimento, String celular, String cpf,
+                          String email,String senha) {
         this.nome = nome;
         this.endereço = endereço;
         this.dataNascimento = dataNascimento;
         this.celular = celular;
         this.cpf = cpf;
         this.email = email;
+        this.senha = senha;
     }
 
     public NovoClienteDto() {

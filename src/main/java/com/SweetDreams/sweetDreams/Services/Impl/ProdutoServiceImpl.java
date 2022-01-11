@@ -1,7 +1,7 @@
 package com.SweetDreams.sweetDreams.Services.Impl;
 
-import com.SweetDreams.sweetDreams.Model.DTOs.ProdutoDto;
-import com.SweetDreams.sweetDreams.Model.Produto;
+import com.SweetDreams.sweetDreams.Models.DTOs.ProdutoDto;
+import com.SweetDreams.sweetDreams.Models.Produto;
 import com.SweetDreams.sweetDreams.Repository.ProdutoRepository;
 import com.SweetDreams.sweetDreams.Services.ProdutoService;
 import org.springframework.beans.factory.annotation.Autowired;

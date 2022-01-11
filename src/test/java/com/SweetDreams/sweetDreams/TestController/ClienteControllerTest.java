@@ -1,21 +1,15 @@
 package com.SweetDreams.sweetDreams.TestController;
 
-import com.SweetDreams.sweetDreams.Controller.ClienteController;
-import com.SweetDreams.sweetDreams.Model.Cliente;
-import com.SweetDreams.sweetDreams.Model.DTOs.NovoClienteDto;
-import com.SweetDreams.sweetDreams.Model.Endereço;
+import com.SweetDreams.sweetDreams.Models.Cliente;
+import com.SweetDreams.sweetDreams.Models.DTOs.NovoClienteDto;
+import com.SweetDreams.sweetDreams.Models.Endereço;
 import com.SweetDreams.sweetDreams.Services.ClienteService;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.mockito.Mock;
-import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
-import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
@@ -45,17 +39,20 @@ public class ClienteControllerTest {
         cliente.setEndereço(new Endereço("Teste", "45", "abc", "09110830", "Sao Paulo", "Sao paulo"));
         cliente.setNome("Cliente teste");
         cliente.setCpf("35912852857");
+        cliente.setSenha("abc");
         clienteService.save(cliente);
         return cliente;
     }
 
     @Test
     public void listaClientesTest() throws Exception {
+        Cliente cliente = clienteTest();
         MvcResult result =
                 mockMvc.perform(MockMvcRequestBuilders.get("/cliente/"))
                         .andExpect(status().isOk()).andReturn();
         String resultCase = result.getResponse().getContentAsString();
         assertTrue(resultCase.length() > 0);
+        clienteService.delete(cliente);
     }
 
     @Test
