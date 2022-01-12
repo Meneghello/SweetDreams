@@ -18,3 +18,4 @@ jobs: # a collection of steps
           path: target
       - codecov/upload:
           file: target/my-reports/index.html
+          
