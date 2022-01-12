@@ -1,4 +1,6 @@
-version: 2 # use CircleCI 2.0
+version: 2.1 # use CircleCI 2.0
+orbs:
+  codecov: codecov/codecov@1.0.2
 jobs: # a collection of steps
   build: # runs not using Workflows must have a `build` job as entry point
     working_directory: ~/circleci-demo-java-spring # directory where steps will run
@@ -14,3 +16,5 @@ jobs: # a collection of steps
       - store_artifacts: # store the uberjar as an artifact
           # Upload test summary for display in Artifacts: https://circleci.com/docs/2.0/artifacts/
           path: target
+      - codecov/upload:
+          file: target/my-reports/index.html
