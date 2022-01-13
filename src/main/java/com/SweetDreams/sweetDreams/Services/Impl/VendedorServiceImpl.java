@@ -96,6 +96,7 @@ public class VendedorServiceImpl implements VendedorService {
         if (findCliente(vendedorDto.getCliente().getCpf()) == null) {
             Cliente cliente = clienteRepository.save(vendedorDto.getCliente());
             vendedor.setCliente(cliente);
+            vendedor.getCliente().setSenha(vendedorDto.getCliente().getSenha());
             vendedor.getCliente().setNome(vendedorDto.getCliente().getNome().toLowerCase());
             vendedor.setCpf(vendedorDto.getCliente().getCpf());
             return vendedor;
@@ -122,6 +123,7 @@ public class VendedorServiceImpl implements VendedorService {
         cliente.setCelular(clienteDTO.getCelular());
         cliente.setEmail(clienteDTO.getEmail());
         cliente.setEndereço(clienteDTO.getEndereço());
+        cliente.setSenha(clienteDTO.getSenha());
         clienteRepository.save(cliente);
     }
 }

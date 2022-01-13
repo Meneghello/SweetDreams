@@ -1,5 +1,6 @@
 package com.SweetDreams.sweetDreams.TestHandle;
 
+import com.SweetDreams.sweetDreams.Models.Cliente;
 import com.SweetDreams.sweetDreams.Models.DTOs.NovoClienteDto;
 import com.SweetDreams.sweetDreams.Models.Endereço;
 import com.SweetDreams.sweetDreams.Models.Operadores;
@@ -22,6 +23,7 @@ import org.springframework.util.MultiValueMap;
 import java.util.ArrayList;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @SpringBootTest
@@ -103,5 +105,16 @@ public class RestExceptionHandlerTest {
         System.out.println(resultcase);
         assertEquals(HttpStatus.BAD_REQUEST.value(),result.getResponse().getStatus());
         produtoService.delete(produtoTest);
+    }
+
+    @Test
+    public void handleMissingServletRequestParameterTest() throws Exception {
+        MvcResult result = mockMvc.perform(MockMvcRequestBuilders.delete(
+                        "/cliente/delete"))
+                .andExpect(status().is4xxClientError()).andReturn();
+        String resultCase = result.getResponse().getContentAsString();
+        System.out.println(resultCase);
+        assertEquals(HttpStatus.BAD_REQUEST.value(),result.getResponse().getStatus());
+
     }
 }

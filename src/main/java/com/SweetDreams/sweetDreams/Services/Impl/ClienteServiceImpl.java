@@ -8,6 +8,7 @@ import com.SweetDreams.sweetDreams.Models.DTOs.NovoClienteDto;
 import com.SweetDreams.sweetDreams.Repository.ClienteRepository;
 import com.SweetDreams.sweetDreams.Services.ClienteService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 
@@ -18,6 +19,9 @@ public class ClienteServiceImpl implements ClienteService {
 
     @Autowired
     ClienteRepository clienteRepository;
+
+    @Autowired
+    BCryptPasswordEncoder bCryptPasswordEncoder;
 
 
     @Override
@@ -58,7 +62,7 @@ public class ClienteServiceImpl implements ClienteService {
         cliente.setCelular(novoClienteDto.getCelular());
         cliente.setNome(novoClienteDto.getNome().toLowerCase());
         cliente.setCpf(novoClienteDto.getCpf());
-        cliente.setSenha(novoClienteDto.getSenha());
+        cliente.setSenha(bCryptPasswordEncoder.encode(novoClienteDto.getSenha()));
         cliente.setDataNascimento(novoClienteDto.getDataNascimento());
         return cliente;
 
