@@ -10,7 +10,7 @@ import java.util.Collection;
 import java.util.Set;
 import java.util.stream.Collectors;
 
-public class UserDetail implements UserDetails {
+public class UserSS implements UserDetails {
 
     @Id
     private String id;
@@ -18,10 +18,10 @@ public class UserDetail implements UserDetails {
     private String cpf;
     private Collection<? extends GrantedAuthority> authorities;
 
-    public UserDetail() {
+    public UserSS() {
     }
 
-    public UserDetail(String id, String senha, String cpf, Set<Perfil> perfils) {
+    public UserSS(String id, String senha, String cpf, Set<Perfil> perfils) {
         this.id = id;
         this.senha = senha;
         this.cpf = cpf;
@@ -66,4 +66,9 @@ public class UserDetail implements UserDetails {
     public boolean isEnabled() {
         return true;
     }
+
+    public boolean hasRole(Perfil perfil) {
+        return getAuthorities().contains(new SimpleGrantedAuthority(perfil.getRole()));
+    }
 }
+

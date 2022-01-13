@@ -13,6 +13,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
@@ -59,6 +60,7 @@ public class ClienteController {
     }
 
     //Delete cliente
+    //@PreAuthorize("hasAnyRole('ADMIN')")
     @DeleteMapping(value = "/delete")
     @ApiOperation(value = "Deletar um cliente")
     @ApiResponses(@ApiResponse(code = 202, message = "Requisição aceita e concluida"))
@@ -87,7 +89,8 @@ public class ClienteController {
         return new ResponseEntity<>("Cliente não encontrado", HttpStatus.NOT_FOUND);
     }
 
-    //Lista todos os produtos
+    //Lista todos os clientes
+    //@PreAuthorize("hasAnyRole('admin')")
     @GetMapping(value = "/")
     @ApiOperation(value = "Lista todos os clientes")
     public ResponseEntity<Object> ListaClientes() {

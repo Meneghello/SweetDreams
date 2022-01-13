@@ -1,6 +1,10 @@
 package com.SweetDreams.sweetDreams.Services.Impl;
 
 
+import com.SweetDreams.sweetDreams.Handle.AuthorizationExceptionHandle;
+import com.SweetDreams.sweetDreams.Models.Perfil;
+import com.SweetDreams.sweetDreams.Security.UserSS;
+import com.SweetDreams.sweetDreams.Services.UserService;
 import com.SweetDreams.sweetDreams.SweetDreamsApplication;
 import com.SweetDreams.sweetDreams.Models.Cliente;
 import com.SweetDreams.sweetDreams.Models.DTOs.ClienteDto;
@@ -24,8 +28,13 @@ public class ClienteServiceImpl implements ClienteService {
     BCryptPasswordEncoder bCryptPasswordEncoder;
 
 
+
     @Override
     public Cliente findByCpf(String cpf) {
+        UserSS userSS = UserService.authenticated();
+        if(userSS==null || !userSS.hasRole(Perfil.admin) && !cpf.equals(userSS.getUsername())){
+            throw new AuthorizationExceptionHandle("Acesso negado");
+        }
         return clienteRepository.findByCpf(cpf);
     }
 

@@ -13,6 +13,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import org.slf4j.Logger;
@@ -31,6 +32,7 @@ public class ProdutoController {
 
     private static Logger log = LoggerFactory.getLogger(ProdutoController.class);
 
+    //@PreAuthorize("hasAnyRole('admin')")
     @PostMapping(value = "/cadastro")
     @ApiOperation(value = "Cadastro Produto")
     public ResponseEntity<Object> CadastroProduto(@RequestBody @Valid ProdutoDto produtoDto) {
@@ -47,6 +49,7 @@ public class ProdutoController {
     }
 
     //Update de um produto
+    //@PreAuthorize("hasAnyRole('admin')")
     @PutMapping(value = "/atualizacao/{nomeProduto}")
     @ApiOperation(value = "Update do cadastro de produto")
     public ResponseEntity<Object> UpdateProduto(@RequestBody @Valid ProdutoDto produtoDto,
@@ -64,6 +67,7 @@ public class ProdutoController {
     }
 
     //Atualizar quantidade de produto
+    //@PreAuthorize("hasAnyRole('admin','vendedor')")
     @PutMapping(value = "/reposicao/{nomeProduto}")
     @ApiOperation(value = "Atualizar quantidade de produto")
     public ResponseEntity<Object> reposicaoProduto(@PositiveOrZero @RequestParam(value = "quantidade",
@@ -105,6 +109,7 @@ public class ProdutoController {
 
 
     //Deleta um produto
+    //@PreAuthorize("hasAnyRole('admin')")
     @DeleteMapping(value = "/delete/{nomeProduto}")
     @ApiOperation(value = "Deletar produto")
     @ApiResponses(@ApiResponse(code = 202, message = "Requisição aceita e concluida"))

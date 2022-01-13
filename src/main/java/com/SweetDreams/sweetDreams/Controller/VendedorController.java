@@ -15,6 +15,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
@@ -87,6 +88,7 @@ public class VendedorController {
     }
 
     //delete vendedor por codigo
+    //@PreAuthorize("hasAnyRole('ADMIN')")
     @DeleteMapping(value = "/delete/{codigoVendedor}")
     @ApiOperation(value = "Deletar um vendedor por codigo")
     @ApiResponses(@ApiResponse(code = 202, message = "Requisição aceita e concluida"))
@@ -102,6 +104,7 @@ public class VendedorController {
     }
 
     //delete vendedor por cpf
+    //@PreAuthorize("hasAnyRole('ADMIN')")
     @DeleteMapping(value = "/delete")
     @ApiOperation(value = "Deletar um vendedor por cpf")
     @ApiResponses(@ApiResponse(code = 202, message = "Requisição aceita e concluida"))
@@ -117,6 +120,7 @@ public class VendedorController {
     }
 
     //Lista todos os vendedores
+    //@PreAuthorize("hasAnyRole('ADMIN')")
     @GetMapping(value = "/")
     @ApiOperation(value = "Lista todos os vendedores")
     public ResponseEntity<Object> ListaVendedores() {

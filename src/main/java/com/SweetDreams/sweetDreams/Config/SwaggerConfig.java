@@ -2,17 +2,23 @@ package com.SweetDreams.sweetDreams.Config;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.security.core.context.SecurityContext;
 import springfox.documentation.builders.ApiInfoBuilder;
 import springfox.documentation.builders.PathSelectors;
 import springfox.documentation.builders.RequestHandlerSelectors;
 import springfox.documentation.service.ApiInfo;
+import springfox.documentation.service.ApiKey;
 import springfox.documentation.service.Contact;
 import springfox.documentation.spi.DocumentationType;
 import springfox.documentation.spring.web.plugins.Docket;
 import springfox.documentation.swagger2.annotations.EnableSwagger2;
 
+import java.lang.reflect.Array;
+import java.util.Arrays;
+
 @Configuration
 @EnableSwagger2
+
 public class SwaggerConfig {
     @Bean
     public Docket api() {
@@ -21,6 +27,7 @@ public class SwaggerConfig {
                 .apis(RequestHandlerSelectors.basePackage("com.SweetDreams.sweetDreams.Controller"))
                 .paths(PathSelectors.any())
                 .build()
+                .securitySchemes(Arrays.asList(apiKey()))
                 .apiInfo(apiInfo());
 
     }
@@ -33,5 +40,10 @@ public class SwaggerConfig {
                 .contact(new Contact("Gabriel Meneghello", "https://github.com/Meneghello", null))
                 .build();
     }
+    private ApiKey apiKey() {
+        return new ApiKey("JWT", "Authorization", "header");
+    }
+
+
 
 }

@@ -49,7 +49,7 @@ public class JWTAuthFilter extends UsernamePasswordAuthenticationFilter {
     protected void successfulAuthentication(HttpServletRequest req, HttpServletResponse res, FilterChain hcain,
                                          Authentication auth) throws IOException, ServletException {
 
-        String username =((UserDetail) auth.getPrincipal()).getUsername();
+        String username =((UserSS) auth.getPrincipal()).getUsername();
         String token = jwtUtil.generateToken(username);
         res.addHeader("Authorization","Bearer " + token);
 

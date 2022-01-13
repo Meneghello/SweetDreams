@@ -2,7 +2,7 @@ package com.SweetDreams.sweetDreams.Services.Impl;
 
 import com.SweetDreams.sweetDreams.Models.Cliente;
 import com.SweetDreams.sweetDreams.Repository.ClienteRepository;
-import com.SweetDreams.sweetDreams.Security.UserDetail;
+import com.SweetDreams.sweetDreams.Security.UserSS;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -21,6 +21,6 @@ public class UserDetailsServiceImpl implements UserDetailsService {
         if (cliente==null){
             throw new UsernameNotFoundException(cpf);
         }
-        return new UserDetail(cliente.getId(),cliente.getSenha(),cliente.getCpf(),cliente.getRole());
+        return new UserSS(cliente.getId(),cliente.getSenha(),cliente.getCpf(),cliente.getRole());
     }
 }
