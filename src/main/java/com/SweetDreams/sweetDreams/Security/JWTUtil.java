@@ -12,7 +12,7 @@ import java.util.Date;
 public class JWTUtil {
 
     @Value("${jwt.secret}")
-    private String secret;
+    private String segredo;
 
     @Value("${jwt.expiration}")
     private Long expiration;
@@ -21,7 +21,7 @@ public class JWTUtil {
         return Jwts.builder()
                 .setSubject(username)
                 .setExpiration(new Date(System.currentTimeMillis()+expiration))
-                .signWith(SignatureAlgorithm.HS512,secret.getBytes())
+                .signWith(SignatureAlgorithm.HS512, segredo.getBytes())
                 .compact();
     }
 
@@ -48,7 +48,7 @@ public class JWTUtil {
 
     private Claims getClaims(String token) {
         try {
-            return Jwts.parser().setSigningKey(secret.getBytes()).parseClaimsJws(token).getBody();
+            return Jwts.parser().setSigningKey(segredo.getBytes()).parseClaimsJws(token).getBody();
         }
         catch (Exception e){
             return null;

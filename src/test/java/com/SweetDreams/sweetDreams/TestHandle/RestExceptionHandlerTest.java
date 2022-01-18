@@ -26,7 +26,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-@SpringBootTest
+@SpringBootTest(properties = {"security.basic.enabled=false"})
 @AutoConfigureMockMvc
 public class RestExceptionHandlerTest {
     @Autowired
