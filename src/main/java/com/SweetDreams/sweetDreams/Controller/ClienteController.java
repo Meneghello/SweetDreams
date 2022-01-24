@@ -96,6 +96,7 @@ public class ClienteController {
     public ResponseEntity<Object> ListaClientes() {
         log.info("Listados todos os clientes \r\n {} Clientes encontrados",
                 clienteService.findAll().size());
+        log.info("Cadastrando novo cliente");
         return new ResponseEntity<>(clienteService.findAll(), HttpStatus.OK);
     }
 
