@@ -35,6 +35,7 @@ public class NovoClienteDto {
     @Indexed(unique = true)
     private String email;
 
+    @NotEmpty(message = "Campo senha é obrigatório")
     private String senha;
 
     public String getNome() {

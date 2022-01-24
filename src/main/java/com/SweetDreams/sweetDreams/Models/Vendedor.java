@@ -6,6 +6,9 @@ import org.springframework.data.mongodb.core.mapping.DBRef;
 import org.springframework.data.mongodb.core.mapping.Document;
 
 import javax.validation.Valid;
+import java.util.HashSet;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 
 @Document(value = "Vendedores")
@@ -19,6 +22,8 @@ public class Vendedor {
     @DBRef
     private Cliente cliente;
     private Long codigoVendedor;
+
+    private Set<Integer> role = new HashSet<>();
 
 
     public String getId() {
@@ -53,13 +58,23 @@ public class Vendedor {
         this.codigoVendedor = codigoVendedor;
     }
 
+    public Set<Perfil> getRole() {
+        return role.stream().map(Perfil::toEnum).collect(Collectors.toSet());
+    }
+
+    public void setRole(Perfil roles) {
+        role.add(roles.getCode());
+    }
+
     public Vendedor(String id, String cpf, Cliente cliente, Long codigoVendedor) {
         this.cpf=cliente.getCpf();
         this.id = id;
         this.cliente = cliente;
         this.codigoVendedor = codigoVendedor;
+        setRole(Perfil.vendedor);
     }
 
     public Vendedor() {
+        setRole(Perfil.vendedor);
     }
 }

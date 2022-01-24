@@ -1,18 +1,23 @@
 package com.SweetDreams.sweetDreams.Models;
 
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.index.Indexed;
 import org.springframework.data.mongodb.core.mapping.Document;
 
 import javax.validation.Valid;
 import javax.validation.constraints.*;
+import java.util.HashSet;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 
 @Document(value = "Clientes")
 public class Cliente {
 
     @Id
+    @JsonIgnore
     private String id;
 
     @NotBlank(message = "Nome é obrigatório")
@@ -41,10 +46,15 @@ public class Cliente {
     @Indexed(unique = true)
     private String email;
 
+
+    @NotEmpty(message = "Campo senha é obrigatório")
     private String senha;
 
-    public Cliente() {
 
+    private Set<Integer> role = new HashSet<>();
+
+    public Cliente() {
+        setRole(Perfil.cliente);
     }
 
     public String getId() {
@@ -111,6 +121,14 @@ public class Cliente {
         this.email = email;
     }
 
+    public Set<Perfil> getRole() {
+        return role.stream().map(Perfil::toEnum).collect(Collectors.toSet());
+    }
+
+    public void setRole(Perfil roles) {
+        role.add(roles.getCode());
+    }
+
     public Cliente(String id, String nome, Endereço endereço, String dataNascimento, String celular, String cpf,
                    String email, String senha) {
         this.id = id;
@@ -121,6 +139,7 @@ public class Cliente {
         this.cpf = cpf;
         this.email = email;
         this.senha = senha;
+        setRole(Perfil.cliente);
     }
 
 }

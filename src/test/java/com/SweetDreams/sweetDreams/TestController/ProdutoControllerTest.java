@@ -21,7 +21,7 @@ import java.util.ArrayList;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-@SpringBootTest
+@SpringBootTest(properties = {"security.basic.enabled=false"})
 @AutoConfigureMockMvc
 public class ProdutoControllerTest {
 

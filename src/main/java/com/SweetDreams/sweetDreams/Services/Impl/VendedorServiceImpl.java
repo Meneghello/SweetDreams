@@ -1,13 +1,17 @@
 package com.SweetDreams.sweetDreams.Services.Impl;
 
+import com.SweetDreams.sweetDreams.Handle.AuthorizationExceptionHandle;
 import com.SweetDreams.sweetDreams.Models.Cliente;
 import com.SweetDreams.sweetDreams.Models.DTOs.ClienteDto;
 import com.SweetDreams.sweetDreams.Models.DTOs.NovoVendedorDto;
+import com.SweetDreams.sweetDreams.Models.Perfil;
 import com.SweetDreams.sweetDreams.Models.Vendedor;
 
 import com.SweetDreams.sweetDreams.Repository.ClienteRepository;
 import com.SweetDreams.sweetDreams.Repository.VendedorRepository;
+import com.SweetDreams.sweetDreams.Security.UserSS;
 import com.SweetDreams.sweetDreams.Services.ClienteService;
+import com.SweetDreams.sweetDreams.Services.UserService;
 import com.SweetDreams.sweetDreams.Services.VendedorService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -29,14 +33,11 @@ public class VendedorServiceImpl implements VendedorService {
 
     @Override
     public Vendedor findByCpf(String cpf) {
-        if (clienteRepository.findByCpf(cpf) != null) {
-            String id = clienteRepository.findByCpf(cpf).getId();
-            if (vendedorRepository.findByClienteId(id) != null) {
-                return vendedorRepository.findByClienteId(id);
-            }
-            return null;
+        UserSS userSS = UserService.authenticated();
+        if(userSS==null || !userSS.hasRole(Perfil.admin) && !cpf.equals(userSS.getUsername())){
+            throw new AuthorizationExceptionHandle("Acesso negado");
         }
-        return null;
+        return vendedorRepository.findByCpf(cpf);
     }
 
     @Override
@@ -51,10 +52,13 @@ public class VendedorServiceImpl implements VendedorService {
 
     @Override
     public Vendedor findByCodigoVendedor(Long codigoVendedor) {
+        UserSS userSS = UserService.authenticated();
+        if(userSS==null || !userSS.hasRole(Perfil.admin) && !codigoVendedor.equals(findByCpf(userSS.getUsername()).getCodigoVendedor())){
+            throw new AuthorizationExceptionHandle("Acesso negado");
+        }
         return vendedorRepository.findByCodigoVendedor(codigoVendedor);
     }
 
-    ;
 
     @Override
     public Vendedor save(Vendedor vendedor) {
@@ -96,6 +100,7 @@ public class VendedorServiceImpl implements VendedorService {
         if (findCliente(vendedorDto.getCliente().getCpf()) == null) {
             Cliente cliente = clienteRepository.save(vendedorDto.getCliente());
             vendedor.setCliente(cliente);
+            vendedor.getCliente().setSenha(vendedorDto.getCliente().getSenha());
             vendedor.getCliente().setNome(vendedorDto.getCliente().getNome().toLowerCase());
             vendedor.setCpf(vendedorDto.getCliente().getCpf());
             return vendedor;
@@ -122,6 +127,7 @@ public class VendedorServiceImpl implements VendedorService {
         cliente.setCelular(clienteDTO.getCelular());
         cliente.setEmail(clienteDTO.getEmail());
         cliente.setEndereço(clienteDTO.getEndereço());
+        cliente.setSenha(clienteDTO.getSenha());
         clienteRepository.save(cliente);
     }
 }

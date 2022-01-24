@@ -20,6 +20,7 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
 
 
+import javax.servlet.http.HttpServletRequest;
 import javax.validation.ConstraintViolation;
 import javax.validation.ConstraintViolationException;
 import java.io.IOException;
@@ -53,23 +54,32 @@ public class RestExceptionHandler extends ResponseEntityExceptionHandler {
         return new ResponseEntity<Object>(apiError, new HttpHeaders(), apiError.getStatus());
     }
 
-    /*CONFLITO COM O SWAGGER POR CONTA DAS NOTAÇOES, exception para tratar caminho não existente
-    spring.mvc.throw-exception-if-no-handler-found=true
-    spring.resources.add-mappings=false
-    */
-    @Override
-    protected ResponseEntity<Object> handleNoHandlerFoundException(NoHandlerFoundException ex, HttpHeaders headers,
-                                                                   HttpStatus status, WebRequest request) {
-        String errors = "Caminho não especificado: " + ex.getHttpMethod() + " " + ex.getRequestURL();
-        ApiError apiError = new ApiError(HttpStatus.NOT_FOUND, status.value(), ex.getLocalizedMessage(), errors);
-        return new ResponseEntity<>(apiError, new HttpHeaders(), apiError.getStatus());
-    }
-
     @ExceptionHandler(ConstraintViolationException.class)
     public ResponseEntity<Object> handleConstraintViolationException(ConstraintViolationException ex) {
         ApiError apiError = new ApiError(HttpStatus.BAD_REQUEST,HttpStatus.BAD_REQUEST.value(), ex.getMessage());
         return new ResponseEntity<Object>(apiError, new HttpHeaders(), apiError.getStatus());
     }
+
+    @ExceptionHandler(AuthorizationExceptionHandle.class)
+    public ResponseEntity<Object> authorization(AuthorizationExceptionHandle e, HttpServletRequest request){
+        ApiError apiError = new ApiError(HttpStatus.FORBIDDEN,HttpStatus.FORBIDDEN.value(), e.getMessage(), (List<String>) null);
+        return new ResponseEntity<>(apiError, new HttpHeaders(), apiError.getStatus());
+
+    }
+
+
+//    /*CONFLITO COM O SWAGGER POR CONTA DAS NOTAÇOES, exception para tratar caminho não existente
+//    spring.mvc.throw-exception-if-no-handler-found=true
+//    spring.resources.add-mappings=false
+//    */
+//    @ExceptionHandler(NoHandlerFoundException.class)
+//    protected ResponseEntity<Object> handleNoHandlerFoundException(NoHandlerFoundException ex, HttpHeaders headers,
+//                                                                   HttpStatus status, WebRequest request) {
+//        String errors = "Caminho não especificado: " + ex.getHttpMethod() + " " + ex.getRequestURL();
+//        ApiError apiError = new ApiError(HttpStatus.NOT_FOUND, status.value(), ex.getLocalizedMessage(), errors);
+//        return new ResponseEntity<>(apiError, new HttpHeaders(), apiError.getStatus());
+//    }
+
 
 }
 

@@ -1,6 +1,10 @@
 package com.SweetDreams.sweetDreams.Services.Impl;
 
 
+import com.SweetDreams.sweetDreams.Handle.AuthorizationExceptionHandle;
+import com.SweetDreams.sweetDreams.Models.Perfil;
+import com.SweetDreams.sweetDreams.Security.UserSS;
+import com.SweetDreams.sweetDreams.Services.UserService;
 import com.SweetDreams.sweetDreams.SweetDreamsApplication;
 import com.SweetDreams.sweetDreams.Models.Cliente;
 import com.SweetDreams.sweetDreams.Models.DTOs.ClienteDto;
@@ -8,6 +12,7 @@ import com.SweetDreams.sweetDreams.Models.DTOs.NovoClienteDto;
 import com.SweetDreams.sweetDreams.Repository.ClienteRepository;
 import com.SweetDreams.sweetDreams.Services.ClienteService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 
@@ -19,9 +24,17 @@ public class ClienteServiceImpl implements ClienteService {
     @Autowired
     ClienteRepository clienteRepository;
 
+    @Autowired
+    BCryptPasswordEncoder bCryptPasswordEncoder;
+
+
 
     @Override
     public Cliente findByCpf(String cpf) {
+        UserSS userSS = UserService.authenticated();
+        if(userSS==null || !userSS.hasRole(Perfil.admin) && !cpf.equals(userSS.getUsername())){
+            throw new AuthorizationExceptionHandle("Acesso negado");
+        }
         return clienteRepository.findByCpf(cpf);
     }
 
@@ -58,7 +71,7 @@ public class ClienteServiceImpl implements ClienteService {
         cliente.setCelular(novoClienteDto.getCelular());
         cliente.setNome(novoClienteDto.getNome().toLowerCase());
         cliente.setCpf(novoClienteDto.getCpf());
-        cliente.setSenha(novoClienteDto.getSenha());
+        cliente.setSenha(bCryptPasswordEncoder.encode(novoClienteDto.getSenha()));
         cliente.setDataNascimento(novoClienteDto.getDataNascimento());
         return cliente;
 
