@@ -13,4 +13,4 @@ jobs:
       - store_artifacts:
           path:  target
       - store_test_results:
-          path: target/test-results-show
+          path: target
