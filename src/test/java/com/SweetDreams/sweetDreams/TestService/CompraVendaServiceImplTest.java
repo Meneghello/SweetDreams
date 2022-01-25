@@ -14,7 +14,7 @@ import org.springframework.http.ResponseEntity;
 
 import java.util.Optional;
 
-@SpringBootTest(properties = {"security.basic.enabled=false"})
+@SpringBootTest
 public class CompraVendaServiceImplTest {
 
     @Autowired

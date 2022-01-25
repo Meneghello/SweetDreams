@@ -32,8 +32,9 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
     //Lista de requisições liberadas sem estar logado
     private static final String[] PUBLIC_REQUESTS = {
-            "/produto/",
-            "/produto/busca/**"
+            //"/produto/",
+            //"/produto/busca/**"
+            "/auth/**"
     };
     //Lista de requisições liberadas read only sem estar logado
     private static final String[] PUBLIC_REQUESTS_READ_ONLY = {
@@ -41,7 +42,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     };
     //Lista de requisições liberadas para post sem estar logado
     private static final String[] PUBLIC_REQUESTS_POST_ONLY = {
-
+            //"/cliente/**"
     };
 
     @Override
@@ -49,8 +50,9 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         http.cors().and().csrf().disable();
         http.authorizeRequests()
                 .antMatchers(PUBLIC_REQUESTS).permitAll()
-                //.anyRequest().authenticated();
-                .anyRequest().permitAll();
+                //.antMatchers(HttpMethod.POST, PUBLIC_REQUESTS_POST_ONLY).permitAll()
+                //.anyRequest().permitAll();
+                .anyRequest().authenticated();
         http.addFilter(new JWTAuthorizationFilter(authenticationManager(), jwtUtil, userDetailsService));
         http.addFilter(new JWTAuthFilter(authenticationManager(), jwtUtil));
         http.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);

@@ -14,7 +14,7 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
-@SpringBootTest(properties = {"security.basic.enabled=false"})
+@SpringBootTest
 public class VendedorServiceImplTest {
 
     @Autowired
@@ -34,6 +34,7 @@ public class VendedorServiceImplTest {
         cliente.setEndereço(new Endereço("Teste", "45", "abc", "09110830", "Sao Paulo", "Sao paulo"));
         cliente.setNome("Cliente teste");
         cliente.setCpf("35912852857");
+        cliente.setSenha("abc");
         clienteRepository.save(cliente);
         return cliente;
     }

@@ -129,3 +129,4 @@ public class VendedorController {
         return new ResponseEntity<>(vendedorService.findAll(), HttpStatus.OK);
     }
 }
+

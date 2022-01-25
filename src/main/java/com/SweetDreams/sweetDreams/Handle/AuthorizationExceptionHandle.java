@@ -5,7 +5,7 @@ public class AuthorizationExceptionHandle extends RuntimeException{
     public AuthorizationExceptionHandle(String msg){
         super(msg);
     }
-    public AuthorizationExceptionHandle(String msg, Throwable cause){
-        super(msg,cause);
-    }
+//    public AuthorizationExceptionHandle(String msg, Throwable cause){
+//        super(msg,cause);
+//    }
 }

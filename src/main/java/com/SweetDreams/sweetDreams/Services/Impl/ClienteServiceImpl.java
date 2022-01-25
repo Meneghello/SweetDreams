@@ -31,10 +31,10 @@ public class ClienteServiceImpl implements ClienteService {
 
     @Override
     public Cliente findByCpf(String cpf) {
-        UserSS userSS = UserService.authenticated();
-        if(userSS==null || !userSS.hasRole(Perfil.admin) && !cpf.equals(userSS.getUsername())){
-            throw new AuthorizationExceptionHandle("Acesso negado");
-        }
+//        UserSS userSS = UserService.authenticated();
+//        if(userSS==null || !userSS.hasRole(Perfil.admin) && !cpf.equals(userSS.getUsername())){
+//            throw new AuthorizationExceptionHandle("Acesso negado");
+//        }
         return clienteRepository.findByCpf(cpf);
     }
 
