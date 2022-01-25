@@ -1,0 +1,14 @@
+version: 2.1
+orbs:
+  browser-tools: circleci/browser-tools@1.2.3
+jobs:
+  build:
+    docker:
+      - image: cimg/openjdk:17.0-browsers
+
+    steps:
+      - checkout
+      - browser-tools/install-browser-tools
+      - run : mvn test
+      - store_artifacts:
+          path:  target
