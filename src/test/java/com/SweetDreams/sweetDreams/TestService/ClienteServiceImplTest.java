@@ -1,17 +1,20 @@
 package com.SweetDreams.sweetDreams.TestService;
 
 import com.SweetDreams.sweetDreams.Models.Cliente;
+import com.SweetDreams.sweetDreams.Models.DTOs.ClienteAuthDto;
 import com.SweetDreams.sweetDreams.Models.DTOs.ClienteDto;
 import com.SweetDreams.sweetDreams.Models.DTOs.NovoClienteDto;
 import com.SweetDreams.sweetDreams.Models.Endereço;
 import com.SweetDreams.sweetDreams.Repository.ClienteRepository;
 import com.SweetDreams.sweetDreams.Services.ClienteService;
+import com.SweetDreams.sweetDreams.Services.Impl.UserDetailsServiceImpl;
 import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
-@SpringBootTest(properties = {"security.basic.enabled=false"})
+@SpringBootTest
 public class ClienteServiceImplTest {
 
     @Autowired
@@ -19,6 +22,10 @@ public class ClienteServiceImplTest {
 
     @Autowired
     ClienteRepository clienteRepository;
+
+    @Autowired
+    UserDetailsServiceImpl userDetailsService;
+
 
     private Cliente clienteTest() {
         Cliente cliente = new Cliente();
@@ -28,6 +35,7 @@ public class ClienteServiceImplTest {
         cliente.setEndereço(new Endereço("Teste", "45", "abc", "09110830", "Sao Paulo", "Sao paulo"));
         cliente.setNome("Cliente teste");
         cliente.setCpf("359.128.528-57");
+        cliente.setSenha("abc");
         clienteRepository.save(cliente);
         return cliente;
     }
@@ -75,6 +83,7 @@ public class ClienteServiceImplTest {
         novoClienteDto.setEndereço(new Endereço("Teste", "45", "abc", "09110830", "Sao Paulo", "Sao paulo"));
         novoClienteDto.setNome("Cliente teste");
         novoClienteDto.setCpf("35912852857");
+        novoClienteDto.setSenha("abc");
         Cliente cliente = clienteService.cadastroDto(novoClienteDto);
         Assertions.assertTrue(cliente.getNome().equalsIgnoreCase("Cliente teste"));
         Assertions.assertEquals("35912852857", cliente.getCpf());

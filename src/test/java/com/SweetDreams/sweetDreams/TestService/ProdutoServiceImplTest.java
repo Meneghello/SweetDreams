@@ -15,7 +15,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 
-@SpringBootTest(properties = {"security.basic.enabled=false"})
+@SpringBootTest
 public class ProdutoServiceImplTest {
 
     @Autowired

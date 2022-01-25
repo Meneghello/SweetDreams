@@ -29,8 +29,6 @@ public class JWTAuthFilter extends UsernamePasswordAuthenticationFilter {
         this.authenticationManager = authenticationManager;
         this.jwtUtil = jwtUtil;
     }
-
-
     @Override
     public Authentication attemptAuthentication(HttpServletRequest req, HttpServletResponse res) throws AuthenticationException {
         try {
@@ -43,7 +41,6 @@ public class JWTAuthFilter extends UsernamePasswordAuthenticationFilter {
             throw new RuntimeException(e);
         }
     }
-
     @Override
     protected void successfulAuthentication(HttpServletRequest req, HttpServletResponse res, FilterChain hcain,
                                          Authentication auth) throws IOException, ServletException {
@@ -53,12 +50,6 @@ public class JWTAuthFilter extends UsernamePasswordAuthenticationFilter {
         res.addHeader("Authorization","Bearer " + token);
 
     }
-
-
-
-
-
-
     private class JWTAuthenticationFailureHandler implements AuthenticationFailureHandler {
 
         @Override

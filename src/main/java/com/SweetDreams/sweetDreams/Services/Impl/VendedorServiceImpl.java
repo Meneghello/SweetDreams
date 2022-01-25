@@ -33,10 +33,10 @@ public class VendedorServiceImpl implements VendedorService {
 
     @Override
     public Vendedor findByCpf(String cpf) {
-        UserSS userSS = UserService.authenticated();
-        if(userSS==null || !userSS.hasRole(Perfil.admin) && !cpf.equals(userSS.getUsername())){
-            throw new AuthorizationExceptionHandle("Acesso negado");
-        }
+//        UserSS userSS = UserService.authenticated();
+//        if(userSS==null || !userSS.hasRole(Perfil.admin) && !cpf.equals(userSS.getUsername())){
+//            throw new AuthorizationExceptionHandle("Acesso negado");
+//        }
         return vendedorRepository.findByCpf(cpf);
     }
 
@@ -52,10 +52,10 @@ public class VendedorServiceImpl implements VendedorService {
 
     @Override
     public Vendedor findByCodigoVendedor(Long codigoVendedor) {
-        UserSS userSS = UserService.authenticated();
-        if(userSS==null || !userSS.hasRole(Perfil.admin) && !codigoVendedor.equals(findByCpf(userSS.getUsername()).getCodigoVendedor())){
-            throw new AuthorizationExceptionHandle("Acesso negado");
-        }
+//        UserSS userSS = UserService.authenticated();
+//        if(userSS==null || !userSS.hasRole(Perfil.admin) && !codigoVendedor.equals(findByCpf(userSS.getUsername()).getCodigoVendedor())){
+//            throw new AuthorizationExceptionHandle("Acesso negado");
+//        }
         return vendedorRepository.findByCodigoVendedor(codigoVendedor);
     }
 

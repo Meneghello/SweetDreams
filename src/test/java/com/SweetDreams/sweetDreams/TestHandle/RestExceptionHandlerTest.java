@@ -1,17 +1,21 @@
 package com.SweetDreams.sweetDreams.TestHandle;
 
 import com.SweetDreams.sweetDreams.Models.Cliente;
+import com.SweetDreams.sweetDreams.Models.DTOs.ClienteAuthDto;
 import com.SweetDreams.sweetDreams.Models.DTOs.NovoClienteDto;
 import com.SweetDreams.sweetDreams.Models.Endereço;
 import com.SweetDreams.sweetDreams.Models.Operadores;
 import com.SweetDreams.sweetDreams.Models.Produto;
 import com.SweetDreams.sweetDreams.Services.ClienteService;
+import com.SweetDreams.sweetDreams.Services.Impl.UserDetailsServiceImpl;
 import com.SweetDreams.sweetDreams.Services.ProdutoService;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
@@ -26,7 +30,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-@SpringBootTest(properties = {"security.basic.enabled=false"})
+@SpringBootTest
 @AutoConfigureMockMvc
 public class RestExceptionHandlerTest {
     @Autowired
@@ -41,6 +45,20 @@ public class RestExceptionHandlerTest {
     @Autowired
     private ProdutoService produtoService;
 
+    @Autowired
+    private UserDetailsServiceImpl userDetailsService;
+
+    private String token;
+
+    @BeforeEach
+    public void tokenGenerate(){
+        ClienteAuthDto clienteAuthDto = new ClienteAuthDto();
+        clienteAuthDto.setCpf("111");
+        clienteAuthDto.setSenha("111");
+        token = userDetailsService.logar(clienteAuthDto);
+        System.out.println(token);
+    }
+
     @Test
     public void RestExceptionFieldErrorHandlerTest() throws Exception {
         NovoClienteDto novoClienteDto = new NovoClienteDto();
@@ -52,6 +70,7 @@ public class RestExceptionHandlerTest {
         novoClienteDto.setCpf("35912852857");
 
         MvcResult result = mockMvc.perform(MockMvcRequestBuilders.post("/cliente/cadastro")
+                        .header(HttpHeaders.AUTHORIZATION, token)
                         .content(objectMapper.writeValueAsString(novoClienteDto))
                         .contentType(MediaType.APPLICATION_JSON)
                         .accept(MediaType.APPLICATION_JSON))
@@ -71,6 +90,7 @@ public class RestExceptionHandlerTest {
         novoClienteDto.setCpf("35912852857");
 
         MvcResult result = mockMvc.perform(MockMvcRequestBuilders.post("/cliente/cadastro")
+                        .header(HttpHeaders.AUTHORIZATION, token)
                         .content(objectMapper.writeValueAsString(novoClienteDto))
                         .contentType(MediaType.APPLICATION_JSON)
                         .accept(MediaType.APPLICATION_JSON))
@@ -96,6 +116,7 @@ public class RestExceptionHandlerTest {
         params.add("operador", String.valueOf(Operadores.adicao));
 
         MvcResult result =mockMvc.perform(MockMvcRequestBuilders.put("/produto/reposicao/produtoteste")
+                        .header(HttpHeaders.AUTHORIZATION, token)
                         .params(params)
                         .content(objectMapper.writeValueAsString(produtoTest))
                         .contentType(MediaType.APPLICATION_JSON)
@@ -110,11 +131,21 @@ public class RestExceptionHandlerTest {
     @Test
     public void handleMissingServletRequestParameterTest() throws Exception {
         MvcResult result = mockMvc.perform(MockMvcRequestBuilders.delete(
-                        "/cliente/delete"))
+                        "/cliente/delete")
+                        .header(HttpHeaders.AUTHORIZATION, token))
                 .andExpect(status().is4xxClientError()).andReturn();
         String resultCase = result.getResponse().getContentAsString();
         System.out.println(resultCase);
         assertEquals(HttpStatus.BAD_REQUEST.value(),result.getResponse().getStatus());
 
+    }
+
+    @Test
+    public void handleAuthorizationExceptionHandleTest() throws Exception{
+        MvcResult result = mockMvc.perform(MockMvcRequestBuilders.get("/cliente/busca")
+                .param("cpf", "11111"))
+                .andExpect(status().is4xxClientError()).andReturn();
+        String resultCase = result.getResponse().getContentAsString();
+        System.out.println(resultCase);
     }
 }

@@ -49,7 +49,7 @@ public class UserDetailsServiceImpl implements UserDetailsService {
                 throw new AuthorizationExceptionHandle("Senha incorreta");
             }
         }
-        log.info("Usuario não encontrado");
-        throw new AuthorizationExceptionHandle("Usuario não encontrado");
+        log.info("Usuario nao encontrado");
+        throw new AuthorizationExceptionHandle("Usuario nao encontrado");
     }
 }

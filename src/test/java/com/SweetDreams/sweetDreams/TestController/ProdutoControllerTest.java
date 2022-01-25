@@ -1,14 +1,19 @@
 package com.SweetDreams.sweetDreams.TestController;
 
+import com.SweetDreams.sweetDreams.Models.DTOs.ClienteAuthDto;
 import com.SweetDreams.sweetDreams.Models.Operadores;
 import com.SweetDreams.sweetDreams.Models.Produto;
+import com.SweetDreams.sweetDreams.Services.Impl.UserDetailsServiceImpl;
 import com.SweetDreams.sweetDreams.Services.ProdutoService;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
@@ -21,7 +26,7 @@ import java.util.ArrayList;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-@SpringBootTest(properties = {"security.basic.enabled=false"})
+@SpringBootTest
 @AutoConfigureMockMvc
 public class ProdutoControllerTest {
 
@@ -33,6 +38,20 @@ public class ProdutoControllerTest {
 
     @Autowired
     private ProdutoService produtoService;
+
+    @Autowired
+    private UserDetailsServiceImpl userDetailsService;
+
+    private String token;
+
+    @BeforeEach
+    public void tokenGenerate(){
+        ClienteAuthDto clienteAuthDto = new ClienteAuthDto();
+        clienteAuthDto.setCpf("111");
+        clienteAuthDto.setSenha("111");
+        token = userDetailsService.logar(clienteAuthDto);
+        System.out.println(token);
+    }
 
     private ArrayList<String> sabor() {
         ArrayList<String> sabor = new ArrayList<>();
@@ -55,7 +74,9 @@ public class ProdutoControllerTest {
     @Test
     public void listaProdutosTest() throws Exception {
         MvcResult result = mockMvc.perform(MockMvcRequestBuilders.get(
-                "/produto/")).andExpect(status().isOk()).andReturn();
+                "/produto/").header(HttpHeaders.AUTHORIZATION, token))
+                .andExpect(status().isOk())
+                .andReturn();
         String resultCase = result.getResponse().getContentAsString();
         assertTrue(resultCase.length() > 0);
     }
@@ -64,23 +85,46 @@ public class ProdutoControllerTest {
     public void buscarProdutosNomeTest() throws Exception {
         Produto produtoTest = produtoTest();
         MvcResult result = mockMvc.perform(MockMvcRequestBuilders.get(
-                "/produto/busca/produtoteste")).andExpect(status().isOk()).andReturn();
+                "/produto/busca/produtoteste").header(HttpHeaders.AUTHORIZATION, token)).andExpect(status().isOk()).andReturn();
         String resultCase = result.getResponse().getContentAsString();
         System.out.println(resultCase);
         assertTrue(resultCase.contains("produtoteste"));
         assertTrue(resultCase.contains("chocolate"));
         produtoService.delete(produtoTest);
     }
+    @Test
+    public void buscarProdutosNomeFalhaTest() throws Exception {
+        MvcResult result = mockMvc.perform(MockMvcRequestBuilders.get(
+                "/produto/busca/produtoteste")
+                .header(HttpHeaders.AUTHORIZATION, token))
+                .andExpect(status().isNotFound()).andReturn();
+        String resultCase = result.getResponse().getContentAsString();
+        System.out.println(resultCase);
+        assertEquals(HttpStatus.NOT_FOUND.value(), result.getResponse().getStatus());
+
+    }
 
     @Test
     public void deletarProdutoTest() throws Exception {
         Produto produtoTest = produtoTest();
         MvcResult result = mockMvc.perform(MockMvcRequestBuilders.delete(
-                "/produto/delete/produtoteste")).andExpect(status().isAccepted()).andReturn();
+                "/produto/delete/produtoteste").header(HttpHeaders.AUTHORIZATION, token)).andExpect(status().isAccepted()).andReturn();
         String resultCase = result.getResponse().getContentAsString();
         assertNull(produtoService.findByNomeProduto(produtoTest.getNomeProduto()));
         produtoService.delete(produtoTest);
     }
+    @Test
+    public void deletarProdutoFalhaTest() throws Exception {
+        MvcResult result = mockMvc.perform(MockMvcRequestBuilders.delete(
+                "/produto/delete/produtoteste")
+                .header(HttpHeaders.AUTHORIZATION, token))
+                .andExpect(status().isNotFound()).andReturn();
+        String resultCase = result.getResponse().getContentAsString();
+        System.out.println(resultCase);
+        assertEquals(HttpStatus.NOT_FOUND.value(), result.getResponse().getStatus());
+
+    }
+
 
     @Test
     public void updateProdutoTest() throws Exception {
@@ -88,6 +132,7 @@ public class ProdutoControllerTest {
         produtoTest.setQuantidade(10l);
         MvcResult result = mockMvc.perform(MockMvcRequestBuilders.put(
                                 "/produto/atualizacao/produtoteste")
+                        .header(HttpHeaders.AUTHORIZATION, token)
                         .content(objectMapper.writeValueAsString(produtoTest))
                         .contentType(MediaType.APPLICATION_JSON)
                         .accept(MediaType.APPLICATION_JSON))
@@ -105,6 +150,7 @@ public class ProdutoControllerTest {
         params.add("quantidade", String.valueOf(50));
         params.add("operador", String.valueOf(Operadores.adicao));
         MvcResult result =mockMvc.perform(MockMvcRequestBuilders.put("/produto/reposicao/produtoteste")
+                        .header(HttpHeaders.AUTHORIZATION, token)
                 .params(params)
                         .content(objectMapper.writeValueAsString(produtoTest))
                         .contentType(MediaType.APPLICATION_JSON)
@@ -122,6 +168,7 @@ public class ProdutoControllerTest {
         params.add("quantidade", String.valueOf(50));
         params.add("operador", String.valueOf(Operadores.retirada));
         MvcResult result =mockMvc.perform(MockMvcRequestBuilders.put("/produto/reposicao/produtoteste")
+                        .header(HttpHeaders.AUTHORIZATION, token)
                         .params(params)
                         .content(objectMapper.writeValueAsString(produtoTest))
                         .contentType(MediaType.APPLICATION_JSON)
@@ -143,6 +190,7 @@ public class ProdutoControllerTest {
 
         MvcResult result = mockMvc.perform(MockMvcRequestBuilders.post(
                                 "/produto/cadastro")
+                        .header(HttpHeaders.AUTHORIZATION, token)
                         .content(objectMapper.writeValueAsString(produtoTest))
                         .contentType(MediaType.APPLICATION_JSON)
                         .accept(MediaType.APPLICATION_JSON))
@@ -165,6 +213,7 @@ public class ProdutoControllerTest {
 
         MvcResult result = mockMvc.perform(MockMvcRequestBuilders.post(
                                 "/produto/cadastro")
+                        .header(HttpHeaders.AUTHORIZATION, token)
                         .content(objectMapper.writeValueAsString(produtoTest))
                         .contentType(MediaType.APPLICATION_JSON)
                         .accept(MediaType.APPLICATION_JSON))

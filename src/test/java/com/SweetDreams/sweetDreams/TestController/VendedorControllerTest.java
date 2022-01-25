@@ -1,40 +1,63 @@
 package com.SweetDreams.sweetDreams.TestController;
 
 import com.SweetDreams.sweetDreams.Models.Cliente;
+import com.SweetDreams.sweetDreams.Models.DTOs.ClienteAuthDto;
 import com.SweetDreams.sweetDreams.Models.DTOs.ClienteDto;
 import com.SweetDreams.sweetDreams.Models.DTOs.NovoVendedorDto;
 import com.SweetDreams.sweetDreams.Models.Endereço;
+import com.SweetDreams.sweetDreams.Models.Perfil;
 import com.SweetDreams.sweetDreams.Models.Vendedor;
 import com.SweetDreams.sweetDreams.Services.ClienteService;
+import com.SweetDreams.sweetDreams.Services.Impl.UserDetailsServiceImpl;
 import com.SweetDreams.sweetDreams.Services.VendedorService;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
+import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureWebMvc;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
+import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 
 import static org.junit.jupiter.api.Assertions.*;
+import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.user;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-@SpringBootTest(properties = {"security.basic.enabled=false"})
+@SpringBootTest
 @AutoConfigureMockMvc
 public class VendedorControllerTest {
 
     @Autowired
-    private MockMvc mockMvc;
+    MockMvc mockMvc;
 
     @Autowired
-    private ObjectMapper objectMapper;
+    ObjectMapper objectMapper;
 
     @Autowired
-    private VendedorService vendedorService;
+    VendedorService vendedorService;
 
     @Autowired
-    private ClienteService clienteService;
+    ClienteService clienteService;
+
+    @Autowired
+    UserDetailsServiceImpl userDetailsService;
+
+    private String token;
+
+    @BeforeEach
+    public void tokenGenerate(){
+        ClienteAuthDto clienteAuthDto = new ClienteAuthDto();
+        clienteAuthDto.setCpf("111");
+        clienteAuthDto.setSenha("111");
+        token = userDetailsService.logar(clienteAuthDto);
+        System.out.println(token);
+    }
 
     private Cliente clienteTest() {
         Cliente cliente = new Cliente();
@@ -44,6 +67,7 @@ public class VendedorControllerTest {
         cliente.setEndereço(new Endereço("Teste", "45", "abc", "09110830", "Sao Paulo", "Sao paulo"));
         cliente.setNome("Cliente teste");
         cliente.setCpf("35912852857");
+        cliente.setSenha("abc");
         clienteService.save(cliente);
         return cliente;
     }
@@ -70,14 +94,14 @@ public class VendedorControllerTest {
     private NovoVendedorDto novoVendedorDto() {
         NovoVendedorDto vendedorDto = new NovoVendedorDto();
         vendedorDto.setCliente(new Cliente(
-                null,
+                "abc123",
                 "Gabriel",
-                (new Endereço("Teste", "45", "abc", "09110830", "Sao Paulo", "Sao paulo")),
+                new Endereço("Teste", "45", "abc", "09110830", "Sao Paulo", "Sao paulo"),
                 "25/11/1998",
-                "1111",
+                "11911111111",
                 "35912852857",
-                "abc@abcv.com",
-                "abc"
+                "abc@abc.com",
+                "abc123"
         ));
         return vendedorDto;
     }
@@ -85,7 +109,7 @@ public class VendedorControllerTest {
 
     @Test
     public void listaVendedoresTest() throws Exception {
-        MvcResult result = mockMvc.perform(MockMvcRequestBuilders.get("/vendedor/"))
+        MvcResult result = mockMvc.perform(MockMvcRequestBuilders.get("/vendedor/").header(HttpHeaders.AUTHORIZATION, token))
                 .andExpect(status().isOk()).andReturn();
         String resultCase = result.getResponse().getContentAsString();
         assertTrue(resultCase.length() > 0);
@@ -96,6 +120,7 @@ public class VendedorControllerTest {
         Vendedor vendedor = vendedorTest();
         ClienteDto clienteDto = clienteDto();
         MvcResult result = mockMvc.perform(MockMvcRequestBuilders.put("/vendedor/atualizacao/35912852857")
+                        .header(HttpHeaders.AUTHORIZATION, token)
                         .content(objectMapper.writeValueAsString(clienteDto))
                         .contentType(MediaType.APPLICATION_JSON)
                         .accept(MediaType.APPLICATION_JSON))
@@ -112,6 +137,7 @@ public class VendedorControllerTest {
         Vendedor vendedor = vendedorTest();
 
         MvcResult result = mockMvc.perform(MockMvcRequestBuilders.get("/vendedor/busca")
+                        .header(HttpHeaders.AUTHORIZATION, token)
                         .param("cpf", "35912852857"))
                 .andExpect(status().isOk()).andReturn();
         String resultCase = result.getResponse().getContentAsString();
@@ -129,7 +155,8 @@ public class VendedorControllerTest {
     @Test
     public void buscaVendedorCodigoTest() throws Exception {
         Vendedor vendedor = vendedorTest();
-        MvcResult result = mockMvc.perform(MockMvcRequestBuilders.get("/vendedor/busca/2523"))
+        MvcResult result = mockMvc.perform(MockMvcRequestBuilders.get("/vendedor/busca/2523")
+                        .header(HttpHeaders.AUTHORIZATION, token))
                 .andExpect(status().isOk()).andReturn();
         String resultCase = result.getResponse().getContentAsString();
 
@@ -147,6 +174,7 @@ public class VendedorControllerTest {
     public void deleteVendedorCpfTest() throws Exception {
         Vendedor vendedor = vendedorTest();
         MvcResult result = mockMvc.perform(MockMvcRequestBuilders.delete("/vendedor/delete")
+                        .header(HttpHeaders.AUTHORIZATION, token)
                         .param("cpf", "35912852857"))
                 .andExpect(status().isAccepted())
                 .andReturn();
@@ -158,7 +186,8 @@ public class VendedorControllerTest {
     @Test
     public void deleteVendedorCodigoTest() throws Exception {
         Vendedor vendedor = vendedorTest();
-        MvcResult result = mockMvc.perform(MockMvcRequestBuilders.delete("/vendedor/delete/2523"))
+        MvcResult result = mockMvc.perform(MockMvcRequestBuilders.delete("/vendedor/delete/2523")
+                        .header(HttpHeaders.AUTHORIZATION, token))
                 .andExpect(status().isAccepted())
                 .andReturn();
         String resultCase = result.getResponse().getContentAsString();
@@ -168,12 +197,23 @@ public class VendedorControllerTest {
 
     @Test
     public void cadastroVendedorTestSucess() throws Exception {
-        NovoVendedorDto novoVendedorDto = novoVendedorDto();
+        NovoVendedorDto novoVendedorDto = new NovoVendedorDto();
+        novoVendedorDto.setCliente(new Cliente(
+                "abc123",
+                "Gabriel",
+                new Endereço("Teste", "45", "abc", "09110830", "Sao Paulo", "Sao paulo"),
+                "25/11/1998",
+                "11911111111",
+                "35912852857",
+                "abc@abc.com",
+                "abc123"
+        ));;
+        vendedorService.save(vendedorService.cadastroDto(novoVendedorDto));
         MvcResult result = mockMvc.perform(MockMvcRequestBuilders.post("/vendedor/cadastro")
+                        .header(HttpHeaders.AUTHORIZATION, token)
                         .content(objectMapper.writeValueAsString(novoVendedorDto))
                         .contentType(MediaType.APPLICATION_JSON)
                         .accept(MediaType.APPLICATION_JSON))
-                .andExpect(status().isOk())
                 .andReturn();
         String resulCase = result.getResponse().getContentAsString();
         assertNotNull(resulCase);
@@ -189,6 +229,7 @@ public class VendedorControllerTest {
         NovoVendedorDto novoVendedorDto = novoVendedorDto();
         novoVendedorDto.getCliente().setNome("gabr1el");
         MvcResult result = mockMvc.perform(MockMvcRequestBuilders.post("/vendedor/cadastro")
+                        .header(HttpHeaders.AUTHORIZATION, token)
                         .content(objectMapper.writeValueAsString(novoVendedorDto))
                         .contentType(MediaType.APPLICATION_JSON)
                         .accept(MediaType.APPLICATION_JSON))
