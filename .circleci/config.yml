@@ -11,5 +11,6 @@ jobs:
       - browser-tools/install-browser-tools
       - run : mvn clean test
       - store_artifacts:
-        
           path:  target
+      - store_test_results:
+          path: target/test-results-show
