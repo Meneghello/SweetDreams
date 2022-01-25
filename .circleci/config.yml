@@ -9,6 +9,6 @@ jobs:
     steps:
       - checkout
       - browser-tools/install-browser-tools
-      - run : mvn test
+      - run : mvn clean test
       - store_artifacts:
           path:  target
