@@ -12,7 +12,7 @@ jobs:
           path:  target
       - store_test_results:
           path: target
-      - run: echo "${DOCKER_PASSWORD}"| docker login -u="${DOCKER_USERNAME}" --password-stdin &&\
+      - run: echo "$DOCKER_PASSWORD"| docker login -u="${DOCKER_USERNAME}" --password-stdin &&\
              docker-compose build &&\
              docker tag sweetdreams:latest meneghello/sweetdreams:latest &&\
              docker push meneghello/sweetdreams:latest
