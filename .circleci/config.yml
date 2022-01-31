@@ -1,6 +1,5 @@
 version: 2.1
-orbs:
-  browser-tools: circleci/browser-tools@1.2.3
+
 jobs:
   build:
     docker:
@@ -8,9 +7,12 @@ jobs:
 
     steps:
       - checkout
-      - browser-tools/install-browser-tools
-      - run : mvn clean test
+      - run : mvn clean package
       - store_artifacts:
           path:  target
       - store_test_results:
           path: target
+      - run: docker login -u="${DOCKER_USERNAME}" -p="${DOCKER_PASSWORD}" &&\
+             docker-compose build &&\
+             docker tag sweetdreams:latest meneghello/sweetdreams:latest &&\
+             docker push meneghello/sweetdreams:latest
