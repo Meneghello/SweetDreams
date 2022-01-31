@@ -16,3 +16,4 @@ jobs:
              docker-compose build &&\
              docker tag sweetdreams:latest meneghello/sweetdreams:latest &&\
              docker push meneghello/sweetdreams:latest
+             
