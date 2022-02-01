@@ -37,6 +37,7 @@ public class CompraVendaServiceImplTest {
         compraVendaDto.setQuantidade(20L);
         compraVendaDto.setSabor("Chocolate");
         compraVendaDto.setNomeProduto("teste");
+        compraVendaDto.setCupom("string");
         return compraVendaDto;
     }
 

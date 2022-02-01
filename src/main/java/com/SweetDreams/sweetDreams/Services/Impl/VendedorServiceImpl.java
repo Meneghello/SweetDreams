@@ -99,7 +99,7 @@ public class VendedorServiceImpl implements VendedorService {
         vendedor.setCliente(findCliente(cpf));
         vendedor.setCpf(cpf);
         vendedor.setRole(Perfil.vendedor);
-        findCliente(cpf).setRole(Perfil.vendedor);
+        //findCliente(cpf).setRole(Perfil.vendedor);
         return vendedor;
     }
 

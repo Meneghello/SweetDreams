@@ -54,7 +54,7 @@ public class ClienteServiceImpl implements ClienteService {
 
     @Override
     public Cliente save(Cliente cliente) {
-        enviarEmailCadastro(cliente);
+        //enviarEmailCadastro(cliente);
         return clienteRepository.save(cliente);
     }
 

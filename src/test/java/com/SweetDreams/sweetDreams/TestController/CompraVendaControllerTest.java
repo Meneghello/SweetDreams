@@ -213,6 +213,7 @@ public class CompraVendaControllerTest {
         compraVendaDto.setQuantidade(2L);
         compraVendaDto.setSabor("Chocolate");
         compraVendaDto.setNomeProduto("produtoteste");
+        compraVendaDto.setCupom("string");
         MvcResult result = mockMvc.perform(MockMvcRequestBuilders.post("/negocio/venda")
                         .header(HttpHeaders.AUTHORIZATION, token)
                         .content(objectMapper.writeValueAsString(compraVendaDto))
@@ -236,6 +237,7 @@ public class CompraVendaControllerTest {
         compraVendaDto.setQuantidade(20L);
         compraVendaDto.setSabor("Chocolate");
         compraVendaDto.setNomeProduto("teste");
+        compraVendaDto.setCupom("string");
         MvcResult result = mockMvc.perform(MockMvcRequestBuilders.post("/negocio/venda")
                         .header(HttpHeaders.AUTHORIZATION, token)
                         .content(objectMapper.writeValueAsString(compraVendaDto))
