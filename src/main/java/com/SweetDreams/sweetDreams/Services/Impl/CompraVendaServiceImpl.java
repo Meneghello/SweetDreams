@@ -1,21 +1,16 @@
 package com.SweetDreams.sweetDreams.Services.Impl;
 
 
-import com.SweetDreams.sweetDreams.Models.Cliente;
-import com.SweetDreams.sweetDreams.Models.CompraVenda;
+import com.SweetDreams.sweetDreams.Models.*;
 import com.SweetDreams.sweetDreams.Models.DTOs.CompraVendaDto;
 import com.SweetDreams.sweetDreams.Models.DTOs.HistoricoClienteDto;
-import com.SweetDreams.sweetDreams.Models.Produto;
-import com.SweetDreams.sweetDreams.Models.Vendedor;
 import com.SweetDreams.sweetDreams.Repository.CompraVendaRepository;
-import com.SweetDreams.sweetDreams.Services.ClienteService;
-import com.SweetDreams.sweetDreams.Services.CompraVendaService;
-import com.SweetDreams.sweetDreams.Services.ProdutoService;
-import com.SweetDreams.sweetDreams.Services.VendedorService;
+import com.SweetDreams.sweetDreams.Services.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
+
 import java.text.DecimalFormat;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
@@ -36,6 +31,9 @@ public class CompraVendaServiceImpl implements CompraVendaService {
     @Autowired
     ProdutoService produtoService;
 
+    @Autowired
+    CupomService cupomService;
+
     @Override
     public void delete(CompraVenda compraVenda) {
         compraVendaRepository.delete(compraVenda);
@@ -47,13 +45,19 @@ public class CompraVendaServiceImpl implements CompraVendaService {
     }
 
     @Override
-    public  List<CompraVenda> findAll(){return compraVendaRepository.findAll();}
+    public List<CompraVenda> findAll() {
+        return compraVendaRepository.findAll();
+    }
 
     @Override
-    public Optional<CompraVenda> findById(String id){return compraVendaRepository.findById(id);}
+    public Optional<CompraVenda> findById(String id) {
+        return compraVendaRepository.findById(id);
+    }
 
     @Override
-    public void deleteById(String id){ compraVendaRepository.deleteById(id);}
+    public void deleteById(String id) {
+        compraVendaRepository.deleteById(id);
+    }
 
     @Override
     public List<HistoricoClienteDto> findByCpfCliente(String cpfCliente) {
@@ -80,6 +84,7 @@ public class CompraVendaServiceImpl implements CompraVendaService {
         compraVenda.setNomeProduto(compraVendaDto.getNomeProduto().toLowerCase());
         compraVenda.setData((LocalDateTime.now().format(DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm:ss"))));
         compraVenda.setTotalPago(totalPago(compraVendaDto));
+        compraVenda.setCupom(compraVendaDto.getCupom());
         return compraVenda;
     }
 
@@ -89,9 +94,23 @@ public class CompraVendaServiceImpl implements CompraVendaService {
         Cliente cliente = clienteService.findByCpf(venda.getCpfCliente());
         Vendedor vendedor = vendedorService.findByCodigoVendedor(venda.getCodigoVendedor());
         Produto produto = produtoService.findByNomeProduto(venda.getNomeProduto().toLowerCase());
-        if (cliente != null && vendedor != null && produto != null && venda.getQuantidade()<=produto.getQuantidade() && produto.getSabor().stream().anyMatch((String s) -> produto.getNomeProduto().equalsIgnoreCase(venda.getNomeProduto()))) {
-            posCompra(venda);
-            return true;
+        Cupom cupom = cupomService.findByNomeCupom(venda.getCupom().toLowerCase());
+
+        if (cupom != null) {
+            if (cliente != null && vendedor != null && produto != null && venda.getQuantidade() <= produto.getQuantidade()
+                    && cupom.getDataExpiracao().isAfter(LocalDateTime.now())
+                    && produto.getSabor().stream().anyMatch((String s) -> produto.getNomeProduto().equalsIgnoreCase(venda.getNomeProduto()))) {
+                posCompra(venda);
+                return true;
+            }
+        } else if (cupom == null) {
+            if (cliente != null && vendedor != null && produto != null && venda.getQuantidade() <= produto.getQuantidade()
+                    && produto.getSabor().stream().anyMatch((String s) -> produto.getNomeProduto().equalsIgnoreCase(venda.getNomeProduto()))) {
+                posCompra(venda);
+                return true;
+            }
+            return false;
+
         }
         return false;
     }
@@ -101,6 +120,7 @@ public class CompraVendaServiceImpl implements CompraVendaService {
         Cliente cliente = clienteService.findByCpf(venda.getCpfCliente());
         Vendedor vendedor = vendedorService.findByCodigoVendedor(venda.getCodigoVendedor());
         Produto produto = produtoService.findByNomeProduto(venda.getNomeProduto().toLowerCase());
+        Cupom cupom = cupomService.findByNomeCupom(venda.getCupom().toLowerCase());
 
         if (cliente == null) {
             return new ResponseEntity<Object>("Cpf não encontrado", HttpStatus.NOT_FOUND);
@@ -108,12 +128,12 @@ public class CompraVendaServiceImpl implements CompraVendaService {
             return new ResponseEntity<Object>("Vendedor não encontrado", HttpStatus.NOT_FOUND);
         } else if (produto == null) {
             return new ResponseEntity<Object>("Produto não encontrado", HttpStatus.NOT_FOUND);
-        }
-        else if (produto.getSabor().stream().noneMatch(s -> produto.getNomeProduto().equalsIgnoreCase(venda.getNomeProduto()))){
+        } else if (produto.getSabor().stream().noneMatch(s -> produto.getNomeProduto().equalsIgnoreCase(venda.getNomeProduto()))) {
             return new ResponseEntity<Object>("Sabor não encontrado", HttpStatus.NOT_FOUND);
-        }
-        else if (venda.getQuantidade()>produto.getQuantidade()){
+        } else if (venda.getQuantidade() > produto.getQuantidade()) {
             return new ResponseEntity<Object>("Quantidade insuficiente do produto", HttpStatus.BAD_REQUEST);
+        } else if (cupom.getDataExpiracao().isBefore(LocalDateTime.now())) {
+            return new ResponseEntity<Object>("Cupom invalido/expirado", HttpStatus.BAD_REQUEST);
         }
         return new ResponseEntity<Object>("Venda não realizada", HttpStatus.BAD_REQUEST);
     }
@@ -128,20 +148,21 @@ public class CompraVendaServiceImpl implements CompraVendaService {
         return historico;
     }
 
-    public void posCompra(CompraVendaDto venda){
+    public void posCompra(CompraVendaDto venda) {
         Produto produto = produtoService.findByNomeProduto(venda.getNomeProduto().toLowerCase());
-        Long quantidadeFinal = produto.getQuantidade()-venda.getQuantidade();
+        Long quantidadeFinal = produto.getQuantidade() - venda.getQuantidade();
         produto.setQuantidade(quantidadeFinal);
         produtoService.save(produto);
     }
 
     public String totalPago(CompraVendaDto compraVendaDto) {
         Long quantidade = compraVendaDto.getQuantidade();
-        if (produtoService.findByNomeProduto(compraVendaDto.getNomeProduto().toLowerCase())==null){
+        if (produtoService.findByNomeProduto(compraVendaDto.getNomeProduto().toLowerCase()) == null) {
             return "";
         }
         Double preco = produtoService.findByNomeProduto(compraVendaDto.getNomeProduto().toLowerCase()).getPreco();
-        return new DecimalFormat("##.00").format(quantidade * preco);
+        Double desconto = ((cupomService.findByNomeCupom(compraVendaDto.getCupom()).getPorcentagem() / 100) - 1) * (-1);
+        return new DecimalFormat("##.00").format((quantidade * preco) * desconto);
 
     }
 }

@@ -24,12 +24,16 @@ public class CompraVendaDto {
     @PositiveOrZero(message = "Quantidade não pode ser negativa")
     private Long quantidade;
 
+    private String cupom;
 
-    public CompraVendaDto(Long codigoVendedor, String cpfCliente, String nomeProduto, String sabor, Long quantidade) {
+
+    public CompraVendaDto(Long codigoVendedor, String cpfCliente, String nomeProduto, String sabor, Long quantidade,
+                          String cupom) {
         this.codigoVendedor = codigoVendedor;
         this.cpfCliente = cpfCliente;
         this.nomeProduto = nomeProduto;
         this.sabor = sabor;
+        this.cupom = cupom;
         this.quantidade = quantidade;
     }
 
@@ -74,5 +78,13 @@ public class CompraVendaDto {
 
     public void setQuantidade(Long quantidade) {
         this.quantidade = quantidade;
+    }
+
+    public String getCupom() {
+        return cupom;
+    }
+
+    public void setCupom(String cupom) {
+        this.cupom = cupom;
     }
 }

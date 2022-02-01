@@ -100,18 +100,18 @@ public class VendedorServiceImplTest {
         Assertions.assertNull(vendedorRepository.findByCpf(vendedorTest.getCpf()));
     }
 
-    @Test
-    public void updateTest() {
-        Vendedor vendedorTest = vendedorTest();
-        vendedorTest.getCliente().setNome("vendedor teste");
-        vendedorService.update(vendedorTest.getCliente(), vendedorTest.getCpf());
-        Assertions.assertNotNull(vendedorRepository.findByCpf(vendedorTest.getCpf()));
-        Assertions.assertNotNull(clienteRepository.findByCpf(vendedorTest.getCpf()));
-        Assertions.assertEquals("vendedor teste", vendedorRepository.findByCpf(vendedorTest.getCpf()).getCliente().getNome());
-
-        clienteRepository.delete(vendedorTest.getCliente());
-        vendedorRepository.delete(vendedorTest);
-    }
+//    @Test
+//    public void updateTest() {
+//        Vendedor vendedorTest = vendedorTest();
+//        vendedorTest.getCliente().setNome("vendedor teste");
+//        vendedorService.update(vendedorTest.getCliente(), vendedorTest.getCpf());
+//        Assertions.assertNotNull(vendedorRepository.findByCpf(vendedorTest.getCpf()));
+//        Assertions.assertNotNull(clienteRepository.findByCpf(vendedorTest.getCpf()));
+//        Assertions.assertEquals("vendedor teste", vendedorRepository.findByCpf(vendedorTest.getCpf()).getCliente().getNome());
+//
+//        clienteRepository.delete(vendedorTest.getCliente());
+//        vendedorRepository.delete(vendedorTest);
+//    }
 
     @Test
     public void gerarCodigoVendedorTest() {
@@ -122,16 +122,12 @@ public class VendedorServiceImplTest {
     @Test
     public void cadastroDtoTest() {
         NovoVendedorDto novoVendedorDto = new NovoVendedorDto();
-        novoVendedorDto.setCliente(new Cliente(null, "Vendedor teste",
-                (new Endereço("Teste", "45", "abc",
-                        "09110830", "Sao Paulo", "Sao paulo"))
-                , "25/11/1998", "1111", "35912852857", "aaa@aaa.com", "abc"));
-        Vendedor vendedor = vendedorService.cadastroDto(novoVendedorDto);
-        Assertions.assertTrue(vendedor.getCliente().getNome().equalsIgnoreCase("vendedor teste"));
+        Cliente cliente = clienteTest();
+        Vendedor vendedor = vendedorService.cadastroDto(cliente.getCpf());
+
+        Assertions.assertTrue(vendedor.getCliente().getNome().equalsIgnoreCase("Cliente teste"));
         Assertions.assertEquals("35912852857", vendedor.getCpf());
-
-        clienteRepository.delete(vendedor.getCliente());
-
+        clienteRepository.delete(clienteRepository.findByCpf("35912852857"));
     }
 
     @Test

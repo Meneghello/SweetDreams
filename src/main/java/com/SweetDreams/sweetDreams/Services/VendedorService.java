@@ -24,7 +24,7 @@ public interface VendedorService {
 
     List<Vendedor> findAll();
 
-    Vendedor cadastroDto(NovoVendedorDto vendedorDto);
+    Vendedor cadastroDto(String cpf);
 
     Cliente atualizacaoDto(ClienteDto vendedorDto);
 

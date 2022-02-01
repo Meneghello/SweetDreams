@@ -34,13 +34,14 @@ public class CompraVenda {
     private String totalPago;
 
     private String data;
+    private String cupom;
 
 
     public CompraVenda() {
     }
 
     public CompraVenda(String id, Long codigoVendedor, String cpfCliente, String nomeProduto, String sabor,
-                       Long quantidade, String totalPago, String data) {
+                       Long quantidade, String totalPago, String data, String cupom) {
         this.id = id;
         this.codigoVendedor = codigoVendedor;
         this.cpfCliente = cpfCliente;
@@ -49,6 +50,7 @@ public class CompraVenda {
         this.quantidade = quantidade;
         this.totalPago = totalPago;
         this.data = data;
+        this.cupom = cupom;
     }
 
     public String getId() {
@@ -113,5 +115,13 @@ public class CompraVenda {
 
     public void setData(String data) {
         this.data = data;
+    }
+
+    public String getCupom() {
+        return cupom;
+    }
+
+    public void setCupom(String cupom) {
+        this.cupom = cupom;
     }
 }
