@@ -93,20 +93,13 @@ public class VendedorServiceImpl implements VendedorService {
     }
 
     @Override
-    public Vendedor cadastroDto(NovoVendedorDto vendedorDto) {
+    public Vendedor cadastroDto(String cpf) {
         Vendedor vendedor = new Vendedor();
         vendedor.setCodigoVendedor(gerarCodigoVendedor());
-
-        if (findCliente(vendedorDto.getCliente().getCpf()) == null) {
-            Cliente cliente = clienteRepository.save(vendedorDto.getCliente());
-            vendedor.setCliente(cliente);
-            vendedor.getCliente().setSenha(vendedorDto.getCliente().getSenha());
-            vendedor.getCliente().setNome(vendedorDto.getCliente().getNome().toLowerCase());
-            vendedor.setCpf(vendedorDto.getCliente().getCpf());
-            return vendedor;
-        }
-        vendedor.setCliente(findCliente(vendedorDto.getCliente().getCpf()));
-        vendedor.setCpf(vendedorDto.getCliente().getCpf());
+        vendedor.setCliente(findCliente(cpf));
+        vendedor.setCpf(cpf);
+        vendedor.setRole(Perfil.vendedor);
+        findCliente(cpf).setRole(Perfil.vendedor);
         return vendedor;
     }
 

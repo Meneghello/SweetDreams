@@ -22,7 +22,6 @@ public class Vendedor {
     @DBRef
     private Cliente cliente;
     private Long codigoVendedor;
-
     private Set<Integer> role = new HashSet<>();
 
 

@@ -5,6 +5,7 @@ import com.SweetDreams.sweetDreams.Models.Cliente;
 import com.SweetDreams.sweetDreams.Models.DTOs.ClienteDto;
 import com.SweetDreams.sweetDreams.Models.DTOs.NovoVendedorDto;
 import com.SweetDreams.sweetDreams.Models.Vendedor;
+import com.SweetDreams.sweetDreams.Services.ClienteService;
 import com.SweetDreams.sweetDreams.Services.VendedorService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -28,38 +29,45 @@ public class VendedorController {
     @Autowired
     VendedorService vendedorService;
 
+    @Autowired
+    ClienteService clienteService;
+
     private static Logger log = LoggerFactory.getLogger(VendedorController.class);
 
     //Cadastro novo vendedor
     @PostMapping(value = "/cadastro")
     @ApiOperation(value = "Cadastro novo vendedor")
-    public ResponseEntity<Object> CadastroVendedor(@RequestBody @Valid NovoVendedorDto novoVendedorDto) {
+    public ResponseEntity<Object> CadastroVendedor(@RequestParam("cpf") String cpf) {
         log.info("Cadastrando novo vendedor");
-        if (vendedorService.findByCpf(novoVendedorDto.getCliente().getCpf()) == null) {
-            Vendedor vendedor = vendedorService.cadastroDto(novoVendedorDto);
+        if (vendedorService.findByCpf(cpf) == null && clienteService.findByCpf(cpf)!=null) {
+            Vendedor vendedor = vendedorService.cadastroDto(cpf);
             vendedorService.save(vendedor);
-            log.info("Vendedor {} Cadastrado", novoVendedorDto.getCliente().getNome());
+            log.info("Vendedor {} Cadastrado", clienteService.findByCpf(cpf).getNome());
             return new ResponseEntity<>(vendedor, HttpStatus.OK);
         }
-        log.info("Vendedor {} já Cadastrado", novoVendedorDto.getCliente().getNome());
+        if (vendedorService.findByCpf(cpf) == null && clienteService.findByCpf(cpf)==null){
+            log.info("Cliente não cadastrado, cadastre cliente primeiro");
+            return new ResponseEntity<>("Cpf não cadastrado", HttpStatus.BAD_REQUEST);
+        }
+        log.info("Vendedor {} já Cadastrado", clienteService.findByCpf(cpf).getNome());
         return new ResponseEntity<>("Vendedor já cadastrado", HttpStatus.BAD_REQUEST);
     }
 
-    //Update vendedor
-    @PutMapping(value = "/atualizacao/{cpf}")
-    @ApiOperation(value = "Update de cadastro de vendedor")
-    public ResponseEntity<Object> UpdateVendedor(@RequestBody @Valid ClienteDto vendedorDto, @PathVariable("cpf") String cpf) {
-        log.info("Atualizando vendedor");
-        if (vendedorService.findByCpf(cpf) != null) {
-            Cliente cliente = vendedorService.atualizacaoDto(vendedorDto);
-            vendedorService.update(cliente, cpf);
-            log.info("Vendedor atualizado");
-            return new ResponseEntity<>(vendedorService.findByCpf(cpf), HttpStatus.OK);
-        }
-        log.info("Vendedor não encontrado");
-        return new ResponseEntity<>("Vendedor não encontrado", HttpStatus.NOT_FOUND);
-
-    }
+    //SEM ATUALIZAÇÃO POIS VENDEDOR É SÓ UMA ROLE DO CLIENTE
+//    //Update vendedor
+//    @PutMapping(value = "/atualizacao/{cpf}")
+//    @ApiOperation(value = "Update de cadastro de vendedor")
+//    public ResponseEntity<Object> UpdateVendedor(@RequestBody @Valid ClienteDto vendedorDto, @PathVariable("cpf") String cpf) {
+//        log.info("Atualizando vendedor");
+//        if (vendedorService.findByCpf(cpf) != null) {
+//            Cliente cliente = vendedorService.atualizacaoDto(vendedorDto);
+//            vendedorService.update(cliente, cpf);
+//            log.info("Vendedor atualizado");
+//            return new ResponseEntity<>(vendedorService.findByCpf(cpf), HttpStatus.OK);
+//        }
+//        log.info("Vendedor não encontrado");
+//        return new ResponseEntity<>("Vendedor não encontrado", HttpStatus.NOT_FOUND);
+//    }
 
     //Busca por cpf
     @GetMapping(value = "/busca")

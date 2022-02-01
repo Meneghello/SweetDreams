@@ -7,7 +7,6 @@ import javax.validation.Valid;
 
 public class NovoVendedorDto {
 
-    @Valid
     private Cliente cliente;
 
     public Cliente getCliente() {

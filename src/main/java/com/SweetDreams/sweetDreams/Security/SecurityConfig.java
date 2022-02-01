@@ -34,7 +34,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     private static final String[] PUBLIC_REQUESTS = {
             //"/produto/",
             //"/produto/busca/**"
-            "/auth/**"
+            "/auth/**",
+            "/"
     };
     //Lista de requisições liberadas read only sem estar logado
     private static final String[] PUBLIC_REQUESTS_READ_ONLY = {

@@ -115,22 +115,21 @@ public class VendedorControllerTest {
         assertTrue(resultCase.length() > 0);
     }
 
-    @Test
-    public void updateVendedorTest() throws Exception {
-        Vendedor vendedor = vendedorTest();
-        ClienteDto clienteDto = clienteDto();
-        MvcResult result = mockMvc.perform(MockMvcRequestBuilders.put("/vendedor/atualizacao/35912852857")
-                        .header(HttpHeaders.AUTHORIZATION, token)
-                        .content(objectMapper.writeValueAsString(clienteDto))
-                        .contentType(MediaType.APPLICATION_JSON)
-                        .accept(MediaType.APPLICATION_JSON))
-                .andExpect(status().isOk()).andReturn();
-        assertTrue(vendedorService.findByCpf("35912852857").getCliente().getNome().equalsIgnoreCase("Gabriel"));
-        System.out.println(result.getResponse().getContentAsString());
-        clienteService.delete(vendedor.getCliente());
-        vendedorService.delete(vendedor);
-
-    }
+//    @Test
+//    public void updateVendedorTest() throws Exception {
+//        Vendedor vendedor = vendedorTest();
+//        ClienteDto clienteDto = clienteDto();
+//        MvcResult result = mockMvc.perform(MockMvcRequestBuilders.put("/vendedor/atualizacao/35912852857")
+//                        .header(HttpHeaders.AUTHORIZATION, token)
+//                        .content(objectMapper.writeValueAsString(clienteDto))
+//                        .contentType(MediaType.APPLICATION_JSON)
+//                        .accept(MediaType.APPLICATION_JSON))
+//                .andExpect(status().isOk()).andReturn();
+//        assertTrue(vendedorService.findByCpf("35912852857").getCliente().getNome().equalsIgnoreCase("Gabriel"));
+//        System.out.println(result.getResponse().getContentAsString());
+//        clienteService.delete(vendedor.getCliente());
+//        vendedorService.delete(vendedor);
+//    }
 
     @Test
     public void buscaVendedorCpfTest() throws Exception {
@@ -198,26 +197,14 @@ public class VendedorControllerTest {
     @Test
     public void cadastroVendedorTestSucess() throws Exception {
         NovoVendedorDto novoVendedorDto = new NovoVendedorDto();
-        novoVendedorDto.setCliente(new Cliente(
-                "abc123",
-                "Gabriel",
-                new Endereço("Teste", "45", "abc", "09110830", "Sao Paulo", "Sao paulo"),
-                "25/11/1998",
-                "11911111111",
-                "35912852857",
-                "abc@abc.com",
-                "abc123"
-        ));;
-        vendedorService.save(vendedorService.cadastroDto(novoVendedorDto));
+        Cliente cliente = clienteTest();
         MvcResult result = mockMvc.perform(MockMvcRequestBuilders.post("/vendedor/cadastro")
                         .header(HttpHeaders.AUTHORIZATION, token)
-                        .content(objectMapper.writeValueAsString(novoVendedorDto))
-                        .contentType(MediaType.APPLICATION_JSON)
-                        .accept(MediaType.APPLICATION_JSON))
-                .andReturn();
+                        .param("cpf", "35912852857"))
+                .andExpect(status().isOk()).andReturn();
         String resulCase = result.getResponse().getContentAsString();
         assertNotNull(resulCase);
-        assertEquals("Gabriel", vendedorService.findByCpf("35912852857").getCliente().getNome());
+        assertEquals("Cliente teste", vendedorService.findByCpf("35912852857").getCliente().getNome());
         System.out.println(resulCase);
         Long codigo = vendedorService.findByCpf("35912852857").getCodigoVendedor();
         clienteService.delete(vendedorService.findByCpf("35912852857").getCliente());
