@@ -9,14 +9,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.env.Environment;
 import org.springframework.stereotype.Service;
 
-
+@Service
 public class TaskSpamEmail implements Runnable {
 
     @Autowired
     private EmailSenderService emailSenderService;
-
-    @Autowired
-    private Environment env;
 
     private static final Logger log = LoggerFactory.getLogger(TaskSpamEmail.class);
 

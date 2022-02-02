@@ -35,6 +35,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
             //"/produto/",
             //"/produto/busca/**"
             "/auth/**",
+            "/task/**",
             "/"
     };
     //Lista de requisições liberadas read only sem estar logado
