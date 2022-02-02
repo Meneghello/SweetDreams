@@ -4,11 +4,9 @@ package com.SweetDreams.sweetDreams.Services.Impl;
 import com.SweetDreams.sweetDreams.Controller.ClienteController;
 import com.SweetDreams.sweetDreams.Handle.AuthorizationExceptionHandle;
 import com.SweetDreams.sweetDreams.Models.Email;
-import com.SweetDreams.sweetDreams.Models.Perfil;
-import com.SweetDreams.sweetDreams.Security.UserSS;
+
 import com.SweetDreams.sweetDreams.Services.EmailSenderService;
-import com.SweetDreams.sweetDreams.Services.UserService;
-import com.SweetDreams.sweetDreams.SweetDreamsApplication;
+
 import com.SweetDreams.sweetDreams.Models.Cliente;
 import com.SweetDreams.sweetDreams.Models.DTOs.ClienteDto;
 import com.SweetDreams.sweetDreams.Models.DTOs.NovoClienteDto;

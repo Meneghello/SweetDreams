@@ -21,12 +21,10 @@ public class TaskSchedulingService {
 
     Map<String, ScheduledFuture<?>> jobsMap = new HashMap<>();
     Map<String, String> jobsMapName = new HashMap<>();
-    ArrayList<Object> tasks = new ArrayList<>();
-    TaskDto taskDto = new TaskDto();
 
-    public void scheduleATask(String jobId, String nomeTask, Runnable tasklet, String cronExpression) {
+    public void scheduleATask(String jobId, String nomeTask, Runnable task, String cronExpression) {
         log.info("Scheduling task com job id: " + jobId + " e cron: " + cronExpression);
-        ScheduledFuture<?> scheduledTask = taskScheduler.schedule(tasklet, new CronTrigger(cronExpression, TimeZone.getTimeZone(TimeZone.getDefault().getID())));
+        ScheduledFuture<?> scheduledTask = taskScheduler.schedule(task, new CronTrigger(cronExpression,TimeZone.getTimeZone(TimeZone.getDefault().getID())));
         jobsMap.put(jobId, scheduledTask);
         jobsMapName.put(jobId, nomeTask);
     }

@@ -5,11 +5,11 @@ import com.SweetDreams.sweetDreams.Models.DTOs.ClienteAuthDto;
 import com.SweetDreams.sweetDreams.Models.Task;
 import com.SweetDreams.sweetDreams.Security.JWTUtil;
 import com.SweetDreams.sweetDreams.Security.UserSS;
-import com.SweetDreams.sweetDreams.Services.Impl.TaskExecutorImpl;
+import com.SweetDreams.sweetDreams.Services.Impl.TaskExecutorSout;
 import com.SweetDreams.sweetDreams.Services.Impl.UserDetailsServiceImpl;
 import com.SweetDreams.sweetDreams.Services.TaskSchedulingService;
 import com.SweetDreams.sweetDreams.Services.UserService;
-import com.fasterxml.jackson.annotation.ObjectIdGenerators;
+import com.SweetDreams.sweetDreams.Services.Impl.TaskSpamEmail;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -30,8 +30,6 @@ public class AuthController {
     private JWTUtil jwtUtil;
     @Autowired
     UserDetailsServiceImpl userDetailsService;
-    @Autowired
-    TaskExecutorImpl taskExecutor;
     @Autowired
     TaskSchedulingService taskSchedulingService;
     @Autowired
@@ -62,6 +60,7 @@ public class AuthController {
     public ResponseEntity<Object> task (@RequestBody Task task){
         try {
             log.info("Adicionando nova task");
+            TaskSpamEmail taskExecutor = new TaskSpamEmail();
             taskExecutor.setTaskDef(task);
             String jobId = UUID.randomUUID().toString().replace( "-","");
             taskSchedulingService.scheduleATask(jobId,task.getNomeTask() ,taskExecutor,task.getCronExp());
