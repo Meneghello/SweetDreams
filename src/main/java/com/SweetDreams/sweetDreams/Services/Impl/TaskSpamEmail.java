@@ -35,7 +35,6 @@ public class TaskSpamEmail implements Runnable {
             e.printStackTrace();
         }
 
-
     }
 
     public Task getTaskDef() {

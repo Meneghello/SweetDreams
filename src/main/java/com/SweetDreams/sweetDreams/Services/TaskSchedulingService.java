@@ -1,6 +1,10 @@
 package com.SweetDreams.sweetDreams.Services;
 
+import com.SweetDreams.sweetDreams.Models.DTOs.NewTaskDto;
 import com.SweetDreams.sweetDreams.Models.DTOs.TaskDto;
+import com.SweetDreams.sweetDreams.Models.Task;
+import com.SweetDreams.sweetDreams.Services.Impl.TaskExecutorPrint;
+import com.SweetDreams.sweetDreams.Services.Impl.TaskExecutorSout;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,6 +20,10 @@ import java.util.stream.Collectors;
 public class TaskSchedulingService {
     @Autowired
     private TaskScheduler taskScheduler;
+    @Autowired
+    private TaskExecutorSout taskExecutorSout;
+    @Autowired
+    private TaskExecutorPrint taskExecutorPrint;
 
     private static final Logger log = LoggerFactory.getLogger(TaskSchedulingService.class);
 
@@ -39,5 +47,33 @@ public class TaskSchedulingService {
 
     public List<Map.Entry<String, String>> getAllTasks() {
         return jobsMapName.entrySet().stream().collect(Collectors.toList());
+    }
+
+    public Task fromDto(NewTaskDto newTaskDto){
+        Task task = new Task();
+        task.setNomeTask(newTaskDto.getNomeTask());
+        task.setDescricaoTask(newTaskDto.getDescricaoTask());
+        task.setCronExp(cronGenerate(newTaskDto.getSegundos(), newTaskDto.getMinutos(), newTaskDto.getHoras(),
+                newTaskDto.getDia(), newTaskDto.getMes(), newTaskDto.getDiaDaSemana() ));
+        return task;
+    }
+
+    private String cronGenerate(String segundos, String minutos, String horas, String dia, String mes, String diaDaSemana){
+        return segundos + " " + minutos + " " + horas + " " + dia + " " + mes + " " + diaDaSemana;
+    }
+
+    public Runnable taskRunnable (Task task, Integer taskNumero){
+        Runnable taskRun = null;
+        switch (taskNumero){
+            case 0:
+                taskExecutorPrint.setTaskDef(task);
+                 taskRun = taskExecutorPrint;
+                 break;
+            case 1:
+                taskExecutorSout.setTaskDef(task);
+                taskRun = taskExecutorSout;
+                break;
+        }
+        return taskRun;
     }
 }

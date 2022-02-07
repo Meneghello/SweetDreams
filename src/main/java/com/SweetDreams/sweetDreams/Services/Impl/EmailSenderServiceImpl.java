@@ -45,17 +45,15 @@ public class EmailSenderServiceImpl implements EmailSenderService {
     @Override
     public void sendEmail(Email email) throws Exception {
         MimeMessage message = emailSender.createMimeMessage();
-
-        MimeMessageHelper helper = new MimeMessageHelper(message);
+        MimeMessageHelper mime = new MimeMessageHelper(message);
 
         configuration.setClassForTemplateLoading(this.getClass(), "/Templates");
-
         Template t = configuration.getTemplate("NovoCadastro.ftl");
-        String text = FreeMarkerTemplateUtils.processTemplateIntoString(t, email.getModel());
 
-        helper.setTo(email.getEmailPara());
-        helper.setText(text, true);
-        helper.setSubject(email.getEmailAssunto());
+        String text = FreeMarkerTemplateUtils.processTemplateIntoString(t, email.getModel());
+        mime.setTo(email.getEmailPara());
+        mime.setText(text, true);
+        mime.setSubject(email.getEmailAssunto());
 
         emailSender.send(message);
     }

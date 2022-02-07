@@ -1,5 +1,6 @@
 package com.SweetDreams.sweetDreams.Controller;
 
+import com.SweetDreams.sweetDreams.Models.DTOs.NewTaskDto;
 import com.SweetDreams.sweetDreams.Models.Task;
 import com.SweetDreams.sweetDreams.Services.Impl.TaskSpamEmail;
 import com.SweetDreams.sweetDreams.Services.TaskSchedulingService;
@@ -12,6 +13,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.scheduling.config.ScheduledTaskHolder;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
 import java.util.UUID;
 
 @RestController
@@ -19,21 +21,21 @@ import java.util.UUID;
 public class TaskController {
     @Autowired
     TaskSchedulingService taskSchedulingService;
-    @Autowired
-    ScheduledTaskHolder taskHolder;
-    @Autowired
-    TaskSpamEmail taskSpamEmail;
+
 
     private static final Logger log = LoggerFactory.getLogger(TaskController.class);
 
     @PostMapping(value = "/new")
     @ApiOperation(value = "Cadastrar nova task")
-    public ResponseEntity<Object> task (@RequestBody Task task){
+    public ResponseEntity<Object> task (@RequestBody @Valid NewTaskDto newTaskDto, Integer taskNumero){
+        Task task = taskSchedulingService.fromDto(newTaskDto);
         try {
             log.info("Adicionando nova task");
-            taskSpamEmail.setTaskDef(task);
+            Runnable taskRun = taskSchedulingService.taskRunnable(task, taskNumero);
+
             String jobId = UUID.randomUUID().toString().replace( "-","");
-            taskSchedulingService.scheduleATask(jobId,task.getNomeTask() ,taskSpamEmail,task.getCronExp());
+            taskSchedulingService.scheduleATask(jobId,task.getNomeTask() ,taskRun,task.getCronExp());
+
             log.info("Task adicionada");
             return new ResponseEntity<>("Task adicionada, jobId: "+jobId, HttpStatus.OK);
         }catch (Exception e){
@@ -55,3 +57,11 @@ public class TaskController {
         return new ResponseEntity<>(taskSchedulingService.getAllTasks(), HttpStatus.OK);
     }
 }
+
+
+//TODO
+//exception para illigal argument (?)-> cron com caracteres errados
+//Guardar no banco alguma task -> usar um campo para verificar se o usuario quer que a task seja salva
+//-Com a task salva no banco, verificar assim que iniciar a app para ver se alguma task necessita ser rodada
+//Melhorar a lista de tasks
+//Criar um package diferente para tasks (ou tentar criar um run master
