@@ -1,4 +1,4 @@
-package com.SweetDreams.sweetDreams.Services.Impl;
+package com.SweetDreams.sweetDreams.Tasks;
 
 import com.SweetDreams.sweetDreams.Models.Email;
 import com.SweetDreams.sweetDreams.Models.Task;
@@ -6,10 +6,10 @@ import com.SweetDreams.sweetDreams.Services.EmailSenderService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.core.env.Environment;
+import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
 
-@Service
+@Component
 public class TaskSpamEmail implements Runnable {
 
     @Autowired

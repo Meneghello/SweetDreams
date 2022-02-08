@@ -28,8 +28,10 @@ public class NewTaskDto {
     @Pattern(regexp = "^[a-zA-Z0-9 ._]+$")
     private String nomeTask;
     private String descricaoTask;
+    private Boolean save;
 
-    public NewTaskDto(String segundos, String minutos, String horas, String dia, String mes, String diaDaSemana, String nomeTask, String descricaoTask) {
+    public NewTaskDto(String segundos, String minutos, String horas, String dia, String mes, String diaDaSemana,
+                      String nomeTask, String descricaoTask, Boolean save) {
         this.segundos = segundos;
         this.minutos = minutos;
         this.horas = horas;
@@ -38,9 +40,18 @@ public class NewTaskDto {
         this.diaDaSemana = diaDaSemana;
         this.nomeTask = nomeTask;
         this.descricaoTask = descricaoTask;
+        this.save = save;
     }
 
     public NewTaskDto() {
+    }
+
+    public Boolean getSave() {
+        return save;
+    }
+
+    public void setSave(Boolean save) {
+        this.save = save;
     }
 
     public String getSegundos() {

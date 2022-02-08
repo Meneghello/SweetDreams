@@ -1,4 +1,4 @@
-package com.SweetDreams.sweetDreams.Services.Impl;
+package com.SweetDreams.sweetDreams.Tasks;
 
 import com.SweetDreams.sweetDreams.Models.Task;
 import org.springframework.stereotype.Component;

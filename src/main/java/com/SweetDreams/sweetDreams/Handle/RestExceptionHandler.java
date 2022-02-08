@@ -56,15 +56,22 @@ public class RestExceptionHandler extends ResponseEntityExceptionHandler {
 
     @ExceptionHandler(ConstraintViolationException.class)
     public ResponseEntity<Object> handleConstraintViolationException(ConstraintViolationException ex) {
-        ApiError apiError = new ApiError(HttpStatus.BAD_REQUEST,HttpStatus.BAD_REQUEST.value(), ex.getMessage());
+        ApiError apiError = new ApiError(HttpStatus.BAD_REQUEST, HttpStatus.BAD_REQUEST.value(), ex.getMessage());
         return new ResponseEntity<Object>(apiError, new HttpHeaders(), apiError.getStatus());
     }
 
     @ExceptionHandler(AuthorizationExceptionHandle.class)
-    public ResponseEntity<Object> authorization(AuthorizationExceptionHandle e, HttpServletRequest request){
-        ApiError apiError = new ApiError(HttpStatus.FORBIDDEN,HttpStatus.FORBIDDEN.value(), e.getMessage(), (List<String>) null);
+    public ResponseEntity<Object> authorization(AuthorizationExceptionHandle e, HttpServletRequest request) {
+        ApiError apiError = new ApiError(HttpStatus.FORBIDDEN, HttpStatus.FORBIDDEN.value(), e.getMessage(), (List<String>) null);
         return new ResponseEntity<>(apiError, new HttpHeaders(), apiError.getStatus());
+    }
 
+    @ExceptionHandler(IllegalArgumentException.class)
+    public ResponseEntity<Object> illegalArgument(IllegalArgumentException e) {
+        ApiError apiError = new ApiError(HttpStatus.BAD_REQUEST, HttpStatus.BAD_REQUEST.value(), "erro na expressao " +
+                "cron",
+                (String) e.getMessage());
+        return new ResponseEntity<>(apiError, new HttpHeaders(), apiError.getStatus());
     }
 
 

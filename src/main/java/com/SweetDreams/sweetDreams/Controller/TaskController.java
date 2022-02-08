@@ -1,8 +1,8 @@
 package com.SweetDreams.sweetDreams.Controller;
 
+import com.SweetDreams.sweetDreams.Handle.RestExceptionHandler;
 import com.SweetDreams.sweetDreams.Models.DTOs.NewTaskDto;
 import com.SweetDreams.sweetDreams.Models.Task;
-import com.SweetDreams.sweetDreams.Services.Impl.TaskSpamEmail;
 import com.SweetDreams.sweetDreams.Services.TaskSchedulingService;
 import io.swagger.annotations.ApiOperation;
 import org.slf4j.Logger;
@@ -10,7 +10,6 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.scheduling.config.ScheduledTaskHolder;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
@@ -36,10 +35,16 @@ public class TaskController {
             String jobId = UUID.randomUUID().toString().replace( "-","");
             taskSchedulingService.scheduleATask(jobId,task.getNomeTask() ,taskRun,task.getCronExp());
 
+            if (task.getSave()==true){
+                taskSchedulingService.save(task, jobId);
+            }
+
             log.info("Task adicionada");
             return new ResponseEntity<>("Task adicionada, jobId: "+jobId, HttpStatus.OK);
-        }catch (Exception e){
-            return new ResponseEntity<>("Falha ao adicionar task", HttpStatus.BAD_REQUEST);
+        }catch (IllegalArgumentException e){
+            log.info("Task nao adicionada");
+            RestExceptionHandler restExceptionHandler = new RestExceptionHandler();
+            return  restExceptionHandler.illegalArgument(e);
         }
     }
     @GetMapping(path="/remove")
@@ -56,12 +61,12 @@ public class TaskController {
         log.info("Listando todas as tasks encontradas\n\rForam encontradas {} tasks",taskSchedulingService.getAllTasks().size());
         return new ResponseEntity<>(taskSchedulingService.getAllTasks(), HttpStatus.OK);
     }
+
 }
 
 
 //TODO
-//exception para illigal argument (?)-> cron com caracteres errados
 //Guardar no banco alguma task -> usar um campo para verificar se o usuario quer que a task seja salva
 //-Com a task salva no banco, verificar assim que iniciar a app para ver se alguma task necessita ser rodada
 //Melhorar a lista de tasks
-//Criar um package diferente para tasks (ou tentar criar um run master
+

@@ -2,25 +2,19 @@ package com.SweetDreams.sweetDreams.Controller;
 
 
 import com.SweetDreams.sweetDreams.Models.DTOs.ClienteAuthDto;
-import com.SweetDreams.sweetDreams.Models.Task;
 import com.SweetDreams.sweetDreams.Security.JWTUtil;
 import com.SweetDreams.sweetDreams.Security.UserSS;
-import com.SweetDreams.sweetDreams.Services.Impl.TaskExecutorSout;
 import com.SweetDreams.sweetDreams.Services.Impl.UserDetailsServiceImpl;
-import com.SweetDreams.sweetDreams.Services.TaskSchedulingService;
 import com.SweetDreams.sweetDreams.Services.UserService;
-import com.SweetDreams.sweetDreams.Services.Impl.TaskSpamEmail;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.scheduling.config.ScheduledTaskHolder;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
-import java.util.UUID;
 
 @RestController
 @RequestMapping(value="/auth")
@@ -41,7 +35,7 @@ public class AuthController {
         String token = jwtUtil.generateToken(userSS.getUsername());
         response.addHeader("Authorization", "Bearer " + token);
         log.info("Novo token criado");
-        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+        return new ResponseEntity<>(HttpStatus.FORBIDDEN);
     }
 
     @PostMapping(value = "/login")

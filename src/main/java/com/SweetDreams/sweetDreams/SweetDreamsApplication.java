@@ -30,6 +30,4 @@ public class SweetDreamsApplication {
 
 }
 
-//        docker automatizado
-//        schedule task na
-//        - fim do dia relatorio de vendas
+
