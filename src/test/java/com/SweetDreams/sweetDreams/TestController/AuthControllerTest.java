@@ -47,7 +47,7 @@ public class AuthControllerTest {
         MvcResult result = mockMvc.perform(MockMvcRequestBuilders.post(
                         "/auth/refreshToken")
                         .header(HttpHeaders.AUTHORIZATION, token))
-                .andExpect(status().isNoContent()).andReturn();
+                .andExpect(status().isAccepted()).andReturn();
         String resultCase = result.getResponse().getHeader("Authorization");
         System.out.println(resultCase);
         Assertions.assertNotNull(resultCase);

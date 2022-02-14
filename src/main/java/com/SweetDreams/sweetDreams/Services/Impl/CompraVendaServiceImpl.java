@@ -161,8 +161,13 @@ public class CompraVendaServiceImpl implements CompraVendaService {
             return "";
         }
         Double preco = produtoService.findByNomeProduto(compraVendaDto.getNomeProduto().toLowerCase()).getPreco();
-        Double desconto = ((cupomService.findByNomeCupom(compraVendaDto.getCupom()).getPorcentagem() / 100) - 1) * (-1);
-        return new DecimalFormat("##.00").format((quantidade * preco) * desconto);
+        if (cupomService.findByNomeCupom(compraVendaDto.getCupom())!=null) {
+            Double desconto = ((cupomService.findByNomeCupom(compraVendaDto.getCupom()).getPorcentagem() / 100) - 1) * (-1);
+            return new DecimalFormat("##.00").format((quantidade * preco) * desconto);
+        }
+        else {
+            return new DecimalFormat("##.00").format((quantidade * preco));
+        }
 
     }
 }

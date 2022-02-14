@@ -35,7 +35,7 @@ public class AuthController {
         String token = jwtUtil.generateToken(userSS.getUsername());
         response.addHeader("Authorization", "Bearer " + token);
         log.info("Novo token criado");
-        return new ResponseEntity<>(HttpStatus.FORBIDDEN);
+        return new ResponseEntity<>(HttpStatus.ACCEPTED);
     }
 
     @PostMapping(value = "/login")

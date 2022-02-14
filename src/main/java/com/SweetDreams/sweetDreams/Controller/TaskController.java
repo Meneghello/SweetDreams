@@ -21,7 +21,6 @@ public class TaskController {
     @Autowired
     TaskSchedulingService taskSchedulingService;
 
-
     private static final Logger log = LoggerFactory.getLogger(TaskController.class);
 
     @PostMapping(value = "/new")
@@ -56,8 +55,8 @@ public class TaskController {
         return new ResponseEntity<>("Task removida", HttpStatus.ACCEPTED);
     }
     @GetMapping(path = "/lista")
-    @ApiOperation(value = "Listar todas as tasks")
-    public ResponseEntity<Object> listaTask(){
+    @ApiOperation(value = "Listar todas as tasks ativas")
+    public ResponseEntity<Object> listaTaskAtivas(){
         log.info("Listando todas as tasks encontradas\n\rForam encontradas {} tasks",taskSchedulingService.getAllTasks().size());
         return new ResponseEntity<>(taskSchedulingService.getAllTasks(), HttpStatus.OK);
     }
@@ -75,10 +74,33 @@ public class TaskController {
         return new  ResponseEntity<Object>("Task nao encontrada",HttpStatus.NOT_FOUND);
     }
 
+    @GetMapping(path = "/listarTask")
+    @ApiOperation(value = "Listar tasks do Banco")
+    public ResponseEntity<Object> listarTasksBanco(){
+        log.info("Listando todas as tasks salvas no banco.\r\nForam encontradas {} tasks",taskSchedulingService.listAll().size());
+        return new ResponseEntity<>(taskSchedulingService.listAll().size(),HttpStatus.OK);
+    }
+
+    @PutMapping(path = "/alterar")
+    @ApiOperation(value = "Ativar ou desativar tasks salvas no banco")
+    public ResponseEntity<Object> statusTask(@RequestParam("jobId") String jobId){
+        log.info("alterando status da task salva");
+        if (taskSchedulingService.findByJobId(jobId)!=null){
+            Task task = taskSchedulingService.findByJobId(jobId);
+            task.setActive(!task.getActive());
+            taskSchedulingService.save(task,jobId);
+            if (task.getActive()) {
+                log.info("Task {} habilitada com sucesso", task.getNomeTask());
+                return new ResponseEntity("Task " + task.getNomeTask() + " habilitada com sucesso", HttpStatus.OK);
+            } else if (!(task.getActive())) {
+                log.info("Task {} desabilitada com sucesso", task.getNomeTask());
+                return new ResponseEntity("Task " + task.getNomeTask() + " desabilitada com sucesso", HttpStatus.OK);
+            }
+        }
+        log.info("Task nao encontrada");
+        return new  ResponseEntity<Object>("Task nao encontrada",HttpStatus.NOT_FOUND);
+    }
+
 }
 
-
-//TODO
-//Melhorar a lista de tasks
-//colocar um alterar tasks do BD
 
