@@ -6,6 +6,7 @@ import com.SweetDreams.sweetDreams.Repository.TaskSchedulingRepository;
 import com.SweetDreams.sweetDreams.Services.TaskSchedulingService;
 import com.SweetDreams.sweetDreams.Tasks.TaskExecutorPrint;
 import com.SweetDreams.sweetDreams.Tasks.TaskExecutorSout;
+import io.swagger.models.auth.In;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,6 +14,7 @@ import org.springframework.scheduling.TaskScheduler;
 import org.springframework.scheduling.support.CronTrigger;
 import org.springframework.stereotype.Service;
 
+import javax.annotation.PostConstruct;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -39,6 +41,7 @@ public class TaskSchedulingServiceImpl implements TaskSchedulingService {
     Map<String, ScheduledFuture<?>> jobsMap = new HashMap<>();
     Map<String, String> jobsMapName = new HashMap<>();
 
+    @Override
     public void scheduleATask(String jobId, String nomeTask, Runnable task, String cronExpression) {
         log.info("Scheduling task com job id: " + jobId + " e cron: " + cronExpression);
         ScheduledFuture<?> scheduledTask = taskScheduler.schedule(task, new CronTrigger(cronExpression, TimeZone.getTimeZone(TimeZone.getDefault().getID())));
@@ -46,6 +49,7 @@ public class TaskSchedulingServiceImpl implements TaskSchedulingService {
         jobsMapName.put(jobId, nomeTask);
     }
 
+    @Override
     public void removeScheduledTask(String jobId) {
         ScheduledFuture<?> scheduledTask = jobsMap.get(jobId);
         if (scheduledTask != null) {
@@ -54,11 +58,13 @@ public class TaskSchedulingServiceImpl implements TaskSchedulingService {
         }
     }
 
+    @Override
     public List<Map.Entry<String, String>> getAllTasks() {
         return jobsMapName.entrySet().stream().collect(Collectors.toList());
     }
 
-    public Task fromDto(NewTaskDto newTaskDto) {
+    @Override
+    public Task fromDto(NewTaskDto newTaskDto, Integer taskNumero) {
         Task task = new Task();
         task.setNomeTask(newTaskDto.getNomeTask());
         task.setDescricaoTask(newTaskDto.getDescricaoTask());
@@ -66,6 +72,7 @@ public class TaskSchedulingServiceImpl implements TaskSchedulingService {
                 newTaskDto.getDia(), newTaskDto.getMes(), newTaskDto.getDiaDaSemana()));
         task.setActive(true);
         task.setSave(newTaskDto.getSave());
+        task.setTaskNum(taskNumero);
         return task;
     }
 
@@ -73,6 +80,7 @@ public class TaskSchedulingServiceImpl implements TaskSchedulingService {
         return segundos + " " + minutos + " " + horas + " " + dia + " " + mes + " " + diaDaSemana;
     }
 
+    @Override
     public Runnable taskRunnable(Task task, Integer taskNumero) {
         Runnable taskRun = null;
         switch (taskNumero) {
@@ -99,12 +107,40 @@ public class TaskSchedulingServiceImpl implements TaskSchedulingService {
         return taskSchedulingRepository.findAll();
     }
 
-    public void verificarTasks() {
-        List<Task> list = listAll();
-        for (int i = 0; i < list.size(); i++) {
-           Object task = list.get(i);
-
-        }
+    @Override
+    public Task findByJobId(String jobId) {
+        return taskSchedulingRepository.findByJobId(jobId);
     }
+
+    @Override
+    public void deleteTask(Task task) {
+        taskSchedulingRepository.delete(task);
+    }
+
+    @PostConstruct
+    public void verificarTasks() {
+        log.info("--------------------Verificando tasks existentes--------------------");
+        System.out.println("--------------------Verificando tasks existentes--------------------");
+        List<Task> list = listAll();
+        Runnable taskRun = null;
+        if (list.size() > 0) {
+            for (int i = 0; i < list.size(); i++) {
+                Task task = list.get(i);
+                if (task.getActive() == true) {
+                    log.info("--------------------Iniciando tasks " + task.getNomeTask()+" --------------------");
+                    System.out.println("Iniciando tasks " + task.getNomeTask()+" --------------------");
+                    taskRun = taskRunnable(task, task.getTaskNum());
+                    scheduleATask(task.getJobId(), task.getNomeTask(), taskRun, task.getCronExp());
+                    log.info("--------------------Task iniciada--------------------");
+                    System.out.println("--------------------Task iniciada--------------------");
+                }
+            }
+        } else {
+            log.info("--------------------Nenhuma task encontrada--------------------");
+            System.out.println("--------------------Nenhuma task encontrada--------------------");
+        }
+
+    }
+
 
 }

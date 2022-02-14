@@ -27,7 +27,7 @@ public class TaskController {
     @PostMapping(value = "/new")
     @ApiOperation(value = "Cadastrar nova task")
     public ResponseEntity<Object> task (@RequestBody @Valid NewTaskDto newTaskDto, Integer taskNumero){
-        Task task = taskSchedulingService.fromDto(newTaskDto);
+        Task task = taskSchedulingService.fromDto(newTaskDto, taskNumero);
         try {
             log.info("Adicionando nova task");
             Runnable taskRun = taskSchedulingService.taskRunnable(task, taskNumero);
@@ -62,11 +62,23 @@ public class TaskController {
         return new ResponseEntity<>(taskSchedulingService.getAllTasks(), HttpStatus.OK);
     }
 
+    @DeleteMapping
+    @ApiOperation(value = "Deletar task do banco de dados")
+    public ResponseEntity<Object> deletarTask(@RequestParam("jobId") String jobId){
+        log.info("Deletando task");
+        if (taskSchedulingService.findByJobId(jobId)!=null){
+            taskSchedulingService.deleteTask(taskSchedulingService.findByJobId(jobId));
+            log.info("Task deletada");
+            return new  ResponseEntity<Object>("Task deletada",HttpStatus.ACCEPTED);
+        }
+        log.info("Task nao encontrada");
+        return new  ResponseEntity<Object>("Task nao encontrada",HttpStatus.NOT_FOUND);
+    }
+
 }
 
 
 //TODO
-//Guardar no banco alguma task -> usar um campo para verificar se o usuario quer que a task seja salva
-//-Com a task salva no banco, verificar assim que iniciar a app para ver se alguma task necessita ser rodada
 //Melhorar a lista de tasks
+//colocar um alterar tasks do BD
 

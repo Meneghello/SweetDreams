@@ -2,6 +2,8 @@ package com.SweetDreams.sweetDreams;
 
 import com.SweetDreams.sweetDreams.Models.Email;
 import com.SweetDreams.sweetDreams.Services.EmailSenderService;
+import com.SweetDreams.sweetDreams.Services.Impl.TaskSchedulingServiceImpl;
+import com.SweetDreams.sweetDreams.Services.TaskSchedulingService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -16,8 +18,6 @@ import java.util.Map;
 @SpringBootApplication
 @EnableScheduling
 public class SweetDreamsApplication {
-
-
 
     @GetMapping(value = "")
     public String index() {

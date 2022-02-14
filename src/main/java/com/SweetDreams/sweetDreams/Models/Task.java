@@ -15,9 +15,10 @@ public class Task {
     private Boolean active;
     private Boolean save;
     private String jobId;
+    private Integer taskNum;
 
     public Task(String id,String cronExp, String nomeTask, String descricaoTask, Boolean active, Boolean save,
-                String jobId) {
+                String jobId, Integer taskNum) {
         this.id = id;
         this.cronExp = cronExp;
         this.nomeTask = nomeTask;
@@ -25,9 +26,18 @@ public class Task {
         this.active = active;
         this.save = save;
         this.jobId = jobId;
+        this.taskNum = taskNum;
     }
 
     public Task() {
+    }
+
+    public Integer getTaskNum() {
+        return taskNum;
+    }
+
+    public void setTaskNum(Integer taskNum) {
+        this.taskNum = taskNum;
     }
 
     public String getJobId() {

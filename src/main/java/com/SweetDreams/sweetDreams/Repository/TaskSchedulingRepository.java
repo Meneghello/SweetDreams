@@ -5,4 +5,5 @@ import com.SweetDreams.sweetDreams.Models.Task;
 import org.springframework.data.mongodb.repository.MongoRepository;
 
 public interface TaskSchedulingRepository  extends MongoRepository<Task, String> {
+    Task findByJobId(String jobId);
 }
