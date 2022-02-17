@@ -11,10 +11,13 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
+import java.security.Principal;
 
 @RestController
 @RequestMapping(value="/auth")
@@ -46,6 +49,8 @@ public class AuthController {
         log.info("Logado com sucesso");
         return new ResponseEntity<>("Logado com sucesso",HttpStatus.OK);
     }
-
-
+    @GetMapping(path = "/username")
+    public String currentUser(Authentication principal){
+        return principal.getName() + " " + principal.getAuthorities();
+    }
 }

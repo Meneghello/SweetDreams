@@ -46,10 +46,8 @@ public class Cliente {
     @Indexed(unique = true)
     private String email;
 
-
     @NotEmpty(message = "Campo senha é obrigatório")
     private String senha;
-
 
     private Set<Integer> role = new HashSet<>();
 
